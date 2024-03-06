@@ -4,7 +4,13 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
 {
     /** Color in format RGB Floating point notation**/
     override fun equals(other: Any?): Boolean { //override operatore logico ==
-        return super.equals(other)
+
+        if (other is Color) {
+            return ((this.r == other.r) and (this.r == other.r) and (this.r == other.r))
+
+        }
+
+        return false
     }
 
     operator fun plus(col:Color):Color //funzione somma
@@ -19,26 +25,42 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
     {
         return Color()
     }
-    operator fun times(factor:Any):Color //funzione prodotto
+    operator fun times(factor:Float):Color //funzione prodotto scalare
     {
         /**
          * Scalar*Color: multiply every component of the RGB format by the value passed by
-         * Color*Color:  return the color given by the product component by component:
-         *      (R1,G1,B1)*(R2,G2,B2)=(R1*R2, G1*G2, B1*B2)
          */
-
-        return Color()
+        return Color(r = factor * this.r, g = factor * this.g, b = factor * this.b)
     }
 
-    operator fun div(factor: Any):Color
+    operator fun times(factor: Color):Color
+    {
+        /**
+         * Color*Color:  return the color given by the product component by component:
+         *      (R1,G1,B1)*(R2,G2,B2)=(R1*R2, G1*G2, B1*B2)
+        */
+        // tensor product
+        return Color(r=factor.r*this.r, g=factor.g*this.g, b=factor.b*this.b,)
+    }
+
+    operator fun div(factor: Float):Color
     {
         /**
          * Color/Scalar: Divide every component of the RGB format by the value passed by
+         */
+        return Color(r=this.r/factor, g=this.g/factor, b=this.b/factor)
+    }
+
+/*    operator fun div(factor: Color):Color
+    {
+        /**
          * Color/Color:  return the color given by the division component by component:
          *      (R1,G1,B1)/(R2,G2,B2)=(R1/R2, G1/G2, B1/B2)
          */
-        return Color()
+        if (factor.r or)
+
     }
+*/
     override fun toString(): String {
         /**
          * Display the Color in RGB notation
@@ -47,12 +69,15 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
         return super.toString()
     }
 
-    fun are_similar_colors(color:Color, eps:Float):Boolean
+    fun are_similar_colors(color:Color, eps:Float=1e-5f):Boolean
     {
         /**
          * Make a comparison between the colors within a certain tolerance for the floats
          * numbers in the RGB notation
          */
+
+
         return true
     }
 }
+
