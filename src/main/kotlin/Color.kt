@@ -63,7 +63,7 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
          * Make a comparison between the colors within a certain tolerance for the floats
          * numbers in the RGB notation
          */
-        if (are_similar(this.r, color.r) and are_similar(this.g, color.g) and are_similar(this.b, color.b))
+        //if (are_similar(this.r, color.r) and are_similar(this.g, color.g) and are_similar(this.b, color.b))
         {
             return true
         }
