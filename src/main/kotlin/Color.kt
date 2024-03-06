@@ -3,23 +3,33 @@ package org.example
 data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
 {
     /** Color in format RGB Floating point notation**/
-    override fun equals(other: Any?): Boolean { //override operatore logico ==
+    override fun equals(other: Any?): Boolean { //override logic operator ==
         return super.equals(other)
     }
 
-    operator fun plus(col:Color):Color //funzione somma
+    operator fun plus(col:Color):Color // sum function
     {
+
         /**
          * Sum every component of the RGB format of 2 Colors
          */
-        return Color()
+        val newR = this.r + col.r
+        val newG = this.g + col.g
+        val newB = this.b + col.b
+        return Color(newR, newG, newB)
     }
 
     operator fun minus(col: Color):Color
     {
-        return Color()
+        /**
+         * Subtract every component of the RGB format of 2 Colors
+         */
+        val newR = this.r - col.r
+        val newG = this.g - col.g
+        val newB = this.b - col.b
+        return Color(newR, newG, newB)
     }
-    operator fun times(factor:Any):Color //funzione prodotto
+    operator fun times(factor:Any):Color //product function
     {
         /**
          * Scalar*Color: multiply every component of the RGB format by the value passed by
@@ -44,16 +54,19 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
          * Display the Color in RGB notation
          */
 
-        return super.toString()
+        return "Color(r=$r, g=$g, b=$b)"
     }
 
-    fun are_similar_colors(color:Color, eps:Float):Boolean
+    fun are_similar_colors(color:Color, eps:Float=1e-5f):Boolean
     {
         /**
          * Make a comparison between the colors within a certain tolerance for the floats
          * numbers in the RGB notation
          */
-        return true
+        if (are_similar(this.r, color.r) and are_similar(this.g, color.g) and are_similar(this.b, color.b))
+        {
+            return true
+        }
+        return false
     }
 }
->>>>>>> 6e3570e1d20a195b7e954020784783f1b775c480
