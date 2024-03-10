@@ -33,6 +33,15 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
         return Color(r = factor * this.r, g = factor * this.g, b = factor * this.b)
     }
 
+    operator fun times(factor:Int):Color //funzione prodotto scalare
+    {
+        /**
+         * Scalar*Color: multiply every component of the RGB format by the value passed by
+         */
+        return Color(r = factor * this.r, g = factor * this.g, b = factor * this.b)
+    }
+
+
     operator fun times(factor: Color):Color
     {
         /**
@@ -51,7 +60,16 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
         return Color(r=this.r/factor, g=this.g/factor, b=this.b/factor)
     }
 
-/*    operator fun div(factor: Color):Color
+
+    operator fun div(factor: Int):Color
+    {
+        /**
+         * Color/Scalar: Divide every component of the RGB format by the value passed by
+         */
+        return Color(r=this.r/factor, g=this.g/factor, b=this.b/factor)
+    }
+
+    /*    operator fun div(factor: Color):Color
     {
         /**
          * Color/Color:  return the color given by the division component by component:
