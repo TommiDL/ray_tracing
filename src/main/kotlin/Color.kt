@@ -22,8 +22,7 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
         /**
          * Sum every component of the RGB format of 2 Colors
          */
-        return Color()
-    }
+        return Color(this.r + col.r, this.g + col.g, this.b + col.b)    }
 
     operator fun minus(col: Color):Color
     {

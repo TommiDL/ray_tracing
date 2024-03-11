@@ -8,6 +8,7 @@ class ColorTest {
 
     @Test
     fun testEquals() {
+<<<<<<< HEAD
         print(Color(r=1f,g=2f,b=3f))
         print(" == ")
         println(Color(r=1f,g=2f,b=3f))
@@ -19,6 +20,10 @@ class ColorTest {
         println(Color(r=4f,g=5f,b=6f))
         assert(Color(r=1f,g=2f,b=3f) == Color(r=4f,g=5f,b=6f))
     */
+=======
+        assert(Color(r=1f,g=2f,b=3f) == Color(r=4f,g=5f,b=6f))
+        assert(Color(r=1f,g=2f,b=3f) == Color(r=4f,g=5f,b=6f))
+>>>>>>> 205b2e9301d176124202f318e2458f70f0a4d0b6
         assert(Color(r=1f,g=2f,b=3f) == Color(r=4f,g=5f,b=6f))
         assert(Color(r=1f,g=2f,b=3f) == Color(r=4f,g=5f,b=6f))
         assert(Color(r=1f,g=2f,b=3f) == Color(r=4f,g=5f,b=6f))
