@@ -23,7 +23,7 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
 
     operator fun minus(col: Color):Color
     {
-        return Color()
+        return Color(this.r + col.r, this.g + col.g, this.b + col.b)
     }
     operator fun times(factor:Float):Color //funzione prodotto scalare
     {
