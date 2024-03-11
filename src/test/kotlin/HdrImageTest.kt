@@ -5,7 +5,6 @@ class HdrImageTest {
 
     @Test
     fun getPixels() {
-
     }
 
     @Test

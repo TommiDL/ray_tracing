@@ -1,12 +1,16 @@
 package org.example
 
+//data class  --> override operatori
 data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
 {
     /** Color in format RGB Floating point notation**/
     override fun equals(other: Any?): Boolean { //override operatore logico ==
+        /**
+         * override == function
+         */
 
         if (other is Color) {
-            return ((this.r == other.r) and (this.r == other.r) and (this.r == other.r))
+            return ((this.r == other.r) and (this.g == other.g) and (this.b == other.b))
 
         }
 
@@ -23,7 +27,10 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
 
     operator fun minus(col: Color):Color
     {
-        return Color()
+        /**
+         * Minus: (R1,G1, B1) - (R2,G2,B2) = (R1-R2, G1-G2, B1-B2)
+         */
+        return Color(r=this.r-col.r, g=this.g-col.g, b=this.b-col.b)
     }
     operator fun times(factor:Float):Color //funzione prodotto scalare
     {
@@ -84,8 +91,9 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
          * Display the Color in RGB notation
          */
 
-        return super.toString()
+        return "(${this.r}, ${this.g}, ${this.b})"
     }
+
 
     fun are_similar_colors(color:Color, eps:Float=1e-5f):Boolean
     {
