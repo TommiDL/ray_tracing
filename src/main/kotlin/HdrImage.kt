@@ -9,7 +9,7 @@ class HdrImage(val witdth:Int = 0, val height:Int=0)
      *
      */
 
-    val pixels = Array<Color>(size = witdth * height) { Color() }
+    var pixels = Array<Color>(size = witdth * height) { Color() }
 
     fun get_pixel(x:Int, y:Int):Color
     {

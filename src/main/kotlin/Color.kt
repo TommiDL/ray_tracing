@@ -90,7 +90,7 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
          * Display the Color in RGB notation
          */
 
-        return "(${this.r}, ${this.g}, ${this.b})"
+        return "Color(r=$r, g=$g, b=$b)"
     }
 
 
@@ -100,9 +100,13 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
          * Make a comparison between the colors within a certain tolerance for the floats
          * numbers in the RGB notation
          */
+        if(are_similar(this.r, color.r, eps) and are_similar(this.g, color.g, eps) and are_similar(this.b, color.b, eps))
+        {
+            return true
+        }
 
-
-        return true
+        return false
+        
     }
 }
 
