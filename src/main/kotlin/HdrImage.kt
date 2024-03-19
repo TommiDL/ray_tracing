@@ -1,5 +1,8 @@
 package org.example
 
+import java.io.*
+import java.nio.*
+
 class HdrImage(val witdth:Int = 0, val height:Int=0)
 {
     /**
@@ -40,5 +43,21 @@ class HdrImage(val witdth:Int = 0, val height:Int=0)
     {
         return y*this.witdth+x
     }
+
+    //fun read_pfm_image(){
+        //funzione per la lettura di un file pfm da uno stream
+    //}
+
+   // fun _parse_img_size ():Int
+    //{
+        //lettura delle dimensioni di un'immagine da una stringa
+
+    //}
+
+   // fun _parse_endianness(str: String):ByteOrder
+    //{
+        //decodifica del tipo di endianness da una stringa
+      //  return string.ByteOrder()
+   // }
 
 }
