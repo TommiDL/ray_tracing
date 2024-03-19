@@ -4,10 +4,6 @@ package org.example
 data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
 {
     /** Color in format RGB Floating point notation**/
-
-   // override fun equals(other: Any?): Boolean { //override logic operator ==
-     //   return super.equals(other)
-
     override fun equals(other: Any?): Boolean { //override operatore logico ==
         /**
          * override == function
@@ -19,44 +15,23 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
         }
 
         return false
-
     }
 
-    operator fun plus(col:Color):Color // sum function
+    operator fun plus(col:Color):Color //funzione somma
     {
-
         /**
          * Sum every component of the RGB format of 2 Colors
          */
-
-        val newR = this.r + col.r
-        val newG = this.g + col.g
-        val newB = this.b + col.b
-        return Color(newR, newG, newB)
-    }
-
         return Color(this.r + col.r, this.g + col.g, this.b + col.b)    }
-
 
     operator fun minus(col: Color):Color
     {
         /**
-
-         * Subtract every component of the RGB format of 2 Colors
-         */
-        val newR = this.r - col.r
-        val newG = this.g - col.g
-        val newB = this.b - col.b
-        return Color(newR, newG, newB)
-    }
-    operator fun times(factor:Any):Color //product function
-
          * Minus: (R1,G1, B1) - (R2,G2,B2) = (R1-R2, G1-G2, B1-B2)
          */
         return Color(r=this.r-col.r, g=this.g-col.g, b=this.b-col.b)
     }
     operator fun times(factor:Float):Color //funzione prodotto scalare
-
     {
         /**
          * Scalar*Color: multiply every component of the RGB format by the value passed by
@@ -125,15 +100,6 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
          * Make a comparison between the colors within a certain tolerance for the floats
          * numbers in the RGB notation
          */
-
-        //if (are_similar(this.r, color.r) and are_similar(this.g, color.g) and are_similar(this.b, color.b))
-        {
-            return true
-        }
-        return false
-    }
-}
-
         if(are_similar(this.r, color.r, eps) and are_similar(this.g, color.g, eps) and are_similar(this.b, color.b, eps))
         {
             return true
@@ -143,5 +109,4 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
         
     }
 }
-
 
