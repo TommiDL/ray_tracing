@@ -1,5 +1,6 @@
 package org.example
 
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
@@ -7,173 +8,163 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.stream.Stream
 
-class HdrImage(var width:Int = 0, var height:Int=0)
+/**
+ * Function to read a PFM file
+ */
+fun read_pfm_image(stream: InputStream):HdrImage
 {
-    /**
-     * Create a matrix with dimensions (width, height)
-     * of Color in RGB format (all in color black)
-     *
-     *
-     */
 
-    var pixels = Array<Color>(size = width * height) {Color()}
-
-    // costruttore da file
-    constructor(filename:String):this()
+    var magic=_read_line(stream)
+    if(magic!="PF")
     {
-        /**
-         * upload image from a PFM file
-         */
-        var stream:InputStream=FileInputStream(File(filename))
-
-        read_pfm_image(stream)
-
+        throw InvalidPfmFileFormat("Invalid magic in PFM File")
     }
 
-    //costruttore da stream
-    constructor(stream:InputStream):this()
-    {
-        read_pfm_image(stream)
+    var img_size:String=_read_line(stream)
+    var _width=_parse_img_size(img_size)[0]
+    var _height=_parse_img_size(img_size)[1]
 
+    var endianness_line:String=_read_line(stream)
+    var endiannes: ByteOrder = _parse_endianness(endianness_line)
+
+    return HdrImage(width=_width, height=_height)
+}
+
+/**
+ * read the endianness from
+ */
+fun _parse_endianness(line:String):ByteOrder
+{
+    var value:Float=0f
+    try {
+        value=line.toFloat()
+    }catch (e:Exception)
+    {
+        throw InvalidPfmFileFormat("missing endianness specification")
     }
-
-    fun read_pfm_image(stream: InputStream)
+    if(value>0)
     {
-        var magic=_read_line(stream)
-        if(magic!="PF")
-        {
-            //throw
-        }
-
-        var img_size:String=_read_line(stream)
-        var _width=_parse_img_size(img_size)[0]
-        var _height=_parse_img_size(img_size)[1]
-
-        var endianness_line:String=_read_line(stream)
-        var endiannes: ByteOrder = _parse_endianness(endianness_line)
-
-        this=HdrImage(width=_width, height=_height)
-    }
-
-    fun _parse_endianness(line:String):ByteOrder
-    {
-        var value:Float=0f
-        try {
-            value=line.toFloat()
-        }catch (e:Error)
-        {
-
-        }
-        if(value>0)
-        {
-            return ByteOrder.BIG_ENDIAN
-        }
-        else if (value<0)
-        {
-            return ByteOrder.LITTLE_ENDIAN
-        }
-        else
-        {
-            //raise InvalidPfmFileFormat
-        }
-
-        // default
         return ByteOrder.BIG_ENDIAN
     }
-
-    fun _parse_img_size(str:String):Array<Int>
+    else if (value<0)
     {
-        var l = str.split(" ")
-
-        if(l.size!=2)
-        {
-            //raise
-        }
-
-        var w:Int=0
-        var h:Int=0
-        try {
-             w= l[0].toInt()
-             h= l[1].toInt()
-
-            if((w<0) or (h<0))
-            {
-                //throw
-            }
-
-        } catch () {}
+        return ByteOrder.LITTLE_ENDIAN
+    }
+    else
+    {
+        throw InvalidPfmFileFormat("invalid endianness specification, it cannot be zero")
+    }
+}
 
 
-        return arrayOf<Int>(w, h)
+fun _parse_img_size(str:String):Array<Int>
+{
+    var l = str.split(" ")
+
+    if(l.size!=2)
+    {
+        throw InvalidPfmFileFormat("invalid image size specification")
     }
 
-    fun _read_line(stream: InputStream):String {
+    var w:Int=0
+    var h:Int=0
 
-        var res:ByteBuffer=ByteBuffer.wrap("".toByteArray())
+    w= l[0].toInt()
+    h= l[1].toInt()
 
-        var buff:ByteArray= ByteArray(1)
-        while (true)
-        {
-            stream.read(buff)
-
-            if ((buff == "".toByteArray()) or  (buff=="\n".toByteArray()))
-            {
-                return res.array().decodeToString()
-            }
-
-            res.put(buff[0].toByte())
-
-        }
-
+    if((w<0) or (h<0))
+    {
+        throw InvalidPfmFileFormat("invalid width/height")
     }
 
-    fun _read_float(stream: InputStream, endiannes:ByteOrder):Float
-    {
-        // dichiarare un array di 4 byte perchè le righe sono tutte a 32 bit
-        var b:ByteArray=ByteArray(4)
 
+    return arrayOf<Int>(w, h)
+}
+
+fun _read_line(stream: InputStream):String {
+
+    var res:ByteArrayOutputStream=ByteArrayOutputStream()
+
+
+    while (true)
+    {
+        var buff:Int=stream.read()
+
+        if ((buff == -1) or  (buff=='\n'.code))
+        {
+            return res.toString("ASCII")
+        }
+
+        res.write(buff)
+    }
+
+}
+
+/**
+ * Read a float 32 bit from a binary file opened in a stream object
+ */
+fun _read_float(stream: InputStream, endiannes:ByteOrder):Float
+{
+    // dichiarare un array di 4 byte perchè le righe sono tutte a 32 bit
+    var b:ByteArray=ByteArray(4)
+
+    try {
         stream.read(b)
-
         var value:ByteBuffer=ByteBuffer.wrap(b)
+        value.order(endiannes)
+        return value.float
 
-        var res:Float=0f
-
-        try {
-            value.order(endiannes)
-            res=value.float
-        }catch (e:Exception)
-        {
-            print("")
-        }
-        return res
-
+    }catch (e:Exception)
+    {
+        throw InvalidPfmFileFormat("impossible to read binary data from the file")
     }
 
 
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Create a matrix with dimensions (width, height)
+ * of Color in RGB format (all in color black)
+ *
+ *
+ */
+class HdrImage(val width:Int = 0, val height:Int=0)
+{
+    var pixels = Array<Color>(size = width * height) {Color()}
+
+    /**
+     * Return the `Color` value for a pixel in the image
+     *
+     * The pixel at the top-left corner has coordinates (0, 0).
+     */
     fun get_pixel(x:Int, y:Int):Color
     {
-        /**
-         * Return the `Color` value for a pixel in the image
-         *
-         * The pixel at the top-left corner has coordinates (0, 0).
-         */
+
         assert(this.valid_coordinates(x,y))
         return this.pixels[this.pixel_offset(x,y)]
     }
 
+
+    /**
+     * Set the new color for a pixel in the image
+     * The pixel at the top-left corner has coordinates (0, 0)
+     */
     fun set_pixel(x:Int, y:Int, new_color:Color)
     {
-        /**Set the new color for a pixel in the image
-         * The pixel at the top-left corner has coordinates (0, 0)
-         */
+
         assert(this.valid_coordinates(x,y))
         this.pixels[this.pixel_offset(x,y)]=new_color
     }
 
+    /**
+     * Check if the coordinates of the matrix are inside the boundaries
+     */
     fun valid_coordinates(x:Int, y:Int):Boolean
     {
         return ((x>=0) and (x<this.width) and (y>=0) and (y<this.height))
     }
+
 
     fun pixel_offset(x:Int, y:Int):Int
     {
