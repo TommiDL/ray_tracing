@@ -7,7 +7,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.stream.Stream
 
-class HdrImage(val width:Int = 0, val height:Int=0)
+class HdrImage(var width:Int = 0, var height:Int=0)
 {
     /**
      * Create a matrix with dimensions (width, height)
@@ -34,14 +34,25 @@ class HdrImage(val width:Int = 0, val height:Int=0)
     constructor(stream:InputStream):this()
     {
         read_pfm_image(stream)
+
     }
 
     fun read_pfm_image(stream: InputStream)
     {
         var magic=_read_line(stream)
-        //if(magic!="PF")
-        //{
-        //}
+        if(magic!="PF")
+        {
+            //throw
+        }
+
+        var img_size:String=_read_line(stream)
+        var _width=_parse_img_size(img_size)[0]
+        var _height=_parse_img_size(img_size)[1]
+
+        var endianness_line:String=_read_line(stream)
+        var endiannes: ByteOrder = _parse_endianness(endianness_line)
+
+        this=HdrImage(width=_width, height=_height)
     }
 
     fun _parse_endianness(line:String):ByteOrder
@@ -65,19 +76,55 @@ class HdrImage(val width:Int = 0, val height:Int=0)
         {
             //raise InvalidPfmFileFormat
         }
-        
 
+        // default
         return ByteOrder.BIG_ENDIAN
     }
 
-    fun _parse_img_size():Array<Int>
+    fun _parse_img_size(str:String):Array<Int>
     {
+        var l = str.split(" ")
 
-        return  Array<Int>(1){0}
+        if(l.size!=2)
+        {
+            //raise
+        }
+
+        var w:Int=0
+        var h:Int=0
+        try {
+             w= l[0].toInt()
+             h= l[1].toInt()
+
+            if((w<0) or (h<0))
+            {
+                //throw
+            }
+
+        } catch () {}
+
+
+        return arrayOf<Int>(w, h)
     }
 
-    fun _read_line(stream: InputStream):ByteArray {
-       ByteBuffer.
+    fun _read_line(stream: InputStream):String {
+
+        var res:ByteBuffer=ByteBuffer.wrap("".toByteArray())
+
+        var buff:ByteArray= ByteArray(1)
+        while (true)
+        {
+            stream.read(buff)
+
+            if ((buff == "".toByteArray()) or  (buff=="\n".toByteArray()))
+            {
+                return res.array().decodeToString()
+            }
+
+            res.put(buff[0].toByte())
+
+        }
+
     }
 
     fun _read_float(stream: InputStream, endiannes:ByteOrder):Float
@@ -96,7 +143,7 @@ class HdrImage(val width:Int = 0, val height:Int=0)
             res=value.float
         }catch (e:Exception)
         {
-            print("Lore succhia i cazzzi al limone")
+            print("")
         }
         return res
 
