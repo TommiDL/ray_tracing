@@ -1,4 +1,5 @@
 import org.example.Color
+import org.example.are_similar
 import org.junit.jupiter.api.Test
 
 
@@ -403,5 +404,15 @@ class ColorTest {
         t2 =Color(r=1f, g=3f, b=2f)
         assertFalse(t1.are_similar_colors(t2))
 
+    }
+
+    @Test
+    fun luminosity() {
+
+        val col1:Color=Color(1.0f, 2.0f, 3.0f)
+        val col2:Color=Color(9.0f, 5.0f, 7.0f)
+
+        assertTrue(are_similar(2.0f, col1.luminosity().toFloat()))
+        assertTrue(are_similar(7.0f, col2.luminosity().toFloat()))
     }
 }

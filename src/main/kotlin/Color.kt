@@ -93,13 +93,12 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
         return "Color(r=$r, g=$g, b=$b)"
     }
 
-
+    /**
+     * Make a comparison between the colors within a certain tolerance for the floats
+     * numbers in the RGB notation
+     */
     fun are_similar_colors(color:Color, eps:Float=1e-5f):Boolean
     {
-        /**
-         * Make a comparison between the colors within a certain tolerance for the floats
-         * numbers in the RGB notation
-         */
         if(are_similar(this.r, color.r, eps) and are_similar(this.g, color.g, eps) and are_similar(this.b, color.b, eps))
         {
             return true
@@ -108,5 +107,15 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
         return false
         
     }
+
+    /**
+     * Returns the image luminosity in a double variable.  
+     * No input, just uses r,g,b of type color
+     */
+    fun luminosity(): Double
+    {
+        return (maxOf(this.r, this.g, this.b) + minOf(this.r, this.g, this.b)) * 0.5
+    }
+
 }
 
