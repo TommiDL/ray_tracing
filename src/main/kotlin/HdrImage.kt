@@ -3,10 +3,18 @@ package org.example
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
+import java.io.IOException
 import java.io.InputStream
+import java.io.OutputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.stream.Stream
+
+/**
+
+ * class InvalidPfmFileFormat extends the 'Exception' class, when this typer of exceprion is launched it means that there are ploblems with the PFM format*/
+class InvalidPfmFileFormat(message: String) : Exception(message)
+
 
 /**
  * Function to read a PFM file
@@ -33,28 +41,33 @@ fun read_pfm_image(stream: InputStream):HdrImage
 /**
  * read the endianness from
  */
+
 fun _parse_endianness(line:String):ByteOrder
-{
-    var value:Float=0f
-    try {
-        value=line.toFloat()
-    }catch (e:Exception)
     {
-        throw InvalidPfmFileFormat("missing endianness specification")
-    }
-    if(value>0)
-    {
+        var value:Float=0f
+        try {
+            value=line.toFloat()
+        }catch (e:Error)
+        {
+
+        }
+        if(value>0)
+        {
+            return ByteOrder.BIG_ENDIAN
+        }
+        else if (value<0)
+        {
+            return ByteOrder.LITTLE_ENDIAN
+        }
+        else
+        {
+            //raise InvalidPfmFileFormat
+            throw InvalidPfmFileFormat("invalid endianness specification, it cannot be zero")
+        }
+
+        // default
         return ByteOrder.BIG_ENDIAN
     }
-    else if (value<0)
-    {
-        return ByteOrder.LITTLE_ENDIAN
-    }
-    else
-    {
-        throw InvalidPfmFileFormat("invalid endianness specification, it cannot be zero")
-    }
-}
 
 
 fun _parse_img_size(str:String):Array<Int>
@@ -171,4 +184,44 @@ class HdrImage(val width:Int = 0, val height:Int=0)
         return y*this.width+x
     }
 
+    fun _writeFloatToStream(stream: OutputStream, value: Float, order: ByteOrder) {
+        val bytes = ByteBuffer.allocate(4).putFloat(value).array() // Big endian
+
+        if (order == ByteOrder.LITTLE_ENDIAN) {
+            bytes.reverse()
+        }
+
+        stream.write(bytes)
+    }
+
+    /**
+     * writes a PFM file with a given output stream
+     *
+     * the color matrix is written with (0,0) in the bottom left corner
+     */
+    fun write_pfm_image(stream: OutputStream, endiannes:ByteOrder = ByteOrder.LITTLE_ENDIAN) {
+        val endiannes_str:String = if (endiannes == ByteOrder.LITTLE_ENDIAN) "-1.0" else "1.0"
+
+        //setting the header that must be printed on the top of the file
+        val header:String = "PF\n${this.width} ${this.height}\n$endiannes_str\n"
+        //converting the string type to tne ASCII
+        try {
+            stream.write(header.toByteArray())
+        }catch (e:IOException){
+            println("Stream Write Error:$e")
+        }
+        // the (0,0) pixel starts from the bottom left
+        for (i in this.height-1 downTo 0){
+            for(j in 0..this.width-1){
+                val color:Color = this.get_pixel(j,i)
+                _writeFloatToStream(stream, color.r, endiannes)
+                _writeFloatToStream(stream, color.g, endiannes)
+                _writeFloatToStream(stream, color.b, endiannes)
+
+            }
+        }
+    }
+
+
 }
+
