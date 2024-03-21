@@ -42,7 +42,31 @@ fun read_pfm_image(stream: InputStream):HdrImage
     return HdrImage(width=_width, height=_height)
 }
 
-
+/**
+ * read the endianness from PFM file
+ */
+fun _parse_endianness(line:String):ByteOrder
+{
+    var value:Float=0f
+    try {
+        value=line.toFloat()
+    }catch (e:Exception)
+    {
+        throw InvalidPfmFileFormat("missing endianness specification")
+    }
+    if(value>0)
+    {
+        return ByteOrder.BIG_ENDIAN
+    }
+    else if (value<0)
+    {
+        return ByteOrder.LITTLE_ENDIAN
+    }
+    else
+    {
+        throw InvalidPfmFileFormat("invalid endianness specification, it cannot be zero")
+    }
+}
 
 fun _parse_img_size(str:String):Array<Int>
 {
