@@ -9,7 +9,7 @@ data class Parameters(
 {
     fun parse_command_line(argv:Array<String>)
     {
-        if(argv.size!=5)
+        if(argv.size!=4)
         {
             // digli quali arg vuoi
             //throw runtimeerror
@@ -17,23 +17,23 @@ data class Parameters(
             throw RuntimeException("Usage: main.py INPUT_PFM_FILE FACTOR GAMMA OUTPUT_PNG_FILE")
         }
 
-        this.input_pfm_file_name = argv.get(1) as String
+        this.input_pfm_file_name = argv.get(0) as String
 
         try {
-            this.factor=argv.get(2).toFloat()
+            this.factor=argv.get(1).toFloat()
         } catch (e:NumberFormatException)
         {
-            throw RuntimeException("Invalid factor ('${argv[2]}'), it must be a floating-point number.")
+            throw RuntimeException("Invalid factor ('${argv[1]}'), it must be a floating-point number.")
         }
 
         try {
-            this.gamma = argv.get(3).toFloat()
+            this.gamma = argv.get(2).toFloat()
         }catch (e:NumberFormatException)
         {
-            throw RuntimeException("Invalid gamma ('${argv[3]}'), it must be a floating-point number.")
+            throw RuntimeException("Invalid gamma ('${argv[2]}'), it must be a floating-point number.")
         }
 
-        this.output_png_filename=argv[4] as String
+        this.output_png_filename=argv[3] as String
 
     }
 }

@@ -280,6 +280,10 @@ class HdrImage(val width:Int = 0, val height:Int=0)
         }
     }
 
+    /**
+     * generate a ldr image from a Stream of Output
+     * with the selected format
+     */
     fun write_ldr_image(stream: OutputStream, format:String, gamma:Float=1.0f)
     {
         val img:BufferedImage = BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB)
@@ -290,7 +294,7 @@ class HdrImage(val width:Int = 0, val height:Int=0)
                 val color:Color=this.pixels[pixel_offset(x,y)]
 
 
-                val conv:Int = (255*(color.r.pow(1/gamma)) * 65536 + 255*(color.g.pow(1/gamma)) * 256 + 255*(color.b.pow(1/gamma))).toInt()
+                val conv:Int = (255*(color.r.pow(1/gamma))).toInt() * 65536 + (255*(color.g.pow(1/gamma))).toInt() * 256 + (255*(color.b.pow(1/gamma))).toInt()
                 img.setRGB(x, y, conv)
             }
         }
