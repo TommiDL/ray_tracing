@@ -1,9 +1,9 @@
-import org.example.Color
-import org.example.HdrImage
-import org.example._clamp
-import org.example.are_similar
+import org.example.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
+import java.io.ByteArrayInputStream
+import java.nio.ByteOrder
+import kotlin.test.assertFailsWith
 
 class HdrImageTest {
 
@@ -27,7 +27,7 @@ class HdrImageTest {
         val reference_color:Color = Color(1.0f, 2.0f, 3.0f)
         img.set_pixel(3, 2, reference_color)
 
-        assertTrue(reference_color.are_similar_colors(img.get_pixel(3, 2)))
+        assertTrue(reference_color.is_close(img.get_pixel(3, 2)))
     }
 
     @Test
@@ -75,8 +75,8 @@ class HdrImageTest {
 
         img.normalize_image(factor = 1000.0f, luminosity = 100.0f)
 
-        assertTrue(img.get_pixel(0,0).are_similar_colors(Color(0.5e2f, 1.0e2f, 1.5e2f)))
-        assertTrue(img.get_pixel(1,0).are_similar_colors(Color(0.5e4f, 1.0e4f, 1.5e4f)))
+        assertTrue(img.get_pixel(0,0).is_close(Color(0.5e2f, 1.0e2f, 1.5e2f)))
+        assertTrue(img.get_pixel(1,0).is_close(Color(0.5e4f, 1.0e4f, 1.5e4f)))
     }
 
     @Test
@@ -94,6 +94,91 @@ class HdrImageTest {
             assertTrue((pix.g>=0) and (pix.g<=1))
             assertTrue((pix.b>=0) and (pix.b<=1))
         }
+
+    }
+    @Test
+    fun test_read_pfm_image() {
+
+        // tutti i byte con bit + sign = 1 perchè usa byte con sgn [-128, +127 = 7f]
+        val LE_REFERENCE_BYTES:ByteArray = byteArrayOf(
+            0x50, 0x46, 0x0a, 0x33, 0x20, 0x32, 0x0a, 0x2d, 0x31, 0x2e, 0x30, 0x0a,
+            0x00, 0x00, 0xc8.toByte(), 0x42, 0x00, 0x00, 0x48, 0x43, 0x00, 0x00, 0x96.toByte(), 0x43,
+            0x00, 0x00, 0xc8.toByte(), 0x43, 0x00, 0x00, 0xfa.toByte(), 0x43, 0x00, 0x00, 0x16, 0x44,
+            0x00, 0x00, 0x2f, 0x44, 0x00, 0x00, 0x48, 0x44, 0x00, 0x00, 0x61, 0x44,
+            0x00, 0x00, 0x20, 0x41, 0x00, 0x00, 0xa0.toByte(), 0x41, 0x00, 0x00, 0xf0.toByte(), 0x41,
+            0x00, 0x00, 0x20, 0x42, 0x00, 0x00, 0x48, 0x42, 0x00, 0x00, 0x70, 0x42,
+            0x00, 0x00, 0x8c.toByte(), 0x42, 0x00, 0x00, 0xa0.toByte(), 0x42, 0x00, 0x00, 0xb4.toByte(), 0x42,
+        )
+
+        val BE_REFERENCE_BYTES:ByteArray= byteArrayOf(
+            0x50, 0x46, 0x0a, 0x33, 0x20, 0x32, 0x0a, 0x31, 0x2e, 0x30, 0x0a, 0x42,
+            0xc8.toByte(), 0x00, 0x00, 0x43, 0x48, 0x00, 0x00, 0x43, 0x96.toByte(), 0x00, 0x00, 0x43,
+            0xc8.toByte(), 0x00, 0x00, 0x43, 0xfa.toByte(), 0x00, 0x00, 0x44, 0x16, 0x00, 0x00, 0x44,
+            0x2f, 0x00, 0x00, 0x44, 0x48, 0x00, 0x00, 0x44, 0x61, 0x00, 0x00, 0x41,
+            0x20, 0x00, 0x00, 0x41, 0xa0.toByte(), 0x00, 0x00, 0x41, 0xf0.toByte(), 0x00, 0x00, 0x42,
+            0x20, 0x00, 0x00, 0x42, 0x48, 0x00, 0x00, 0x42, 0x70, 0x00, 0x00, 0x42,
+            0x8c.toByte(), 0x00, 0x00, 0x42, 0xa0.toByte(), 0x00, 0x00, 0x42, 0xb4.toByte(), 0x00, 0x00,
+        )
+
+        for(reference_bytes in listOf(LE_REFERENCE_BYTES, BE_REFERENCE_BYTES))
+        {
+            val img:HdrImage= read_pfm_image(ByteArrayInputStream(reference_bytes))
+
+            assertTrue(img.width==3)
+            assertTrue(img.height==2)
+
+            println(img.get_pixel(0, 0))
+
+            assertTrue(img.get_pixel(0, 0).is_close(Color(1.0e1f, 2.0e1f, 3.0e1f)))
+            assertTrue(img.get_pixel(1, 0).is_close(Color(4.0e1f, 5.0e1f, 6.0e1f)))
+            assertTrue(img.get_pixel(2, 0).is_close(Color(7.0e1f, 8.0e1f, 9.0e1f)))
+            assertTrue(img.get_pixel(0, 1).is_close(Color(1.0e2f, 2.0e2f, 3.0e2f)))
+            assertTrue(img.get_pixel(0, 0).is_close(Color(1.0e1f, 2.0e1f, 3.0e1f)))
+            assertTrue(img.get_pixel(1, 1).is_close(Color(4.0e2f, 5.0e2f, 6.0e2f)))
+            assertTrue(img.get_pixel(2, 1).is_close(Color(7.0e2f, 8.0e2f, 9.0e2f)))
+
+        }
+
+    }
+
+
+    @Test
+    fun test_read_pfm_image_wrong() {
+        val buf:ByteArrayInputStream= ByteArrayInputStream("PF\\n3 2\\n-1.0\\nstop".toByteArray())
+
+        assertFailsWith<InvalidPfmFileFormat> { read_pfm_image(buf) }
+    }
+
+
+    @Test
+    fun test_parse_endianness() {
+        assertTrue(org.example._parse_endianness("1.0") == ByteOrder.BIG_ENDIAN)
+        assertTrue(org.example._parse_endianness("-1.0") == ByteOrder.LITTLE_ENDIAN)
+
+        assertFailsWith<InvalidPfmFileFormat> { _parse_endianness(line = "0.0") }
+        assertFailsWith<InvalidPfmFileFormat> { _parse_endianness(line = "abc") }
+
+
+    }
+
+    @Test
+    fun test_parse_img_size() {
+        assertTrue(_parse_img_size("3 2").contentEquals((arrayOf <Int>(3,2))))
+
+        assertFailsWith<InvalidPfmFileFormat> { _parse_img_size("-1 3") }
+        assertFailsWith<InvalidPfmFileFormat> { _parse_img_size("3 2 1") }
+        assertFailsWith<InvalidPfmFileFormat> { _parse_img_size("2") }
+
+    }
+
+    @Test
+    fun test_read_line() {
+        val line:ByteArrayInputStream=ByteArrayInputStream("Hello\nworld".toByteArray())
+
+        assertTrue(_read_line(line)=="Hello")
+        assertTrue(_read_line(line)=="world")
+        assertTrue(_read_line(line)=="")
+
 
     }
 }

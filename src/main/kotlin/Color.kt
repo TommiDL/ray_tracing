@@ -97,7 +97,7 @@ data class Color(var r:Float = 0f, var g:Float = 0f, var b:Float = 0f)
      * Make a comparison between the colors within a certain tolerance for the floats
      * numbers in the RGB notation
      */
-    fun are_similar_colors(color:Color, eps:Float=1e-5f):Boolean
+    fun is_close(color:Color, eps:Float=1e-5f):Boolean
     {
         if(are_similar(this.r, color.r, eps) and are_similar(this.g, color.g, eps) and are_similar(this.b, color.b, eps))
         {

@@ -367,42 +367,42 @@ class ColorTest {
         // (1, 2, 3) similar (1-1e-6f, 2, 3)
         var t1:Color=Color(r=1f, g=2f, b=3f)
         var t2:Color=Color(r=1f-1e-6f, g=2f, b=3f)
-        assertTrue(t1.are_similar_colors(t2))
+        assertTrue(t1.is_close(t2))
 
         // (1, 2, 3) similar (1-1e-6f, 2-1e-6f, 3-1e-6f)
         t1 =Color(r=1f, g=2f, b=3f)
         t2 =Color(r=1f-1e-6f, g=2f-1e-6f, b=3f-1e-6f)
-        assertTrue(t1.are_similar_colors(t2))
+        assertTrue(t1.is_close(t2))
 
         // (1, 2, 3) similar (1, 2-1e-6f, 3)
         t1 =Color(r=1f, g=2f, b=3f)
         t2 =Color(r=1f, g=2f-1e-6f, b=3f)
-        assertTrue(t1.are_similar_colors(t2))
+        assertTrue(t1.is_close(t2))
 
         // (1, 2, 3) similar (1, 2, 3-1e-6f)
         t1 =Color(r=1f, g=2f, b=3f)
         t2 =Color(r=1f, g=2f, b=3f-1e-6f)
-        assertTrue(t1.are_similar_colors(t2))
+        assertTrue(t1.is_close(t2))
 
         // (1, 2, 3) similar (0, 2-1e-6f, 3)
         t1 =Color(r=1f, g=2f, b=3f)
         t2 =Color(r=0f, g=2f-1e-6f, b=3f)
-        assertFalse(t1.are_similar_colors(t2))
+        assertFalse(t1.is_close(t2))
 
         // (1, 2, 3) similar (0, 2-1e-6f, 3-1e-6f)
         t1 =Color(r=1f, g=2f, b=3f)
         t2 =Color(r=0f, g=2f-1e-6f, b=3f-1e-6f)
-        assertFalse(t1.are_similar_colors(t2))
+        assertFalse(t1.is_close(t2))
 
         // (1, 2, 3) similar (1, 2, 4)
         t1 =Color(r=1f, g=2f, b=3f)
         t2 =Color(r=1f, g=2f, b=4f)
-        assertFalse(t1.are_similar_colors(t2))
+        assertFalse(t1.is_close(t2))
 
         // (1, 2, 3) similar (1, 3, 2)
         t1 =Color(r=1f, g=2f, b=3f)
         t2 =Color(r=1f, g=3f, b=2f)
-        assertFalse(t1.are_similar_colors(t2))
+        assertFalse(t1.is_close(t2))
 
     }
 

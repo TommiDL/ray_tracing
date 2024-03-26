@@ -1,5 +1,6 @@
 package org.example
 
+import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -9,6 +10,7 @@ import java.io.OutputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.stream.Stream
+import javax.imageio.ImageIO
 import kotlin.math.pow
 import kotlin.math.ln
 import kotlin.math.log10
@@ -32,14 +34,30 @@ fun read_pfm_image(stream: InputStream):HdrImage
     }
 
 
-    var img_size:String=_read_line(stream)
-    var _width=_parse_img_size(img_size)[0]
-    var _height=_parse_img_size(img_size)[1]
+    val img_size:String=_read_line(stream)
+    val _width=_parse_img_size(img_size)[0]
+    val _height=_parse_img_size(img_size)[1]
 
-    var endianness_line:String=_read_line(stream)
-    var endiannes: ByteOrder = _parse_endianness(endianness_line)
+    val endianness_line:String=_read_line(stream)
+    val endiannes: ByteOrder = _parse_endianness(endianness_line)
 
-    return HdrImage(width=_width, height=_height)
+    val img:HdrImage = HdrImage(width=_width, height=_height)
+
+    for (i in img.height-1 downTo 0){
+        for(j in 0..img.width-1){
+            val r:Float= _read_float(stream, endiannes)
+            val g:Float= _read_float(stream, endiannes)
+            val b:Float= _read_float(stream, endiannes)
+
+            img.set_pixel(j,i, Color(r,g,b))
+
+        }
+    }
+
+
+    return img
+
+
 }
 
 /**
@@ -94,12 +112,12 @@ fun _parse_img_size(str:String):Array<Int>
 
 fun _read_line(stream: InputStream):String {
 
-    var res:ByteArrayOutputStream=ByteArrayOutputStream()
+    val res:ByteArrayOutputStream=ByteArrayOutputStream()
 
 
     while (true)
     {
-        var buff:Int=stream.read()
+        val buff:Int=stream.read()
 
         if ((buff == -1) or  (buff=='\n'.code))
         {
@@ -117,11 +135,11 @@ fun _read_line(stream: InputStream):String {
 fun _read_float(stream: InputStream, endiannes:ByteOrder):Float
 {
     // dichiarare un array di 4 byte perchè le righe sono tutte a 32 bit
-    var b:ByteArray=ByteArray(4)
+    val b:ByteArray=ByteArray(4)
 
     try {
         stream.read(b)
-        var value:ByteBuffer=ByteBuffer.wrap(b)
+        val value:ByteBuffer=ByteBuffer.wrap(b)
         value.order(endiannes)
         return value.float
 
@@ -260,6 +278,23 @@ class HdrImage(val width:Int = 0, val height:Int=0)
 
             }
         }
+    }
+
+    fun write_ldr_image(stream: OutputStream, format:String, gamma:Float=1.0f)
+    {
+        val img:BufferedImage = BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB)
+
+        for (y in 0 until this.height) {
+            for (x in 0 until this.width) {
+                // 0xFF0000 corresponds to sRGB(255, 0, 0):
+                val color:Color=this.pixels[pixel_offset(x,y)]
+
+
+                val conv:Int = (255*(color.r.pow(1/gamma)) * 65536 + 255*(color.g.pow(1/gamma)) * 256 + 255*(color.b.pow(1/gamma))).toInt()
+                img.setRGB(x, y, conv)
+            }
+        }
+        ImageIO.write(img, format, stream)
     }
 
 
