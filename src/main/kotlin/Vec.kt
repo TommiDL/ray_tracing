@@ -84,10 +84,10 @@ data class Vec(var x:Float=0f, var y:Float=0f, var z:Float=0f)
 
     fun norm():Float
     {
-        return sqrt(this.quadnorm())
+        return sqrt(this.squared_norm())
     }
 
-    fun quadnorm():Float
+    fun squared_norm():Float
     {
         return this * this
     }
