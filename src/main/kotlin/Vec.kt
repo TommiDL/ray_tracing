@@ -101,6 +101,6 @@ data class Vec(var x:Float=0f, var y:Float=0f, var z:Float=0f)
     fun conversion():Normal
     {
         val norm=this.norm()
-        return Normal(this.x/norm, this.y/norm, this.z/norm)
+        return Normal(x=this.x/norm, y=this.y/norm, z=this.z/norm)
     }
 }
