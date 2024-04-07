@@ -49,7 +49,18 @@ data class Vec(var x:Float=0f, var y:Float=0f, var z:Float=0f)
     {
         return Vec(x=factor*this.x, y=factor*this.y, z=factor*this.z)
     }
+    operator fun times(factor:Int):Vec
+    {
+        return Vec(x=factor*this.x, y=factor*this.y, z=factor*this.z)
+    }
+
     operator fun div(factor:Float):Vec
+    {
+        return Vec(x=this.x/factor, y=this.y/factor, z=this.z/factor)
+    }
+
+
+    operator fun div(factor:Int):Vec
     {
         return Vec(x=this.x/factor, y=this.y/factor, z=this.z/factor)
     }
@@ -94,8 +105,8 @@ data class Vec(var x:Float=0f, var y:Float=0f, var z:Float=0f)
 
     fun normalize():Vec
     {
-
-        return (this / (this.norm()))
+        val norm:Float=this.norm()
+        return Vec(this.x/norm, this.y/norm, this.z/norm)
     }
 
     fun conversion():Normal

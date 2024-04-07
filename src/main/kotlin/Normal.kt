@@ -2,7 +2,7 @@ package org.example
 
 import kotlin.math.sqrt
 
-data class Normal(var x:Float, var y:Float, var z:Float)
+data class Normal(var x:Float=0f, var y:Float=0f, var z:Float=0f)
 {
     override fun toString(): String {
         return "Normal (x=$x, y=$y, z=$z)"
@@ -34,6 +34,16 @@ data class Normal(var x:Float, var y:Float, var z:Float)
     {
         return Normal(x=this.x / factor, y=this.y / factor, z=this.z / factor)
     }
+
+    operator fun times(factor:Int):Normal
+    {
+        return Normal(x=factor * this.x, y=factor * this.y, z=factor * this.z)
+    }
+    operator fun div(factor:Int):Normal
+    {
+        return Normal(x=this.x / factor, y=this.y / factor, z=this.z / factor)
+    }
+
 
     /**
      * Scalar product
