@@ -49,6 +49,7 @@ data class Vec(var x:Float=0f, var y:Float=0f, var z:Float=0f)
     {
         return Vec(x=factor*this.x, y=factor*this.y, z=factor*this.z)
     }
+
     operator fun times(factor:Int):Vec
     {
         return Vec(x=factor*this.x, y=factor*this.y, z=factor*this.z)
@@ -58,8 +59,7 @@ data class Vec(var x:Float=0f, var y:Float=0f, var z:Float=0f)
     {
         return Vec(x=this.x/factor, y=this.y/factor, z=this.z/factor)
     }
-
-
+    
     operator fun div(factor:Int):Vec
     {
         return Vec(x=this.x/factor, y=this.y/factor, z=this.z/factor)
@@ -92,23 +92,31 @@ data class Vec(var x:Float=0f, var y:Float=0f, var z:Float=0f)
             z=this.x * vec.y - this.y * vec.x,
         )
     }
-
+    /**
+     * returns the Norm of a Vector
+     */
     fun norm():Float
     {
         return sqrt(this.squared_norm())
     }
-
+    /**
+     * returns the squared Norm of a Vector
+     */
     fun squared_norm():Float
     {
         return this * this
     }
-
+    /**
+     * returns the Vector normalized
+     */
     fun normalize():Vec
     {
         val norm:Float=this.norm()
         return Vec(this.x/norm, this.y/norm, this.z/norm)
     }
-
+    /**
+     * conversion from Vec to Normal
+     */
     fun conversion():Normal
     {
         val norm=this.norm()
