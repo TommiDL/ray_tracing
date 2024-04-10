@@ -55,7 +55,7 @@ class PointTest {
 
         assertTrue( (p + v).is_close(Point(3.0f, 4.0f, 5.0f)) )
         assertTrue( (p - q).is_close(Vec(1.0f, 1.0f, 1.0f)) )
-        assertTrue( (p - v).is_close(Point(1.0f, 1.0f, 1.0f )) )
+        assertTrue( (p - v).is_close(Point(1.0f, 0.0f, -1.0f )) )
     }
 
     }
