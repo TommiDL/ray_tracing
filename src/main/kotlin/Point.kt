@@ -38,7 +38,9 @@ data class Point(var x:Float=0f, var y:Float=0f, var z:Float=0f){
     {
         return Point(x=this.x - a.x, y=this.y - a.y, z=this.z - a.z)
     }
-
+    /**
+     * Function that make a conversion from Point to Vec
+     */
     fun conversion():Vec
     {
     return Vec(x = this.x, y=this.y, z = this.z)
