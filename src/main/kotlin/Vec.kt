@@ -59,7 +59,7 @@ data class Vec(var x:Float=0f, var y:Float=0f, var z:Float=0f)
     {
         return Vec(x=this.x/factor, y=this.y/factor, z=this.z/factor)
     }
-    
+
     operator fun div(factor:Int):Vec
     {
         return Vec(x=this.x/factor, y=this.y/factor, z=this.z/factor)
