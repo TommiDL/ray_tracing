@@ -49,7 +49,7 @@ jobs:
 
   dependency-submission:
 
-    runs-on: ubuntu-latest
+    runs-on: (ubuntu-latest, ubuntu-22.04, macos-13, macos-12, windows-2022)
     permissions:
       contents: write
 
