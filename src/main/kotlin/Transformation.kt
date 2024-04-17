@@ -191,6 +191,17 @@ data class Transformation(var matrix:HomMatrix= HomMatrix(ID.copyOf()), var invm
         return this.invmatrix*normal
     }
 
+    operator fun times(ray:Ray):Ray
+    {
+        return Ray(
+            origin = this * ray.origin,
+            dir = this * ray.dir,
+            tmin = ray.tmin,
+            tmax = ray.tmax,
+            depth = ray.depth,
+        )
+    }
+
     fun inverse():Transformation
     {
         return Transformation(matrix=this.invmatrix, invmatrix=this.matrix)
