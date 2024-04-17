@@ -56,7 +56,7 @@ data class HomMatrix(var matrix:FloatArray)
      */
     operator fun get(x:Int, y:Int):Float
     {
-        return matrix.get(y*this.width+x)
+        return matrix.get(x*this.width+y)
     }
 
     /**
@@ -64,7 +64,7 @@ data class HomMatrix(var matrix:FloatArray)
      */
     operator fun set(x:Int, y:Int, float: Float)
     {
-        matrix.set(y * this.width + x, float)
+        matrix.set(x * this.width + y, float)
     }
 
     /**
@@ -104,6 +104,18 @@ data class HomMatrix(var matrix:FloatArray)
         return result
     }
 
+    /**
+     * Scalar product
+     */
+    operator fun times(factor:Float):HomMatrix
+    {
+        val res:HomMatrix=HomMatrix()
+        for(i in 0 until this.matrix.size)
+        {
+            res.matrix[i]=factor*this.matrix[i]
+        }
+        return res
+    }
 
 
     /**

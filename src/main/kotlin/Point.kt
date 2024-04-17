@@ -5,7 +5,7 @@ data class Point(var x:Float=0f, var y:Float=0f, var z:Float=0f){
      * this function converts to a string the values of the Point class
      */
     override fun toString():String{
-        return "Point (x$x, y$y, z$z)"
+        return "Point (x=$x, y=$y, z=$z)"
     }
     /**
      * check if two Points are similar within a certain precision
