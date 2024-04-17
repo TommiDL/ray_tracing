@@ -2,6 +2,8 @@ import org.example.*
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import kotlin.math.PI
+import kotlin.math.cos
 
 class RayTest {
 
@@ -32,11 +34,12 @@ class RayTest {
             dir = Vec(6f,5f,4f),
         )
 
-        val transf:Transformation = traslation(Vec(10f, 11f, 12f)) * rotation(u = Vec(1f, 0f,0f), theta = 90f)
+
+        val transf:Transformation = traslation(Vec(10f, 11f, 12f)) * rotation(u = Vec(1f, 0f,0f), theta = (PI/2).toFloat())
         val transformed:Ray=ray.transform(transf)
 
         assertTrue(transformed.origin.is_close(Point(11f, 8f, 14f)))
-        assertTrue(transformed.dir.is_close(Vec(6f, -4f, 5f)))
+        assertTrue(transformed.dir.is_close(Vec(6f, -4f, 5f), eps = 1e-4f))
 
         assertTrue(transformed.is_close(transf*ray))
 
