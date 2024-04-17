@@ -15,6 +15,7 @@ build/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+memorial.png
 
 ### Eclipse ###
 .apt_generated
