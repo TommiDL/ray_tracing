@@ -1,5 +1,6 @@
 package org.example
 
+import jdk.jfr.TransitionFrom
 import java.nio.channels.Pipe
 import kotlin.math.cos
 import kotlin.math.pow
@@ -187,6 +188,14 @@ data class Transformation(var matrix:HomMatrix= HomMatrix(ID.copyOf()), var invm
     {
         val prod:HomMatrix = this.matrix*this.invmatrix
         return are_matr_close(prod, HomMatrix(ID))
+    }
+
+    operator fun times(other:Transformation):Transformation
+    {
+        return Transformation(
+            matrix=this.matrix*other.matrix,
+            invmatrix=other.invmatrix*this.matrix
+        )
     }
 
     operator fun times(p: Point):Point

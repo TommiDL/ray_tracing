@@ -1,6 +1,4 @@
-import org.example.Point
-import org.example.Ray
-import org.example.Vec
+import org.example.*
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -29,6 +27,18 @@ class RayTest {
 
     @Test
     fun test_transform() {
+        val ray:Ray=Ray(
+            origin = Point(1f,2f,3f),
+            dir = Vec(6f,5f,4f),
+        )
+
+        val transf:Transformation = traslation(Vec(10f, 11f, 12f)) * rotation(u = Vec(1f, 0f,0f), theta = 90f)
+        val transformed:Ray=ray.transform(transf)
+
+        assertTrue(transformed.origin.is_close(Point(11f, 8f, 14f)))
+        assertTrue(transformed.dir.is_close(Vec(6f, -4f, 5f)))
+
+        assertTrue(transformed.is_close(transf*ray))
 
     }
 }
