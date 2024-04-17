@@ -1,6 +1,5 @@
 package org.example
 
-import org.gradle.internal.impldep.org.glassfish.jaxb.core.v2.util.EditDistance
 
 interface Camera {
     fun fire_ray (u:Float, v:Float):Ray
@@ -12,7 +11,7 @@ class OrthogonalCamera(val aspect_ratio:Float=1.0f,
 {
     override fun fire_ray (u:Float, v:Float):Ray{
         val origin:Point = Point(-1.0f, (1.0f - 2 * u) * this.aspect_ratio, 2 * (v - 1))
-        val direction:Vec = Vec(1, 0, 0)
+        val direction:Vec = Vec(1f, 0f, 0f)
         return Ray(origin = origin, dir = direction, tmin = 1.0e-5f).transform(this.transformation)
     }
 
