@@ -16,7 +16,8 @@ on:
 jobs:
   build:
 
-    runs-on: (ubuntu-latest, ubuntu-22.04, macos-13, macos-12, windows-2022)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
 
@@ -49,7 +50,8 @@ jobs:
 
   dependency-submission:
 
-    runs-on: (ubuntu-latest, ubuntu-22.04, macos-13, macos-12, windows-2022)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
 
