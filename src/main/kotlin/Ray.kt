@@ -2,6 +2,9 @@ package org.example
 
 import kotlin.Float.Companion.POSITIVE_INFINITY
 
+/**
+ * Ray class for the simulation of a light ray
+ */
 data class Ray(
     val origin:Point=Point(),
     val dir:Vec=Vec(),
@@ -10,6 +13,9 @@ data class Ray(
     val depth:Int=0,
     )
 {
+    /**
+     * Comparison between 2 ray objects
+     */
     fun is_close(other:Ray, eps:Float=1e-5f):Boolean
     {
         return (
@@ -18,11 +24,17 @@ data class Ray(
                 )
     }
 
+    /**
+     * fot a given length return the point of the ray of that length
+     */
     fun at(t:Float):Point
     {
         return this.origin + this.dir * t
     }
 
+    /**
+     * Return the ray evolved with the transformation given
+     */
     fun transform(transformation: Transformation):Ray
     {
         return Ray(
