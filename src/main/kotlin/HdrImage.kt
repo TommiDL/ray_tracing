@@ -2,17 +2,13 @@ package org.example
 
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.util.stream.Stream
 import javax.imageio.ImageIO
 import kotlin.math.pow
-import kotlin.math.ln
 import kotlin.math.log10
 
 
@@ -27,7 +23,7 @@ fun _clamp (x: Float): Float
 fun read_pfm_image(stream: InputStream):HdrImage
 {
 
-    var magic=_read_line(stream)
+    val magic=_read_line(stream)
     if(magic!="PF")
     {
         throw InvalidPfmFileFormat("Invalid magic in PFM File")
@@ -88,7 +84,7 @@ fun _parse_endianness(line:String):ByteOrder
 
 fun _parse_img_size(str:String):Array<Int>
 {
-    var l = str.split(" ")
+    val l = str.split(" ")
 
     if(l.size!=2)
     {
@@ -165,7 +161,7 @@ class HdrImage(val width:Int = 0, val height:Int=0)
     /**
      * Return the `Color` value for a pixel in the image
      *
-     * The pixel at the top-left corner has coordinates (0, 0).
+     * The pixel in the top-left corner has coordinates (0, 0).
      */
     fun get_pixel(x:Int, y:Int):Color
     {
@@ -177,7 +173,7 @@ class HdrImage(val width:Int = 0, val height:Int=0)
 
     /**
      * Set the new color for a pixel in the image
-     * The pixel at the top-left corner has coordinates (0, 0)
+     * The pixel in the top-left corner has coordinates (0, 0)
      */
     fun set_pixel(x:Int, y:Int, new_color:Color)
     {
