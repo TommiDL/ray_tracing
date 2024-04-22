@@ -1,13 +1,12 @@
 package org.example
 
-
 interface Camera {
     fun fire_ray (u:Float, v:Float):Ray
 }
 
 class OrthogonalCamera(val aspect_ratio:Float=1.0f,
                        val transformation: Transformation = Transformation(),
-    ) : Camera
+    ):Camera
 {
     override fun fire_ray (u:Float, v:Float):Ray{
         val origin:Point = Point(-1.0f, (1.0f - 2 * u) * this.aspect_ratio, 2 * (v - 1))
@@ -20,7 +19,7 @@ class OrthogonalCamera(val aspect_ratio:Float=1.0f,
 class PerspectiveCamera(val distance:Float=1.0f,
                         val aspect_ratio:Float=1.0f,
                         val transformation: Transformation = Transformation(),
-    ) : Camera
+    ):Camera
 {
     override fun fire_ray (u:Float, v:Float):Ray{
         val origin:Point = Point(-this.distance, 0.0f, 0.0f)
