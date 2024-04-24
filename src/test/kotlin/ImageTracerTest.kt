@@ -16,7 +16,7 @@ class ImageTracerTest
         val ray2 = imageTracer.fire_ray(2, 1, u_pixel = 0.5, v_pixel = 0.5)
         assert(ray1.is_close(ray2))
 
-        tracer.fire_all_ray( {ray:Ray -> Color(1f,2f,3f) } )
+        imageTracer.fire_all_ray( {ray:Ray -> Color(1f,2f,3f) } )
         for (row in 0 until image.height) {
             for (col in 0 until image.width) {
                 assert(image.getPixel(col, row) == Color(1f, 2f, 3f))
@@ -24,6 +24,5 @@ class ImageTracerTest
         }
     }
 
-    }
-
 }
+
