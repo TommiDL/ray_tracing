@@ -1,5 +1,6 @@
 package org.example
 
+import jdk.jfr.TransitionFrom
 import java.nio.channels.Pipe
 import kotlin.math.cos
 import kotlin.math.pow
@@ -56,7 +57,7 @@ data class HomMatrix(var matrix:FloatArray)
      */
     operator fun get(x:Int, y:Int):Float
     {
-        return matrix.get(y*this.width+x)
+        return matrix.get(x*this.width+y)
     }
 
     /**
@@ -64,7 +65,7 @@ data class HomMatrix(var matrix:FloatArray)
      */
     operator fun set(x:Int, y:Int, float: Float)
     {
-        matrix.set(y * this.width + x, float)
+        matrix.set(x * this.width + y, float)
     }
 
     /**
@@ -104,6 +105,18 @@ data class HomMatrix(var matrix:FloatArray)
         return result
     }
 
+    /**
+     * Scalar product
+     */
+    operator fun times(factor:Float):HomMatrix
+    {
+        val res:HomMatrix=HomMatrix()
+        for(i in 0 until this.matrix.size)
+        {
+            res.matrix[i]=factor*this.matrix[i]
+        }
+        return res
+    }
 
 
     /**
@@ -177,6 +190,14 @@ data class Transformation(var matrix:HomMatrix= HomMatrix(ID.copyOf()), var invm
         return are_matr_close(prod, HomMatrix(ID))
     }
 
+    operator fun times(other:Transformation):Transformation
+    {
+        return Transformation(
+            matrix=this.matrix*other.matrix,
+            invmatrix=other.invmatrix*this.matrix
+        )
+    }
+
     operator fun times(p: Point):Point
     {
         return this.matrix*p
@@ -189,6 +210,17 @@ data class Transformation(var matrix:HomMatrix= HomMatrix(ID.copyOf()), var invm
     operator fun times(normal: Normal):Normal
     {
         return this.invmatrix*normal
+    }
+
+    operator fun times(ray:Ray):Ray
+    {
+        return Ray(
+            origin = this * ray.origin,
+            dir = this * ray.dir,
+            tmin = ray.tmin,
+            tmax = ray.tmax,
+            depth = ray.depth,
+        )
     }
 
     fun inverse():Transformation

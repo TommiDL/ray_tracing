@@ -12,28 +12,16 @@ class TransformationKtTest {
     {
         assertTrue( (Transformation()* Vec(1f,2f,3f)).is_close(Vec(1f,2f,3f)) )
         assertTrue( (Transformation()* Normal(1f,2f,3f)).is_close(Normal(1f,2f,3f)) )
-        //assertTrue( (Transformation()* Point(1f,2f,3f)).is_close(Point(1f,2f,3f)) )
+        assertTrue( (Transformation()* Point(1f,2f,3f)).is_close(Point(1f,2f,3f)) )
 
         val a:Transformation= Transformation()
-        //println(a)
 
         for(i in 0 until a.matrix.width)
         {
             a.matrix[i,i]=2f
         }
 
-        //println("Matrix")
-        //println(a.matrix)
-
-        //println("Inverse Matrix")
-        //println(a.invmatrix)
-
-        /*for(i in 0 until ID.size)
-        {
-            print(ID[i])
-            print(" ")
-        }*/
-        //println()
+        println(a)
 
         assertFalse(a.is_consistent())
 
@@ -43,8 +31,16 @@ class TransformationKtTest {
 
         //println(a*Normal(1f,2f,3f))
 
+        for(i in 0 until a.matrix.width)
+        {
+            a.invmatrix[i,i]=1/2f
+        }
 
-        //assertTrue( (a* Point(1f,2f,3f)).is_close(Point(2f,4f,6f)) )
+        assertTrue( (a*Normal(1f,2f,3f)).is_close(Normal(1/2f,1f,1.5f)) )
+
+
+        assertTrue( (a* Point(1f,2f,3f)).is_close(Point(1f,2f,3f)) )
+
 
 
     }
@@ -62,8 +58,8 @@ class TransformationKtTest {
         assertTrue( (traslation() * Normal(1f,2f,3f)).is_close(Normal(1f,2f,3f)) )    //traslation of a null normal
 
         //point product
-        //assertTrue( (trasl*Point(4f,5f,6f)).is_close(Point(5f,7f,9f)) )             //traslation of a not null Point
-        //assertTrue( (traslation() * Point(1f,2f,3f)).is_close(Point(1f,2f,3f)) )    //traslation of a null Point
+        assertTrue( (trasl*Point(4f,5f,6f)).is_close(Point(5f,7f,9f)) )             //traslation of a not null Point
+        assertTrue( (traslation() * Point(1f,2f,3f)).is_close(Point(1f,2f,3f)) )    //traslation of a null Point
 
     }
 
