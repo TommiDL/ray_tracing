@@ -2,10 +2,10 @@ package org.example
 
 class HitRecord(val world_point:Point, val normal:Normal, val surface_point:Vec2D, val t:Float, val ray:Ray) {
 
-    fun createHitRecord(var inv_ray:Ray,
-                        var first_hit_t:Float,
-                        var transformation:Transformation,
-                        var ray:Ray):HitRecord
+    fun createHitRecord(inv_ray:Ray,
+                        first_hit_t:Float,
+                        transformation:Transformation,
+                        ray:Ray):HitRecord
     {
 
         val hit_point:Point = inv_ray.at(first_hit_t)
