@@ -1,4 +1,7 @@
 package org.example
 
-class Shape {
+interface Shape
+{
+    fun ray_intersection(ray:Ray):HitRecord?
+
 }
