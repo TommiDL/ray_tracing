@@ -14,7 +14,9 @@ class World {
             if (intersection == null) {
                 continue
             }
-
+            if (closest == null || intersection.t < closest.t) {
+            closest = intersection
+            }
             closest = intersection
         }
         return closest
