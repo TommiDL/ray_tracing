@@ -1,7 +1,6 @@
 package org.example
 
-class World {
-    var list_shapes: MutableList<Shape> = mutableListOf()
+class World(var list_shapes: MutableList<Shape> = mutableListOf()) {
     fun add(shape: Shape) {
         list_shapes.add(shape)
     }
@@ -17,7 +16,6 @@ class World {
             if (closest == null || intersection.t < closest.t) {
             closest = intersection
             }
-            closest = intersection
         }
         return closest
     }
