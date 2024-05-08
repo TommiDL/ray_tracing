@@ -9,6 +9,10 @@ class World(var list_shapes: MutableList<Shape> = mutableListOf()) {
         list_shapes.add(shape)
     }
 
+    /**
+     * Checks for ray intersection with shapes in the world.
+     * @return The closest hit record if any intersection found, otherwise null.
+     */
     fun ray_intersection(ray: Ray): HitRecord? {
         var closest: HitRecord? = null
         for (shape in list_shapes) {

@@ -26,12 +26,5 @@ class WorldTest {
         assertFalse(intersection2 != null)
     }
 
-    //fun test_quick_ray_intersections() {
-    //    val world = World()
-    //    val sphere1: Sphere = Sphere(trasformation = traslation(vec_x * 2))
-    //    val sphere2: Sphere = Sphere(trasformation = traslation(vec_x * 8))
-    //    world.add(sphere1)
-    //    world.add(sphere2)
 
-    //}
 }
