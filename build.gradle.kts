@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-}
+    implementation("com.github.ajalt.clikt:clikt:4.3.0")}
 
 tasks.test {
     useJUnitPlatform()
