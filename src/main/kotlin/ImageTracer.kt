@@ -2,6 +2,7 @@ package org.example
 
 /**
  * Interface between camera and screen
+ * Arguments: image = to be created and camera = observer
  */
 class ImageTracer(val image:HdrImage, val camera: Camera)
 {

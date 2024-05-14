@@ -6,6 +6,7 @@ import org.example.Vec
 import org.junit.jupiter.api.Assertions.assertTrue
 import kotlin.test.assertFalse
 
+
 class WorldTest {
     val vec_x = Vec(1f,0f,0f) //versore_x (1,0,0)
     @Test
@@ -25,12 +26,5 @@ class WorldTest {
         assertFalse(intersection2 != null)
     }
 
-    //fun test_quick_ray_intersections() {
-    //    val world = World()
-    //    val sphere1: Sphere = Sphere(trasformation = traslation(vec_x * 2))
-    //    val sphere2: Sphere = Sphere(trasformation = traslation(vec_x * 8))
-    //    world.add(sphere1)
-    //    world.add(sphere2)
 
-    //}
 }
