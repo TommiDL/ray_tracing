@@ -38,7 +38,7 @@ class Plane(val trasformation:Transformation=Transformation()):Shape {
         return if ( ray_dir.z < 0f) res else res*(-1)
     }
     /**
-     * Return the 2D coordinates of a pixel on the screen
+     * Return the 2D (u,v) coordinates of a pixel on the screen
      * @param Point
      * @return Vec2D
      */
