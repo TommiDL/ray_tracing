@@ -10,7 +10,7 @@ interface AxisAlignedBoundingBox {
      * @param vertices List of vertices of the shape.
      * @return couple of Points: 1) minimum  2) maximum points of the bounding box.
      */
-    fun calculateBoundingBox(vertices: List<Vec>): Pair<Vec, Vec>
+    fun calculateBoundingBox(vertices: List<Point>): Pair<Vec, Vec>
 
     /**
      * Verify if there is an intersection between a Ray and the Axis-Aligned-Bounding-Box
