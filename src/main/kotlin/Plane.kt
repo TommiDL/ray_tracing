@@ -12,11 +12,15 @@ class Plane(val trasformation:Transformation=Transformation()):Shape {
      * @param Ray
      * @return HitRecord
      */
+
+
     override fun ray_intersection(ray: Ray): HitRecord? {
         val inv_ray:Ray = ray.transform(this.trasformation.inverse())
-        if (inv_ray.dir.z == 0f ) return null
-        val t:Float = - ((inv_ray.origin.z)/(inv_ray.dir.z))
 
+        if (inv_ray.dir.z == 0f ) return null
+
+        val t:Float = - ((inv_ray.origin.z)/(inv_ray.dir.z))
+        if (t < inv_ray.tmin || t > inv_ray.tmax) return null  // intersection is out the limits of the ray
         val hit_point:Point=inv_ray.at(t)
 
         return HitRecord (
