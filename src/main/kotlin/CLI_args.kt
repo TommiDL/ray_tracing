@@ -224,5 +224,3 @@ class pfm2png:CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a 
     }
 
 }
-
-

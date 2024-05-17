@@ -269,7 +269,16 @@ fun _rotation_matrix(u:Vec=Vec(), theta: Float=0f):FloatArray
 }
 
 /**
- * Return a Rotation transformation of the input's angle around the given axis
+ * Returns a Rotation transformation around a given axis by a specified angle in radians.
+ *
+ * @param u Vec representing the axis of rotation. Default is a zero vector.
+ * @param theta Angle of rotation in radians. Default is 0.
+ *
+ * @return A transformation representing the rotation.
+ * @example
+ * // Example usage:
+ * // Create a transformation that rotates by π radians (180 degrees) around the z-axis
+ * val rotation_z: Transformation = rotation(Vec(0f, 0f, 1f), theta = (PI).toFloat())
  */
 fun rotation(u:Vec=Vec(), theta:Float=0f):Transformation
 {
