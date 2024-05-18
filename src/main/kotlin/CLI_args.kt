@@ -153,7 +153,7 @@ class pfm2png:CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a 
         try {
             //parameters.parse_command_line(argv)
         } catch (e:RuntimeException){
-            
+
         }
 
 //        try {
