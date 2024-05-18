@@ -180,4 +180,35 @@ class HomMatrixTest {
 
 
     }
+
+    @Test
+    fun testDet() {
+
+        val a: HomMatrix = HomMatrix(
+            floatArrayOf(
+                1f, 0f, 0f,
+                0f, 1f, 0f,
+                0f, 0f, 1f,
+            ),
+            3,
+            3
+        )
+
+        val b: HomMatrix = HomMatrix(
+            floatArrayOf(
+                1f, 1f, 1f,
+                1f, 1f, 1f,
+                1f, 1f, 1f,
+            ),
+            3,
+            3
+        )
+
+        val det: Float = 1f
+
+        assertTrue(are_similar(a.det(), det))
+        assertFalse(are_similar(b.det(), det))
+        assertTrue(are_similar(b.det(), 0f))
+
+    }
 }
