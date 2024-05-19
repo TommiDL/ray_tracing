@@ -164,7 +164,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
  *      @ png output = output name of the png file
  *
  */
-/*
+
 class pfm2png:CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a PFM file to a PNG image")
 {
     private val args: List<String> by argument(
@@ -175,7 +175,7 @@ class pfm2png:CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a 
                 "\n- output png file name (.png format)"
 
     ).multiple()
-}
+
     /*
 //    val args by option(help = "").split(" " )
     val pfm_input:String by argument("--input_pfm", help="name of the input file PFM (specify .pfm format) to load")
@@ -183,7 +183,7 @@ class pfm2png:CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a 
     val gamma:Float by argument("--gamma", help="gamma value of the screen").float()
     val png_output:String by argument("--output_png", help = "name of the output file PNG (specify .png format)")
 */
-/*
+
     override fun run()
     {
 
@@ -191,27 +191,8 @@ class pfm2png:CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a 
 
         try {
 
-            //parameters.parse_command_line(argv)
-        } catch (e:RuntimeException){
-
-        }
-    }
-/*
-        try {
-            val parameters:Parameters = Parameters(
-                pfm_input,
-                a,
-                gamma,
-                png_output,
-            )
-    }*/
-            //parameters.parse_command_line(args)
-/*        } catch (e:RuntimeException)
->>>>>>> dbc347943470057c2e73331abfb25e22623f9478
-=======
             parameters.parse_command_line(args)
         } catch (e:RuntimeException)
->>>>>>> c3369f17adb26d8343363448516938144a1f91d9
         {
             println("Error:$e")
             return
@@ -252,4 +233,3 @@ class pfm2png:CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a 
     }
 
 }
-*/
