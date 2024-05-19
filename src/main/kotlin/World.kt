@@ -1,6 +1,6 @@
 package org.example
 /*
-* Class World: Holds a list of shapes wich makes a "world"
+* Class World: Holds a list of shapes which makes a "world"
 * Add shapes to a world using ".World.add()".
 * Call "World.ray_intersection" to check whether a light ray intersects any of the shapes in the world.
 * */

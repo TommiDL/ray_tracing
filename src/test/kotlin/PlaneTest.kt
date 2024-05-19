@@ -14,7 +14,7 @@ class PlaneTest {
     @Test
     fun test_plane() {
         val plane: Plane = Plane()
-        var ray1: Ray = Ray(
+        val ray1: Ray = Ray(
             origin = Point(0f, 0f, 1f),
             dir = Vec(0f, 0f, 1f) * (-1),
         )
@@ -62,7 +62,7 @@ class PlaneTest {
         //test on a translated plane
         val plane_translated: Plane = Plane(traslation(vec = Vec(0f, 0f, 1f)))
 
-        var ray1: Ray = Ray(
+        val ray1: Ray = Ray(
             origin = Point(0f, 0f, 2f),
             dir = Vec(0f, 0f, 1f) * (-1),
         )

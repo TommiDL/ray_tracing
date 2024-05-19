@@ -1,5 +1,13 @@
 package org.example
 
+/**
+ * HitRecord class which returns information about an intersection:
+ * intersected point,
+ * surface normal to the intersection,
+ * (u,v) intersection coordinates,
+ * ray parameter associated to the intersection,
+ * ray that caused the intersection
+ */
 class HitRecord(
     val world_point:Point,
     val normal:Normal,
@@ -8,6 +16,9 @@ class HitRecord(
     val ray:Ray,
     ) {
 
+    /**
+     * Comparison between 2 hit record objects
+     */
     fun is_close(hit_record:HitRecord, eps:Float=1e-5f):Boolean
     {
         return (this.world_point.is_close(hit_record.world_point, eps=eps) and
