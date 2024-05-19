@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.parameters.types.int
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import kotlin.math.PI
 
 
 /**
@@ -31,6 +32,13 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
         "Insert:\n- rotation angle  \n- Camera type"
     ).multiple()
 
+/*    val angle by argument("--angle", help = "Rotation angle of the camera").float().default(0f)
+    val camera by argument("--camera", help="Camera type: perspective or orthogonal")
+        .choice(
+            "perspective" to PerspectiveCamera(aspect_ratio = 1f, transformation = rotation(Vec(0f,0f,1f), angle) * traslation(Vec(-1f, 0f, 0f)), distance = 1f),
+            "orthogonal" to OrthogonalCamera(aspect_ratio = 1f, transformation = rotation(Vec(x=0f,y=0f,z=1f), rotation_angle) * traslation(Vec(-1f, 0f, 0f))),
+        )
+*/
     val width by option("--width", "-w", help="Width of the PNG image").int().default(480)
     val height by option("--height", "-he", help="Height of the PNG image").int().default(480)
     val name:String by option("--name", "-n", help="Name of the outputs files").default("output")
@@ -38,15 +46,15 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
     {
 
         try {
-            val rotation_angle:Float = argv[0].toFloat()
+            val rotation_angle:Float = if (argv[0].toFloat()>2*PI) 2*PI.toFloat()*argv[0].toFloat()/360 else argv[0].toFloat()
 
             val camera:Camera =
                 if (argv[1]=="orthogonal")
-                    OrthogonalCamera(aspect_ratio = 1f, transformation = rotation(Vec(x=0f,y=0f,z=1f), rotation_angle) * traslation(Vec(-1f, 0f, 0f)))
+                    OrthogonalCamera(aspect_ratio = (this.width.toFloat()/this.height), transformation = rotation(Vec(x=0f,y=0f,z=1f), rotation_angle) * traslation(Vec(-1f, 0f, 0f)))
                 else if (argv[1]=="perspective")
-                    PerspectiveCamera(aspect_ratio = 1f, transformation = rotation(Vec(0f,0f,1f), rotation_angle) * traslation(Vec(-1f, 0f, 0f)), distance = 1f)
+                    PerspectiveCamera(aspect_ratio = (this.width.toFloat()/this.height), transformation = rotation(Vec(0f,0f,1f), rotation_angle) * traslation(Vec(-1f, 0f, 0f)), distance = 1f)
                 else
-                    PerspectiveCamera(aspect_ratio = 1f, transformation = rotation(Vec(0f,0f,1f), rotation_angle) * traslation(Vec(-1f, 0f, 0f)), distance = 1f)
+                    PerspectiveCamera(aspect_ratio = (this.width.toFloat()/this.height), transformation = rotation(Vec(0f,0f,1f), rotation_angle) * traslation(Vec(-1f, 0f, 0f)), distance = 1f)
 
             print("\tinitialization of objs in world...")
             print("\r\t                                  ")
