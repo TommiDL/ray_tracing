@@ -7,7 +7,7 @@ data class Parameters(
         var output_png_filename:String=""
     )
 {
-    fun parse_command_line(argv:Array<String>)
+    fun parse_command_line(argv: List<String>)
     {
         if(argv.size!=4)
         {

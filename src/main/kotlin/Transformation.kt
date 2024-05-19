@@ -2,6 +2,7 @@ package org.example
 
 import jdk.jfr.TransitionFrom
 import java.nio.channels.Pipe
+import kotlin.io.path.fileVisitor
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
@@ -18,10 +19,11 @@ val ID:FloatArray = floatArrayOf(
  *
  * Operation defined with Vec, Point and Normal
  */
-data class HomMatrix(var matrix:FloatArray)
+data class HomMatrix(var matrix:FloatArray,
+                     var width:Int=4,
+                     var height:Int=4,
+                    )
 {
-    var width:Int=4
-    var height:Int=4
 
     init {
 
@@ -167,6 +169,30 @@ data class HomMatrix(var matrix:FloatArray)
         return Normal(x=vx,y=vy,z=vz)
     }
 
+    /**
+     * Determinant of a NxN matrix
+     */
+    fun det():Float
+    {
+        require(this.width == this.height) { "A squared matrix must have width = height" }
+
+        if (this.width == 1) return this[0,0]
+        if (this.width == 2) return (this[0,0] * this[1,1] - this[0,1] * this[1,0])
+
+        var det = 0f
+        for (c in 0 until this.width) {
+            var incValue = 1f
+            var decValue = 1f
+
+            for (r in 0 until this.height) {
+                incValue *= this[r, (c+r) % this.width]
+                decValue *= this[this.height-r-1, (c+r) % this.width]
+            }
+            det += (incValue - decValue)
+        }
+            return det
+    }
+
 }
 
 
@@ -269,7 +295,16 @@ fun _rotation_matrix(u:Vec=Vec(), theta: Float=0f):FloatArray
 }
 
 /**
- * Return a Rotation transformation of the input's angle around the given axis
+ * Returns a Rotation transformation around a given axis by a specified angle in radians.
+ *
+ * @param u Vec representing the axis of rotation. Default is a zero vector.
+ * @param theta Angle of rotation in radians. Default is 0.
+ *
+ * @return A transformation representing the rotation.
+ * @example
+ * // Example usage:
+ * // Create a transformation that rotates by π radians (180 degrees) around the z-axis
+ * val rotation_z: Transformation = rotation(Vec(0f, 0f, 1f), theta = (PI).toFloat())
  */
 fun rotation(u:Vec=Vec(), theta:Float=0f):Transformation
 {

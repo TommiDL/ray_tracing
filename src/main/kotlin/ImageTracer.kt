@@ -2,6 +2,7 @@ package org.example
 
 /**
  * Interface between camera and screen
+ * Arguments: image = to be created and camera = observer
  */
 class ImageTracer(val image:HdrImage, val camera: Camera)
 {
@@ -10,8 +11,8 @@ class ImageTracer(val image:HdrImage, val camera: Camera)
      */
     fun fire_ray(col:Int, row:Int, u_pixel:Float=0.5f, v_pixel:Float=0.5f):Ray
     {
-        val u:Float=(col+u_pixel)/this.image.width-1
-        val v:Float=(row+v_pixel)/this.image.height-1
+        val u:Float=(col+u_pixel)/(this.image.width-1)
+        val v:Float=(row+v_pixel)/(this.image.height-1)
 
         return this.camera.fire_ray(u=u, v=v)
     }

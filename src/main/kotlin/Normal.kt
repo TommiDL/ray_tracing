@@ -3,7 +3,7 @@ package org.example
 import kotlin.math.sqrt
 
 data class Normal(var x:Float=0f, var y:Float=0f, var z:Float=0f)
-{
+    {
     override fun toString(): String {
         return "Normal (x=$x, y=$y, z=$z)"
     }
