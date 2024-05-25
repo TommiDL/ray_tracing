@@ -1,12 +1,7 @@
-import org.example.Triangle
-import org.example.Point
-import org.example.Ray
-import org.example.Normal
-import org.example.Vec2D
-import org.example.Vec
-import org.example.HitRecord
-import org.example.are_similar
-import org.junit.jupiter.api.Assertions.*
+
+import org.example.*
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import kotlin.test.Test
 
 class TriangleTest {
@@ -20,8 +15,8 @@ class TriangleTest {
         val point:Point =  Point(0f, 0.5f, 0.5f)
         val point1:Point =  Point(1f, 1f, 1f)
 
-        assertTrue(triangle.get_point(beta, gamma).is_close(point))
-        assertFalse(triangle.get_point(beta, gamma).is_close(point1))
+        assertTrue(triangle.get_point(beta, gamma)!!.is_close(point))
+        assertFalse(triangle.get_point(beta, gamma)!!.is_close(point1))
 
     }
 

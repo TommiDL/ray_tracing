@@ -3,7 +3,7 @@
 for angle in $(seq 0 359); do
     # Angle with three digits, e.g. angle="1" → angleNNN="001"
     angleNNN=$(printf "%03d" $angle)
-    ./gradlew run --args="demo $angle perspective --width=640 --height=480 --name=./animation/img$angleNNN"
+    ./gradlew run --args="demo $angle perspective --width=640 --height=640 --name=./animation/img$angleNNN"
 done
 
 # -r 25: Number of frames per second
