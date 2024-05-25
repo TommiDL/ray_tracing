@@ -48,11 +48,17 @@ class MeshTest
     {
         try {
 
-            val mesh:Mesh=Mesh(FileInputStream("/home/tommaso/ziotom/raytracer/raytracing/tetrahedron.obj"))
+            //val mesh1:Mesh=Mesh(FileInputStream("/home/tommaso/ziotom/raytracer/raytracing/tetrahedron.obj"))
+            val mesh2:Mesh=Mesh(
+                stream = FileInputStream("/home/tommaso/ziotom/raytracer/raytracing/tetrahedron.obj"),
+                transformation = traslation(Vec(0f,0f,2f)) * rotation(Vec(1f,0f, 1f), theta = PI.toFloat()/4)
+                )
+
+            val world:World=World(mutableListOf<Shape>(/*mesh1,*/ mesh2))
 
             val camera:Camera=PerspectiveCamera(transformation = rotation(u = Vec(0f, 0f, 1f), theta = PI.toFloat()/4))
 
-            val img:HdrImage=HdrImage(width = 480, height=480)
+            val img:HdrImage=HdrImage(width = 960, height=480)
 
             val tracer:ImageTracer=ImageTracer(camera= camera, image = img)
 
@@ -60,7 +66,7 @@ class MeshTest
             val BLACK:Color=Color()
 
             tracer.fire_all_ray() { ray: Ray ->
-                val hit=mesh.ray_intersection(ray)!=null
+                val hit=world.ray_intersection(ray)!=null
 
                 if (hit) WHITE
                 else BLACK

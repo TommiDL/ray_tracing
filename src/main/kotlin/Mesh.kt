@@ -17,7 +17,7 @@ class indexes(val i1:Int, val i2:Int, val i3:Int)
  *      - Normals of the shape for each vertex
  *      - 3 Indexes of the vertexes to define a triangle
  */
-class Mesh {
+class Mesh :Shape{
     val vertexes: Array<Point>
 
     val triangles:Array<indexes>
@@ -137,7 +137,7 @@ class Mesh {
     }
 
 
-    fun ray_intersection(ray:Ray):HitRecord?
+    override fun ray_intersection(ray:Ray):HitRecord?
     {
         val inv_ray:Ray = ray.transform(this.transformation.inverse())
 

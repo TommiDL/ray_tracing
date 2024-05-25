@@ -33,6 +33,19 @@ class AxisAlignedBoundingBox
         this.zmax=zmax
     }
 
+    constructor(mesh: Mesh)
+    {
+        this.xmax = mesh.vertexes.maxBy { it.x }.x
+        this.xmin = mesh.vertexes.minBy { it.x }.x
+
+        this.ymax = mesh.vertexes.maxBy { it.y }.z
+        this.ymin = mesh.vertexes.minBy { it.y }.z
+
+        this.zmax = mesh.vertexes.maxBy { it.z }.z
+        this.zmin = mesh.vertexes.minBy { it.z }.z
+
+    }
+
     /**
      * Calculate the Axis-Aligned-Bounding-Box based on the vertices of a Shape.
      * @param vertices List of vertices of the shape.
@@ -86,7 +99,7 @@ class AxisAlignedBoundingBox
     {
 
         // x intersection
-        val txmin = (xmin-ray.origin.x)/ray.dir.x
+        val txmin =(xmin-ray.origin.x)/ray.dir.x
         val txmax = (xmax-ray.origin.x)/ray.dir.x
 
         // y intersection
@@ -98,10 +111,33 @@ class AxisAlignedBoundingBox
         val tzmax = (zmax-ray.origin.z)/ray.dir.z
 
 
+        var xintersection:Boolean=true
+        var yintersection:Boolean=true
+        var zintersection:Boolean=true
+
+        if ((txmin.isInfinite()) and (txmax.isInfinite()))
+        {
+            xintersection=false
+        }
+
+        if ((tymin.isInfinite()) and (tymax.isInfinite()))
+        {
+            yintersection=false
+        }
+
+        if ((tzmin.isInfinite()) and (tzmax.isInfinite()))
+        {
+            zintersection=false
+        }
+
+
         return (
-                interval_intersection(txmin, txmax, tymin, tymax) and
-                interval_intersection(txmin, txmax, tzmin, tzmax) and
-                interval_intersection(tymin, tymax, tzmin, tzmax)
+
+                (
+                        (if (xintersection and yintersection) interval_intersection(txmin, txmax, tymin, tymax) else true) and
+                        (if (xintersection and zintersection) interval_intersection(txmin, txmax, tzmin, tzmax) else true) and
+                        (if (yintersection and zintersection) interval_intersection(tymin, tymax, tzmin, tzmax) else true)
+                ) and (xintersection or yintersection or zintersection)
                 )
     }
 
