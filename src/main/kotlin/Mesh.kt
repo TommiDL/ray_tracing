@@ -159,5 +159,25 @@ class Mesh :Shape{
         return closest
     }
 
+    fun get_center():Point
+    {
+        var x_mean:Float=0f
+        var y_mean:Float=0f
+        var z_mean:Float=0f
+
+        this.vertexes.forEach {
+            x_mean+=it.x
+            y_mean+=it.y
+            z_mean+=it.z
+        }
+
+        return Point(
+            x = x_mean/this.vertexes.size,
+            y = y_mean/this.vertexes.size,
+            z = z_mean/this.vertexes.size,
+        )
+
+    }
+
 
 }
