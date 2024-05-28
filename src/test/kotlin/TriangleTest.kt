@@ -18,6 +18,10 @@ class TriangleTest {
         assertTrue(triangle.get_point(beta, gamma).is_close(point))
         assertFalse(triangle.get_point(beta, gamma).is_close(point1))
 
+        assertTrue(triangle(beta, gamma).is_close(point))
+        assertFalse(triangle(beta, gamma).is_close(point1))
+
+
     }
 
     @Test
