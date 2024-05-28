@@ -1,11 +1,14 @@
 package org.example
 
-import kotlin.math.*
-
 /**
  * Definition of a triangle through 3 points
  */
-data class Triangle(val A: Point = Point(1f, 0f, 0f), val B: Point = Point(0f, 1f, 0f), val C:Point = Point(0f, 0f, 1f)):Shape {
+data class Triangle(
+    val A: Point = Point(1f, 0f, 0f),
+    val B: Point = Point(0f, 1f, 0f),
+    val C:Point = Point(0f, 0f, 1f),
+    override val material: Material=Material()
+):Shape(material=material) {
 
     /**
      * Returns a point inside the triangle
@@ -60,6 +63,7 @@ data class Triangle(val A: Point = Point(1f, 0f, 0f), val B: Point = Point(0f, 1
             surface_point = Vec2D(beta, gamma),
             t = t,
             ray = ray,
+            material = this.material
         )
     }
 
