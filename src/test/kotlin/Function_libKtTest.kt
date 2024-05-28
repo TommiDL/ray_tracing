@@ -1,7 +1,7 @@
+
+
 import org.example.are_similar
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 
 class Function_libKtTest {
 
