@@ -17,10 +17,10 @@ open class Pigment() {
  * @param Color
  * @return Pigment
 */
-class UniformPigment( color :Color): Pigment() {
+class UniformPigment( val color :Color): Pigment() {
 
     override fun get_color(uv: Vec2D): Color {
-        return Color()
+        return this.color
         }
 }
 /**
