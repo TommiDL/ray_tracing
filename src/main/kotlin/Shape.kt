@@ -1,7 +1,14 @@
 package org.example
 
-interface Shape
+open class Shape(
+    open val transformation: Transformation=Transformation(),
+    open val material: Material=Material(),
+)
 {
-    fun ray_intersection(ray:Ray):HitRecord?
+
+    open fun ray_intersection(ray: Ray): HitRecord?
+    {
+        return null
+    }
 
 }

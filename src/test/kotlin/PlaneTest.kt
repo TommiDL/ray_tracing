@@ -1,12 +1,10 @@
 
 
 import org.example.*
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import kotlin.math.pow
-import kotlin.math.sqrt
 import kotlin.math.PI
-
 
 
 class PlaneTest {
@@ -28,6 +26,7 @@ class PlaneTest {
                     surface_point = plane._plane_point_to_uv(Point(0f, 0f, 0f)),
                     t = 1f,
                     ray = ray1,
+                    material = plane.material
                 )
             ) ?: true
         )
@@ -75,6 +74,7 @@ class PlaneTest {
                     surface_point = plane_translated._plane_point_to_uv(Point(0f, 0f, 1f)),
                     t = 1f,
                     ray = ray1,
+                    material = plane_translated.material
                 )
             ) ?: true
         )
@@ -117,6 +117,7 @@ class PlaneTest {
                     surface_point = plane_translated._plane_point_to_uv(Point(0f, 0f, 0f)),
                     t = 1f,
                     ray = ray5,
+                    material = plane_translated.material
                 )
             ) ?: true
         )

@@ -51,7 +51,7 @@ class TriangleTest {
         val hit_point:Point = Point(1f, 0f, 0f)
         val normal:Normal = triangle._triangle_normal(hit_point, ray.dir)
 
-        val hit_record:HitRecord = HitRecord(hit_point, normal, vec2d,  t, ray)
+        val hit_record:HitRecord = HitRecord(hit_point, normal, vec2d,  t, ray, triangle.material)
 
         assertFalse(triangle.ray_intersection(ray)!!.is_close(hit_record))
 

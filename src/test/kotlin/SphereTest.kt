@@ -1,8 +1,8 @@
+
 import org.example.*
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import kotlin.math.pow
-import kotlin.math.sqrt
 
 class SphereTest
 {
@@ -24,6 +24,7 @@ class SphereTest
                     surface_point = sphere._sphere_point_to_uv(Point(0f, 0f, 1f)), //da cambiare
                     t = 1f,
                     ray = ray,
+                    material = sphere.material
                 )
             ) ?: false
         )
@@ -41,6 +42,7 @@ class SphereTest
                     surface_point = Vec2D(u = 0f, v = 0.5f), //da cambiare
                     t = 2f, // da cambiare
                     ray = ray,
+                    material = sphere.material
                 )
             ) ?: false
         )
@@ -59,6 +61,7 @@ class SphereTest
                     surface_point = Vec2D(u = 0f, v = 0.5f),
                     t = 1f,
                     ray = ray,
+                    material = sphere.material
                 )
             ) ?: false
         )
@@ -88,6 +91,7 @@ class SphereTest
                         t = 2f,
                         surface_point = Vec2D(0f, 0.5f),
                         ray = ray,
+                        material = sphere.material
                     )
                 )?:false
             )
