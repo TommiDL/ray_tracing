@@ -39,21 +39,53 @@ class TriangleTest {
     @Test
     fun testRayIntersection(){
 
-        val origin:Point = Point(0f, 0f, 0f)
-        val dir:Vec = Vec(1f, 0f, 0f)
-        val ray:Ray = Ray(origin, dir)
-        val triangle:Triangle = Triangle()
+        var origin:Point = Point(0f, 0f, 0f)
+        var dir:Vec = Vec(0f, 0f, -1f)
+        var ray:Ray = Ray(origin, dir)
+        var triangle:Triangle = Triangle(Point(1f, 0f, 0f), Point(0f, 1f, 0f), Point(0f, 0f, 0f))
 
-        val beta:Float = 0f
-        val gamma:Float = 0f
-        val t:Float = 1f
-        val vec2d:Vec2D = Vec2D(beta, gamma)
-        val hit_point:Point = Point(1f, 0f, 0f)
-        val normal:Normal = triangle._triangle_normal(hit_point, ray.dir)
+        var beta:Float = 0f
+        var gamma:Float = 1f
+        var t:Float = 0f
+        var vec2d:Vec2D = Vec2D(beta, gamma)
+        var hit_point:Point = triangle.get_point(beta, gamma)
+        var normal:Normal = Normal(0f, 0f, 1f)
 
-        val hit_record:HitRecord = HitRecord(hit_point, normal, vec2d,  t, ray)
+        var hit_record:HitRecord = HitRecord(hit_point, normal, vec2d,  t, ray)
 
-        assertFalse(triangle.ray_intersection(ray)!!.is_close(hit_record))
+        assertTrue(triangle.ray_intersection(ray)!!.is_close(hit_record))
+
+        origin = Point(0f, 0f, 0f)
+        dir = Vec(-1f, 0f, 0f)
+        ray = Ray(origin, dir)
+        triangle = Triangle(Point(0f, 0f, 0f), Point(0f, 1f, 0f), Point(0f, 0f, 1f))
+
+        beta = 0f               // TO BE FIXED
+        gamma = 1f              // TO BE FIXED
+        t = 0f                  // TO BE FIXED
+        vec2d = Vec2D(beta, gamma)
+        hit_point = triangle.get_point(beta, gamma)
+        normal = Normal(1f, 0f, 0f)
+
+        hit_record = HitRecord(hit_point, normal, vec2d,  t, ray)
+
+        assertTrue(triangle.ray_intersection(ray)!!.is_close(hit_record))
+
+        origin = Point(0f, 0f, 0f)
+        dir = Vec(0f, -1f, 0f)
+        ray = Ray(origin, dir)
+        triangle = Triangle(Point(1f, 0f, 0f), Point(0f, 0f, 0f), Point(0f, 0f, 1f))
+
+        beta = 0f           // TO BE FIXED
+        gamma = 1f          // TO BE FIXED
+        t = 0f              // TO BE FIXED
+        vec2d = Vec2D(beta, gamma)
+        hit_point = triangle.get_point(beta, gamma)
+        normal = Normal(0f, 1f, 0f)
+
+        hit_record = HitRecord(hit_point, normal, vec2d,  t, ray)
+
+        assertTrue(triangle.ray_intersection(ray)!!.is_close(hit_record))
 
     }
 
