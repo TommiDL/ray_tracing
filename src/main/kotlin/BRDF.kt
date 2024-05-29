@@ -31,7 +31,7 @@ open class BRDF(val pigment: Pigment = UniformPigment(Color(255f, 255f, 255f)))
         depth:Int
     ):Ray
     {
-        return Ray()
+        throw NotImplementedError("BRDF.scatter_ray is an abstract Method")
     }
 
 }

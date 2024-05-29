@@ -29,7 +29,7 @@ class Selection:CliktCommand(name="selection") {
 class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image and a pfm file of 10 Spheres")
 {
     val argv: List<String> by argument( help =
-        "Insert:\n- rotation angle  \n- Camera type"
+        "Insert:\n- rotation angle  \n- Camera type: perspective or orthogonal"
     ).multiple()
 
 /*    val angle by argument("--angle", help = "Rotation angle of the camera").float().default(0f)
@@ -42,6 +42,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
     val width by option("--width", "-w", help="Width of the PNG image").int().default(480)
     val height by option("--height", "-he", help="Height of the PNG image").int().default(480)
     val name:String by option("--name", "-n", help="Name of the outputs files").default("output")
+    val alg:String by option("--algorithm", "-a", help = "Rendering type: onoff -> rendering use black&white format, flat -> rendering allow to use the color of objects").default("onoff")
     override fun run()
     {
 
@@ -62,19 +63,74 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
             // Declare 10 Spheres objs, ray 1/10 in the vertex of a cube
             val objs:MutableList<Shape> = mutableListOf(
                 //Sphere(scalar_transformation(100f, 100f, 100f)),
-                Sphere(scalar_transformation(0.1f, 0.1f, 0.1f)),
-                Sphere(traslation(Vec(0.5f,0.5f, 0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f)),
-                Sphere(traslation(Vec(0.5f,0.5f, -0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f)),
-                Sphere(traslation(Vec(0.5f,-0.5f, -0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f)),
-                Sphere(traslation(Vec(-0.5f,-0.5f, -0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f)),
 
-                Sphere(traslation(Vec(-0.5f,0.5f, 0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f)  ),
-                Sphere(traslation(Vec(-0.5f,-0.5f, 0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f)  ),
-                Sphere(traslation(Vec(0.5f,-0.5f, 0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f)  ),
-                Sphere(traslation(Vec(-0.5f,0.5f, -0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f)  ),
+                Sphere(
+                    transformation = scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(127f, 0f, 255f))
+                    )
+                ),
 
-                Sphere(traslation(Vec(0f,0.5f, 0f))*scalar_transformation(0.1f, 0.1f, 0.1f)  ),
-                Sphere(traslation(Vec(0f,0f, -0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f)  ),
+                Sphere(
+                    transformation = traslation(Vec(0.5f,0.5f, 0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(0f, 204f, 0f))
+                    )
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(0.5f,0.5f, -0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(255f, 0f, 0f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(0.5f,-0.5f, -0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(0f, 255f, 0f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(-0.5f,-0.5f, -0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(0f, 0f, 255f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(-0.5f,0.5f, 0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(255f, 128f, 0f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(-0.5f,-0.5f, 0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(122f, 0f, 204f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(0.5f,-0.5f, 0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(100f, 155f, 150f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(-0.5f,0.5f, -0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(0f, 255f, 100f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(0f,0.5f, 0f))*scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(100f, 100f, 255f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(0f,0f, -0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(255f, 255f, 100f)))
+                ),
             )
 
             val world:World=World( objs )
@@ -96,12 +152,24 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
 
             print("\r\tFire all ray")
             print("\r\t                                  ")
-            tracer.fire_all_ray() { ray: Ray ->
+
+            val renderer:Renderer
+            if(alg=="onoff")
+            {
+                renderer=OnOffRenderer(world)
+            }
+            else //not the best solution but fine by now
+            {
+                renderer=FlatRenderer(world)
+            }
+
+            tracer.fire_all_ray(){ray: Ray ->  renderer(ray)}
+            /*{ ray: Ray ->
                 val hit=world.ray_intersection(ray)!=null
 
                 if (hit) WHITE
                 else BLACK
-            }
+            }*/
             println()
 
             println("\r\tIntersection done")
