@@ -1,5 +1,6 @@
 ## Head
-## v0.2.0
+
+## v0.2.0
 
 Second release of the code:
 
