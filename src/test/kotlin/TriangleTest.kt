@@ -11,12 +11,12 @@ class TriangleTest {
 
         val beta:Float = 0.5f
         val gamma:Float = 0.5f
-        val triangle:Triangle = Triangle()
+        val triangle:Triangle = Triangle(material = Material())
         val point:Point =  Point(0f, 0.5f, 0.5f)
         val point1:Point =  Point(1f, 1f, 1f)
 
-        assertTrue(triangle.get_point(beta, gamma).is_close(point))
-        assertFalse(triangle.get_point(beta, gamma).is_close(point1))
+        assertTrue(triangle.get_point(beta, gamma)!!.is_close(point))
+        assertFalse(triangle.get_point(beta, gamma)!!.is_close(point1))
 
         assertTrue(triangle(beta, gamma).is_close(point))
         assertFalse(triangle(beta, gamma).is_close(point1))
@@ -27,8 +27,8 @@ class TriangleTest {
     @Test
     fun testDet() {
 
-        val a:Triangle = Triangle()
-        val b:Triangle = Triangle()
+        val a:Triangle = Triangle(material = Material())
+        val b:Triangle = Triangle(material = Material())
 
         assertTrue(are_similar(a.det(1f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 1f), 1f))
         assertFalse(are_similar(b.det(1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f), 1f))
@@ -39,21 +39,61 @@ class TriangleTest {
     @Test
     fun testRayIntersection(){
 
-        val origin:Point = Point(0f, 0f, 0f)
-        val dir:Vec = Vec(1f, 0f, 0f)
-        val ray:Ray = Ray(origin, dir)
-        val triangle:Triangle = Triangle()
+        var origin:Point = Point(0.25f, 0.25f, 1f)
+        var dir:Vec = Vec(0f, 0f, -1f)
+        var ray:Ray = Ray(origin, dir)
+        var triangle:Triangle = Triangle(Point(1f, 0f, 0f), Point(0f, 1f, 0f), Point(0f, 0f, 0f), material = Material())
 
-        val beta:Float = 0f
-        val gamma:Float = 0f
-        val t:Float = 1f
-        val vec2d:Vec2D = Vec2D(beta, gamma)
-        val hit_point:Point = Point(1f, 0f, 0f)
-        val normal:Normal = triangle._triangle_normal(hit_point, ray.dir)
+        var beta:Float = 0.25f
+        var gamma:Float = 0.5f
+        var t:Float = -1f
+        var vec2d:Vec2D = Vec2D(beta, gamma)
+        var hit_point:Point= triangle.get_point(beta, gamma)!!
+        var normal:Normal = Normal(0f, 0f, 1f)
 
-        val hit_record:HitRecord = HitRecord(hit_point, normal, vec2d,  t, ray, triangle.material)
+        var hit_record:HitRecord = HitRecord(hit_point, normal, vec2d,  t, ray, triangle.material)
 
-        assertFalse(triangle.ray_intersection(ray)!!.is_close(hit_record))
+        assertTrue(triangle.ray_intersection(ray)!!.is_close(hit_record))
+
+        origin = Point(1f, 0.25f, 0.25f)
+        dir = Vec(-1f, 0f, 0f)
+        ray = Ray(origin, dir)
+        triangle = Triangle(Point(0f, 0f, 0f), Point(0f, 1f, 0f), Point(0f, 0f, 1f), material = Material())
+
+        beta = 0.25f
+        gamma = 0.25f
+        t = -1f
+        vec2d = Vec2D(beta, gamma)
+        hit_point = triangle.get_point(beta, gamma)!!
+        normal = Normal(1f, 0f, 0f)
+
+        hit_record = HitRecord(hit_point, normal, vec2d,  t, ray, triangle.material)
+
+        println()
+        if( triangle.ray_intersection(ray) == null)
+            println( "null")
+        println( triangle.ray_intersection(ray)!!.normal)
+
+        println()
+
+        assertTrue(triangle.ray_intersection(ray)!!.is_close(hit_record))
+
+
+        origin = Point(0.25f, 1f, 0.25f)
+        dir = Vec(0f, -1f, 0f)
+        ray = Ray(origin, dir)
+        triangle = Triangle(Point(1f, 0f, 0f), Point(0f, 0f, 0f), Point(0f, 0f, 1f), material = Material())
+
+        beta = 0.5f
+        gamma = 0.25f
+        t = -1f
+        vec2d = Vec2D(beta, gamma)
+        hit_point = triangle.get_point(beta, gamma)!!
+        normal = Normal(0f, 1f, 0f)
+
+        hit_record = HitRecord(hit_point, normal, vec2d,  t, ray, triangle.material)
+
+        assertTrue(triangle.ray_intersection(ray)!!.is_close(hit_record))
 
     }
 
