@@ -31,7 +31,7 @@ open class BRDF(val pigment: Pigment = UniformPigment(Color(255f, 255f, 255f)))
         depth:Int
     ):Ray
     {
-        return Ray()
+        throw NotImplementedError("BRDF.scatter_ray is an abstract Method")
     }
 
 }
@@ -66,6 +66,26 @@ class DiffusiveBRDF(pigment: Pigment, val reflectance:Float=1f):BRDF(pigment)
             dir=e[1]* cos(phi)*cos_theta+e[2]*sin(phi)*cos_theta +e[3]*sin_theta,
             tmin = 1e-3f,
             tmax = Float.POSITIVE_INFINITY,
+            depth = depth
+        )
+    }
+}
+
+
+class SpecularBRDF(pigment: Pigment):BRDF(pigment)
+{
+    override fun scatter_ray(pcg: PCG, incoming_dir: Vec, interaction_point: Point, normal: Normal, depth: Int): Ray {
+        val ray_dir:Vec=Vec(
+            x=incoming_dir.x,
+            y=incoming_dir.y,
+            z=incoming_dir.z
+        ).normalize()
+
+        val _normal=normal.toVec().normalize()
+
+        return Ray(
+            dir = ray_dir-_normal * 2 *(_normal*ray_dir),
+            tmin = 1e-3f,
             depth = depth
         )
     }
