@@ -25,6 +25,42 @@ val BLACK:Color=Color(0f,0f,0f)
  */
 class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image and a pfm file of 10 Spheres")
 {
+    val camera_ch:String by option(
+        "--camera", "-cam",
+        help = "Camera type for the scene rendering: \n" +
+                "\tperspective or orthogonal"
+    ).choice("perspective", "orthogonal").default("perspective")
+
+
+    lateinit var camera:Camera
+
+    val rotation_angle:Float by option(
+        "--angle", "--rotation-angle", "-rot",
+        help="Camera rotation angle"
+    ).float().default(0f)
+
+    val distance:Float by option("--dist", help = "distance of the camera from the screen").float().default(1f)
+
+
+    val alg:String by option(
+        "--algorithm", "-alg",
+        help = "Select rendering algorithm type:\u0085" +
+                "-   onoff -> rendering in black&white format\u0085" +
+                "-   flat -> rendering in colored format\u0085" +
+                "-   pathtracing -> rendering with path tracing alg"
+
+    ).choice("onoff", "flat", "pathtracing").default("onoff")
+
+
+    // pathtracer parameters
+    val n_ray:Int by option("--nray", help = "number of rays for pathtracing algorithm").int().default(10)
+    val max_depth:Int by option("--max-depth", "-md" , help = "max depth of bouncing per ray").int().default(5)
+    val russian_roulette:Int by option("--russian-roul", "-rr", help = "depth to start suppressing the ray bouncing probability")
+        .int().default(3)
+    val bck_col:Color by option("--bck-col", help = "Background Color").choice("white" to WHITE, "black" to BLACK).default(BLACK)
+
+
+    //image parameters
     val width by option(
         "--width", "-w",
         help="Width of the PNG image"
@@ -39,36 +75,13 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
         "--pfm-output", "-pfm",
         help="Name of the pfm output file"
     ).default("output")
-
-    val alg:String by option(
-        "--algorithm", "-alg",
-        help = "Select rendering algorithm type:\n " +
-                "\tonoff -> rendering use black&white format\n" +
-                "\tflat -> rendering allow to use the color of objects\n" +
-                "\tpathtracing -> rendering with path tracing algorithm"
-
-    ).choice("onoff", "flat", "pathtracing").default("onoff")
-
     val png:String? by option(
         "--png-output", "-png",
         help = "Path of the png output file"
     )
 
-    val rotation_angle:Float by option(
-        "--angle", "--rotation-angle", "-rot",
-        help="Camera rotation angle"
-    ).float().default(0f)
-
-    val camera_ch:String by option(
-        "--camera", "-cam",
-        help = "Camera type for the scene rendering: \n" +
-                "\tperspective or orthogonal"
-    ).choice("perspective", "orthogonal").default("perspective")
-
-    lateinit var camera:Camera
 
 
-    val n_ray:Int by option("--nray", help = "number of rays for pathtracing algorithm").int().default(10)
 
     fun declare_world():World
     {
@@ -76,27 +89,35 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
         val objs:MutableList<Shape> = mutableListOf(
 
             Sphere(
-                transformation = scalar_transformation(0.1f, 0.1f, 0.1f),
+                transformation = scalar_transformation(0.6f, 0.6f, 0.6f)* traslation(Vec(0.8f, 1.3f, -0.5f)),
                 material = Material(
-                    emitted_radiance = UniformPigment( Color(127f, 0f, 255f))
+                    brdf = DiffusiveBRDF(UniformPigment(Color(1f))),
+                    emitted_radiance = UniformPigment(Color(1f))
+                )
+            ),
+
+            Plane(
+                transformation = traslation(Vec(z=-1f)),
+                material = Material(
+                    brdf = DiffusiveBRDF(UniformPigment(Color())),
+                    emitted_radiance = CheckeredPigment(color1 = Color(170f, 0f, 255f), color2 = Color(0.1f, 0.2f, 0.5f), n_steps=2)
                 )
             ),
 
             Sphere(
-                transformation = traslation(Vec(0.5f,0.5f, 0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f),
+                transformation = scalar_transformation(0.4f,0.4f,0.4f) * traslation(Vec(/*4f, -1.5f, -2f*/)),
                 material = Material(
-                    emitted_radiance = UniformPigment( Color(0f, 204f, 0f)),
-                    brdf = SpecularBRDF(UniformPigment( Color(0f, 204f, 0f))),
+                    brdf = SpecularBRDF(pigment = UniformPigment(Color(0.2f, 0.4f, 0.6f))),
+                    emitted_radiance = UniformPigment(Color())
                 )
             ),
 
-            Plane(
-                transformation = traslation(Vec(z=10f)),
-                material = Material(UniformPigment(Color(55f,55f,0f)))
-            ),
-            Plane(
-                transformation = traslation(Vec(z=-10f)),
-                material = Material(UniformPigment(Color(0f,0f,55f)))
+            Sphere(
+                transformation = scalar_transformation(150f)* traslation(Vec(z=0.4f)),
+                material = Material(
+                    brdf = DiffusiveBRDF(UniformPigment(Color(0.5f, 0.5f, 0.5f))),
+                    emitted_radiance = UniformPigment(Color(20f, 0f, 0f))
+                )
             )
 
         )
@@ -107,13 +128,15 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
     private fun _camera_selection()
     {
         if (this.camera_ch=="perspective")
-            this.camera=PerspectiveCamera(transformation = rotation(u=Vec(z=1f), rotation_angle*2* PI.toFloat()/360f) * traslation(Vec(-1f, 0f, 0f)),
-                aspect_ratio = this.width.toFloat()/this.height
+            this.camera=PerspectiveCamera(
+                transformation = rotation(u=Vec(z=1f), rotation_angle*2* PI.toFloat()/360f) * traslation(Vec(-1f, 0f, 0f)),
+                aspect_ratio = this.width.toFloat()/this.height,
+                distance = this.distance
             )
         else if (this.camera_ch=="orthogonal")
             this.camera=OrthogonalCamera(
                 transformation = rotation(u = Vec(z=1f), rotation_angle*2* PI.toFloat()/360f)* traslation(Vec(-1f, 0f, 0f)),
-                aspect_ratio = this.width.toFloat()/this.height
+                aspect_ratio = this.width.toFloat()/this.height,
             )
 
     }
@@ -133,7 +156,9 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
             return pathtracer(
                 world = world,
                 n_ray = this.n_ray,
-                max_depth = 5,
+                max_depth = this.max_depth,
+                russian_roulette_limit = this.russian_roulette,
+                background_color = this.bck_col,
             )
         }
         else //da capire se tenerla

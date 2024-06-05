@@ -1,8 +1,5 @@
 package org.example
 
-import jdk.jfr.TransitionFrom
-import java.nio.channels.Pipe
-import kotlin.io.path.fileVisitor
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
@@ -329,5 +326,13 @@ fun scalar_transformation(sx:Float=1f, sy:Float=1f, sz:Float=1f):Transformation
     return Transformation(
         matrix = HomMatrix(_scalar_tranformation_array(sx, sy, sz)),
         invmatrix = HomMatrix(_scalar_tranformation_array(1/sx, 1/sy, 1/sz))
+    )
+}
+
+fun scalar_transformation(s:Float=1f):Transformation
+{
+    return Transformation(
+        matrix = HomMatrix(_scalar_tranformation_array(s, s, s)),
+        invmatrix = HomMatrix(_scalar_tranformation_array(1/s, 1/s, 1/s))
     )
 }
