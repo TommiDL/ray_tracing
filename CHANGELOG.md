@@ -1,5 +1,8 @@
 ## Head
 
+## v0.2.1
+-   Fix an issue with the ortonormal basis creation in function create_onb_from_z [#11](https://github.com/TommiDL/LITracer/pull/11)
+
 ## v0.2.0
 
 Second release of the code:
