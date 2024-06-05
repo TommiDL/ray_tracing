@@ -52,7 +52,7 @@ class Plane(
     fun _plane_point_to_uv(point:Point):Vec2D {
         val u = point.x - truncate(point.x)
         val v = point.y - truncate(point.y)
-        return Vec2D(u, v )
+        return Vec2D(u=u, v=v)
     }
 
     }
