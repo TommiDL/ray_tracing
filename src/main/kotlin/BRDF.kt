@@ -53,17 +53,19 @@ class DiffusiveBRDF(pigment: Pigment, val reflectance:Float=1f):BRDF(pigment)
         normal: Normal,
         depth: Int
     ):Ray {
+
         val e:Array<Vec> = create_onb_from_z(normal)
 
         val cos_theta_sq:Float=pcg.random_float()
 
         val cos_theta:Float= sqrt(cos_theta_sq)
-        val sin_theta:Float= sqrt(1-cos_theta_sq)
+        val sin_theta:Float= sqrt(1f-cos_theta_sq)
 
         val phi:Float= 2f*PI.toFloat()*pcg.random_float()
 
         return Ray(
-            dir=e[0]* cos(phi)*cos_theta+e[1]*sin(phi)*cos_theta +e[2]*sin_theta,
+            origin = interaction_point,
+            dir= e[0]* cos(phi) * cos_theta + e[1] * sin(phi) * cos_theta +e[2]*sin_theta,
             tmin = 1e-3f,
             tmax = Float.POSITIVE_INFINITY,
             depth = depth

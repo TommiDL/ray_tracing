@@ -1,6 +1,6 @@
 package org.example
 
-import kotlin.math.sign
+import kotlin.math.withSign
 
 fun are_similar(a:Float, b:Float, eps:Float=1e-5f):Boolean
 {
@@ -77,7 +77,7 @@ fun interval_intersection(xmin:Float, xmax:Float, ymin:Float, ymax:Float):Boolea
  */
 fun create_onb_from_z(normal: Normal):Array<Vec>
 {
-    val sign:Float = sign(normal.z)
+    val sign:Float = 1f.withSign(normal.z)
 
     val a:Float = -1f/(sign+normal.z)
 
@@ -107,7 +107,7 @@ fun create_onb_from_z(normal: Normal):Array<Vec>
  */
 fun create_onb_from_z(normal: Vec):Array<Vec>
 {
-    val sign:Float = sign(normal.z)
+    val sign:Float = 1f.withSign(normal.z)
 
     val a:Float = -1f/(sign+normal.z)
 

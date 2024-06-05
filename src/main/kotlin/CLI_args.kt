@@ -6,7 +6,6 @@ import com.github.ajalt.clikt.parameters.arguments.multiple
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.int
-import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import kotlin.math.PI
@@ -20,12 +19,14 @@ class Selection:CliktCommand(name="selection") {
     override fun run()=Unit
 }
 
+/*
 /**
  * Command Line Interface to produce an image of 10 spheres
  * Parameters:
  *      @ rotation angle
  *      @ camera type
  */
+
 class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image and a pfm file of 10 Spheres")
 {
     val argv: List<String> by argument( help =
@@ -229,7 +230,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
 
 
 
-}
+}*/
 
 /**
  * Command Line Interface to convert PFM file in PNG image
@@ -242,7 +243,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
  *
  */
 
-class pfm2png:CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a PFM file to a PNG image")
+/*class pfm2png:CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a PFM file to a PNG image")
 {
     private val args: List<String> by argument(
         help="insert:"+
@@ -311,7 +312,7 @@ class pfm2png:CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a 
 
 
 }
-
+*/
 
 
 class pathtracing:CliktCommand(help = "Path tracing algorithm to render a photorealistic image")
@@ -374,7 +375,10 @@ class pathtracing:CliktCommand(help = "Path tracing algorithm to render a photor
 
         val renderer:pathtracer=pathtracer(
             world = world,
-            russian_roulette_limit = 3
+            russian_roulette_limit = 3,
+            max_depth = 3,
+            n_ray = 100,
+
         )
 
         tracer.fire_all_ray(){ray: Ray ->  renderer(ray)}
