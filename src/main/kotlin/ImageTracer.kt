@@ -35,7 +35,7 @@ class ImageTracer(val image:HdrImage, val camera: Camera)
 
                 this.image.set_pixel(col, row, color)
             }
-            print("\r["+"#".repeat(1+row/10)+" ".repeat(this.image.height/10 - (1+row/10))+"]\r")
+            print("\r["+"#".repeat(1+row/10)+" ".repeat(this.image.height/10 - (row/10))+"]\r")
         }
         print("]")
         println()
