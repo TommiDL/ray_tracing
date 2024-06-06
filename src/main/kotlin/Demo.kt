@@ -100,25 +100,25 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
                 transformation = traslation(Vec(z=-1f)),
                 material = Material(
                     brdf = DiffusiveBRDF(UniformPigment(Color())),
-                    emitted_radiance = CheckeredPigment(color1 = Color(170f, 0f, 255f), color2 = Color(0.1f, 0.2f, 0.5f), n_steps=2)
+                    emitted_radiance = UniformPigment(Color(170f, 0f, 255f)/*, color2 = Color(0.1f, 0.2f, 0.5f), n_steps=6*/)
                 )
             ),
 
             Sphere(
-                transformation = scalar_transformation(0.4f,0.4f,0.4f) * traslation(Vec(/*4f, -1.5f, -2f*/)),
+                transformation = scalar_transformation(0.4f,0.4f,0.4f) * traslation(Vec(z=1f)),
                 material = Material(
                     brdf = SpecularBRDF(pigment = UniformPigment(Color(0.2f, 0.4f, 0.6f))),
                     emitted_radiance = UniformPigment(Color())
                 )
             ),
 
-            Sphere(
+            /*Sphere(
                 transformation = scalar_transformation(150f)* traslation(Vec(z=0.4f)),
                 material = Material(
                     brdf = DiffusiveBRDF(UniformPigment(Color(0.5f, 0.5f, 0.5f))),
-                    emitted_radiance = UniformPigment(Color(20f, 0f, 0f))
+                    emitted_radiance = UniformPigment(Color(0f, 0f, 20f))
                 )
-            )
+            )*/
 
         )
         return World( objs )
