@@ -1,10 +1,7 @@
 package org.example
 
 import java.awt.image.BufferedImage
-import java.io.ByteArrayOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import javax.imageio.ImageIO
@@ -148,6 +145,51 @@ fun _read_float(stream: InputStream, endiannes:ByteOrder):Float
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+fun pfm_from_png(stream: InputStream, path:String="conversion.pfm", return_img:Boolean=false, parameters: Parameters= Parameters()):HdrImage?
+{
+    val png=ImageIO.read(stream)
+
+
+    val img:HdrImage=HdrImage()
+
+    for(col in 0 until png.width)
+    {
+        for (row in 0 downTo  png.height-1)
+        {
+            val color=png.getRGB(col, row)
+
+            val blue: Float = (color and 0xff).toFloat()
+            val green: Float = ((color and 0xff00) shr 8).toFloat()
+            val red: Float = ((color and 0xff0000) shr 16).toFloat()
+            img.set_pixel(col, row, Color(r=red, g=green, b=blue))
+        }
+    }
+
+    img.pixels.forEach { it ->
+        it.r *=img.average_luminosity().toFloat()/parameters.factor
+        it.g *=img.average_luminosity().toFloat()/parameters.factor
+        it.b *=img.average_luminosity().toFloat()/parameters.factor
+
+        it.r*=1/255f
+        it.g*=1/255f
+        it.b*=1/255f
+
+        it.r=it.r.pow(parameters.gamma)
+        it.g=it.g.pow(parameters.gamma)
+        it.b=it.b.pow(parameters.gamma)
+
+    }
+
+
+    img.write_pfm_image(stream=FileOutputStream(path))
+
+    if(return_img)
+        return img
+    return null
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  * Create a matrix with dimensions (width, height)
  * of Color in RGB format (all in color black)
@@ -157,6 +199,11 @@ fun _read_float(stream: InputStream, endiannes:ByteOrder):Float
 class HdrImage(val width:Int = 0, val height:Int=0)
 {
     var pixels = Array<Color>(size = width * height) {Color()}
+
+    constructor(width: Int, height: Int, pixels:Array<Color>):this(width = width, height=height)
+    {
+        this.pixels=pixels
+    }
 
     /**
      * Return the `Color` value for a pixel in the image
@@ -308,6 +355,8 @@ class HdrImage(val width:Int = 0, val height:Int=0)
         print("]")
         println()
     }
+
+
 
 
 }

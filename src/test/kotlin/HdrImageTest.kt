@@ -1,7 +1,10 @@
+
 import org.example.*
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.*
 import java.io.ByteArrayInputStream
+import java.io.FileInputStream
 import java.nio.ByteOrder
 import kotlin.test.assertFailsWith
 
@@ -180,5 +183,18 @@ class HdrImageTest {
         assertTrue(_read_line(line)=="")
 
 
+    }
+
+
+    @Test
+    fun test_pfm_from_png()
+    {
+        val image:HdrImage= read_pfm_image(FileInputStream("memorial.pfm"))
+        val new_img=pfm_from_png(stream = FileInputStream("memorial.png"))
+
+        if(new_img!=null)
+            for (col in 0 until image.width)
+                for (row in 0 until image.height)
+                   assertTrue(image.get_pixel(col, row).is_close(new_img.get_pixel(col, row)))
     }
 }

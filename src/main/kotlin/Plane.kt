@@ -1,6 +1,6 @@
 package org.example
 
-import kotlin.math.truncate
+import kotlin.math.floor
 
 /**
 *A 3D infinite plane parallel to the x and y axis and passing through the origin
@@ -50,8 +50,8 @@ class Plane(
      * @return Vec2D
      */
     fun _plane_point_to_uv(point:Point):Vec2D {
-        val u = point.x - truncate(point.x)
-        val v = point.y - truncate(point.y)
+        val u = point.x - floor(point.x)
+        val v = point.y - floor(point.y)
         return Vec2D(u=u, v=v)
     }
 

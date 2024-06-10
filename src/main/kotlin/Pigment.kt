@@ -30,7 +30,7 @@ class UniformPigment( val color :Color): Pigment() {
  * @param n_steps The number of steps to divide the surface for the checkered effect.
  * @return Pigment
  */
-class CheckeredPigment (val color1 : Color, val color2 : Color, val n_steps: Int)  : Pigment() {
+class CheckeredPigment (val color1 : Color, val color2 : Color, val n_steps: Int=10)  : Pigment() {
     override fun get_color(uv : Vec2D) : Color {
         val u: Int = floor((uv.u * n_steps)).toInt()
         val v: Int = floor((uv.v * n_steps)).toInt()
@@ -45,6 +45,7 @@ class ImagePigment(val Image : HdrImage) : Pigment() {
     override fun get_color(uv: Vec2D): Color {
         var col = (uv.u * Image.width).toInt()
         var row = (uv.v * Image.height).toInt()
+
         if (col >= Image.width) {
             col = Image.width -1
         }
