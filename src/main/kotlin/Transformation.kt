@@ -1,8 +1,5 @@
 package org.example
 
-import jdk.jfr.TransitionFrom
-import java.nio.channels.Pipe
-import kotlin.io.path.fileVisitor
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
@@ -220,7 +217,7 @@ data class Transformation(var matrix:HomMatrix= HomMatrix(ID.copyOf()), var invm
     {
         return Transformation(
             matrix=this.matrix*other.matrix,
-            invmatrix=other.invmatrix*this.matrix
+            invmatrix=other.invmatrix*this.invmatrix
         )
     }
 
