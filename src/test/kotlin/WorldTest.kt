@@ -1,9 +1,7 @@
-import com.sun.management.VMOption.Origin
+
 import org.example.*
-import org.junit.jupiter.api.Test
-import org.example.Ray
-import org.example.Vec
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 
 
@@ -12,8 +10,8 @@ class WorldTest {
     @Test
     fun test_ray_intersection() {
         val world = World()
-        val sphere1: Sphere = Sphere(trasformation = traslation(vec_x * 2))
-        val sphere2: Sphere = Sphere(trasformation = traslation(vec_x * 8))
+        val sphere1: Sphere = Sphere(transformation = traslation(vec_x * 2))
+        val sphere2: Sphere = Sphere(transformation = traslation(vec_x * 8))
         world.add(sphere1)
         world.add(sphere2)
 

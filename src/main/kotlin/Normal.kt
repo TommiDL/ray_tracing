@@ -102,4 +102,13 @@ data class Normal(var x:Float=0f, var y:Float=0f, var z:Float=0f)
         return (this / (this.norm()))
     }
 
+    fun toVec():Vec
+    {
+        return Vec(
+            x=this.x,
+            y=this.y,
+            z=this.z
+        )
+    }
+
 }

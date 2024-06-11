@@ -25,7 +25,7 @@ class Mesh :Shape{
 
     val normals:Array<Normal>
 
-    val transformation:Transformation
+    override val transformation:Transformation
     /**
      * Constructor from arrays
      */

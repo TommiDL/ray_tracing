@@ -1,5 +1,7 @@
 package org.example
 
+import kotlin.math.withSign
+
 fun are_similar(a:Float, b:Float, eps:Float=1e-5f):Boolean
 {
     /**
@@ -68,4 +70,64 @@ fun interval_intersection(xmin:Float, xmax:Float, ymin:Float, ymax:Float):Boolea
     }
 
     return true
+}
+
+/**
+ * Creation of a OrtoNormalBase from Normal
+ */
+fun create_onb_from_z(normal: Normal):Array<Vec>
+{
+    val sign:Float = 1f.withSign(normal.z)
+
+    val a:Float = -1f/(sign+normal.z)
+
+    val b:Float = normal.x * normal.y * a
+
+    val e1:Vec = Vec(
+        x=1+sign*normal.x*normal.x*a,
+        y=sign*b,
+        z = -sign*normal.x,
+    )
+
+    val e2:Vec=Vec(
+        x=b,
+        y=sign+normal.y*normal.y*a,
+        z=-normal.y
+    )
+
+    return arrayOf<Vec>(e1, e2, Vec(
+        x=normal.x,
+        y=normal.y,
+        z=normal.z
+    ))
+}
+
+/**
+ * Creation of a OrtoNormalBase from Vec
+ */
+fun create_onb_from_z(normal: Vec):Array<Vec>
+{
+    val sign:Float = 1f.withSign(normal.z)
+
+    val a:Float = -1f/(sign+normal.z)
+
+    val b:Float = normal.x * normal.y * a
+
+    val e1:Vec = Vec(
+        x=1+sign*normal.x*normal.x*a,
+        y=sign*b,
+        z = -sign*normal.x,
+    )
+
+    val e2:Vec=Vec(
+        x=b,
+        y=sign+normal.y*normal.y*a,
+        z=-normal.y
+    )
+
+    return arrayOf<Vec>(e1, e2, Vec(
+        x=normal.x,
+        y=normal.y,
+        z=normal.z
+    ))
 }

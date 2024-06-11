@@ -14,6 +14,7 @@ class HitRecord(
     val surface_point:Vec2D,
     val t:Float,
     val ray:Ray,
+    val material: Material,
     ) {
 
     /**
