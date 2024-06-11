@@ -49,7 +49,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
                 "-   flat -> rendering in colored format\u0085" +
                 "-   pathtracing -> rendering with path tracing alg"
 
-    ).choice("onoff", "flat", "pathtracing").default("onoff")
+    ).choice("onoff", "flat", "pathtracing").default("pathtracing")
 
 
     // pathtracer parameters
@@ -94,28 +94,29 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
             Plane(
                 transformation = traslation(Vec(z=-1f)),
                 material = Material(
-                    emitted_radiance = UniformPigment(Color()),
-                    brdf = DiffusiveBRDF(CheckeredPigment(Color(r=15f, g=15f), Color(b=15f), n_steps = 12))
+                    emitted_radiance =   CheckeredPigment(Color( g=15f), Color(b=15f), n_steps = 12),
+                    brdf = DiffusiveBRDF(CheckeredPigment(Color(g=15f), Color(b=15f), n_steps = 12))
                 )
             ),
 
             Sphere(
-                transformation = traslation(Vec(z=0.5f)),
+                transformation = scalar_transformation(0.5f) * traslation(Vec(z=0f)),
                 material = Material(
-                    emitted_radiance = UniformPigment(Color(r=15f))
+                    emitted_radiance = UniformPigment(Color(r=15f)),
+                    brdf = DiffusiveBRDF(UniformPigment(Color(r=5f)))
                 )
             ),
 
             Sphere(
-                transformation = traslation(Vec(z=-2f)),
+                transformation = scalar_transformation(1f) * traslation(Vec(z=1f, y=3f)),
                 material = Material(
-                    brdf = SpecularBRDF(UniformPigment(Color(10f, 10f, 10f))),
-                    emitted_radiance = UniformPigment(Color())
+                    brdf = SpecularBRDF(UniformPigment(Color(5f, 5f, 5f))),
+                    emitted_radiance = UniformPigment(Color(0f, 0f, 0f))
                 )
 
             ),
 
-            Sphere(
+ /*           Sphere(
                 transformation = scalar_transformation(10f),
                 material = Material(
                     brdf = DiffusiveBRDF(CheckeredPigment(
@@ -125,7 +126,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
                     emitted_radiance = UniformPigment(Color(b=15f))
                 )
             )
-
+*/
 
         )
 
