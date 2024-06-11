@@ -29,24 +29,19 @@ class Selection:CliktCommand(name="selection") {
 class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image and a pfm file of 10 Spheres")
 {
     val argv: List<String> by argument( help =
-        "Insert:\n- rotation angle  \n- Camera type"
+        "Insert:\n- rotation angle  \n- Camera type: perspective or orthogonal"
     ).multiple()
 
-/*    val angle by argument("--angle", help = "Rotation angle of the camera").float().default(0f)
-    val camera by argument("--camera", help="Camera type: perspective or orthogonal")
-        .choice(
-            "perspective" to PerspectiveCamera(aspect_ratio = 1f, transformation = rotation(Vec(0f,0f,1f), angle) * traslation(Vec(-1f, 0f, 0f)), distance = 1f),
-            "orthogonal" to OrthogonalCamera(aspect_ratio = 1f, transformation = rotation(Vec(x=0f,y=0f,z=1f), rotation_angle) * traslation(Vec(-1f, 0f, 0f))),
-        )
-*/
     val width by option("--width", "-w", help="Width of the PNG image").int().default(480)
     val height by option("--height", "-he", help="Height of the PNG image").int().default(480)
-    val name:String by option("--name", "-n", help="Name of the outputs files").default("output")
+    val pfm:String by option("--pfm-output", "-pfm", help="Name of the pfm output file").default("output")
+    val alg:String by option("--algorithm", "-a", help = "Rendering type: onoff -> rendering use black&white format, flat -> rendering allow to use the color of objects").default("onoff")
+    val png:String? by option("--png-output", help = "Name of the png output file")
     override fun run()
     {
 
         try {
-            val rotation_angle:Float = if (argv[0].toFloat()>2*PI) 2*PI.toFloat()*argv[0].toFloat()/360 else argv[0].toFloat()
+            val rotation_angle:Float = argv[0].toFloat()*2*PI.toFloat()/360f
 
             val camera:Camera =
                 if (argv[1]=="orthogonal")
@@ -62,19 +57,84 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
             // Declare 10 Spheres objs, ray 1/10 in the vertex of a cube
             val objs:MutableList<Shape> = mutableListOf(
                 //Sphere(scalar_transformation(100f, 100f, 100f)),
-                Sphere(scalar_transformation(0.1f, 0.1f, 0.1f)),
-                Sphere(traslation(Vec(0.5f,0.5f, 0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f)),
-                Sphere(traslation(Vec(0.5f,0.5f, -0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f)),
-                Sphere(traslation(Vec(0.5f,-0.5f, -0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f)),
-                Sphere(traslation(Vec(-0.5f,-0.5f, -0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f)),
 
-                Sphere(traslation(Vec(-0.5f,0.5f, 0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f)  ),
-                Sphere(traslation(Vec(-0.5f,-0.5f, 0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f)  ),
-                Sphere(traslation(Vec(0.5f,-0.5f, 0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f)  ),
-                Sphere(traslation(Vec(-0.5f,0.5f, -0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f)  ),
+                Sphere(
+                    transformation = scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(127f, 0f, 255f))
+                    )
+                ),
 
-                Sphere(traslation(Vec(0f,0.5f, 0f))*scalar_transformation(0.1f, 0.1f, 0.1f)  ),
-                Sphere(traslation(Vec(0f,0f, -0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f)  ),
+                Sphere(
+                    transformation = traslation(Vec(0.5f,0.5f, 0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(0f, 204f, 0f))
+                    )
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(0.5f,0.5f, -0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(255f, 0f, 0f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(0.5f,-0.5f, -0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(0f, 255f, 0f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(-0.5f,-0.5f, -0.5f)) * scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(0f, 0f, 255f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(-0.5f,0.5f, 0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(255f, 128f, 0f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(-0.5f,-0.5f, 0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(122f, 0f, 204f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(0.5f,-0.5f, 0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(100f, 155f, 150f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(-0.5f,0.5f, -0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(0f, 255f, 100f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(0f,0.5f, 0f))*scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(100f, 100f, 255f)))
+                ),
+
+                Sphere(
+                    transformation = traslation(Vec(0f,0f, -0.5f))*scalar_transformation(0.1f, 0.1f, 0.1f),
+                    material = Material(
+                        emitted_radiance = UniformPigment( Color(255f, 255f, 100f)))
+                ),
+
+                Plane(
+                    transformation = traslation(Vec(z=10f)),
+                    material = Material(UniformPigment(Color(55f,55f,0f)))
+                ),
+                Plane(
+                    transformation = traslation(Vec(z=-10f)),
+                    material = Material(UniformPigment(Color(0f,0f,55f)))
+                )
+
             )
 
             val world:World=World( objs )
@@ -96,12 +156,24 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
 
             print("\r\tFire all ray")
             print("\r\t                                  ")
-            tracer.fire_all_ray() { ray: Ray ->
+
+            val renderer:Renderer
+            if(alg=="onoff")
+            {
+                renderer=OnOffRenderer(world)
+            }
+            else //not the best solution but fine by now
+            {
+                renderer=FlatRenderer(world)
+            }
+
+            tracer.fire_all_ray(){ray: Ray ->  renderer(ray)}
+            /*{ ray: Ray ->
                 val hit=world.ray_intersection(ray)!=null
 
                 if (hit) WHITE
                 else BLACK
-            }
+            }*/
             println()
 
             println("\r\tIntersection done")
@@ -111,34 +183,39 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
 
             try {
                 // Save image in PFM file
-                img.write_pfm_image(FileOutputStream("${this.name}.pfm"))
-                println("Image saved in PFM format at PATH: ${this.name}.pfm")
+                img.write_pfm_image(FileOutputStream("${this.pfm}.pfm"))
+                println("Image saved in PFM format at PATH: ${this.pfm}.pfm")
             }catch (e1: FileNotFoundException)
             {
-                println("Impossible to write on file ${this.name}.pfm")
+                println("Impossible to write on file ${this.pfm}.pfm")
                 println("Error: $e1")
                 return
             }
 
 
 
-            val param:Parameters=Parameters(output_png_filename = "${this.name}.png")
-
-            img.normalize_image(factor = param.factor)
-            img.clamp_image()
-
-            try {
-                //save image in PNG file
-                val out_stream: FileOutputStream = FileOutputStream(param.output_png_filename)
-                img.write_ldr_image(stream = out_stream, format = "PNG", gamma = param.gamma)
-                println("Image saved in PNG format at PATH: ${param.output_png_filename}")
-
-            }catch (e:Error)
+            if (png!=null)
             {
-                println("Impossible to write on file ${param.output_png_filename}")
-                println("Error: $e")
 
-                return
+                val param:Parameters=Parameters(output_png_filename = "${this.png}.png")
+
+                img.normalize_image(factor = param.factor)
+                img.clamp_image()
+
+                try {
+                    //save image in PNG file
+                    val out_stream: FileOutputStream = FileOutputStream(param.output_png_filename)
+                    img.write_ldr_image(stream = out_stream, format = "PNG", gamma = param.gamma)
+                    println("Image saved in PNG format at PATH: ${param.output_png_filename}")
+
+                }catch (e:Error)
+                {
+                    println("Impossible to write on file ${param.output_png_filename}")
+                    println("Error: $e")
+
+                    return
+                }
+
             }
 
         } catch (e:Error)
@@ -231,5 +308,128 @@ class pfm2png:CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a 
 
 
     }
+
+
+}
+
+
+
+class pathtracing:CliktCommand(help = "Path tracing algorithm to render a photorealistic image")
+{
+    val args:List<String> by argument(help = "").multiple()
+    var rotation_angle:Float=0f
+    lateinit var camera:Camera
+
+    val width by option("--width", "-w", help="Width of the PNG image").int().default(480)
+    val height by option("--height", "-he", help="Height of the PNG image").int().default(480)
+    val pfm:String by option("--pfm-output", "-pfm", help="Name of the pfm output file").default("output")
+    val png:String? by option("--png-output", help = "Name of the png output file")
+
+    override fun run() {
+        try {
+            rotation_angle = args[0].toFloat()*2*PI.toFloat()/360f
+
+            camera =
+                if (args[1]=="orthogonal")
+                    OrthogonalCamera(aspect_ratio = (this.width.toFloat()/this.height), transformation = rotation(Vec(x=0f,y=0f,z=1f), rotation_angle) * traslation(Vec(-1f, 0f, 0f)))
+                else if (args[1]=="perspective")
+                    PerspectiveCamera(aspect_ratio = (this.width.toFloat()/this.height), transformation = rotation(Vec(0f,0f,1f), rotation_angle) * traslation(Vec(-1f, 0f, 0f)), distance = 1f)
+                else
+                    PerspectiveCamera(aspect_ratio = (this.width.toFloat()/this.height), transformation = rotation(Vec(0f,0f,1f), rotation_angle) * traslation(Vec(-1f, 0f, 0f)), distance = 1f)
+        }catch (e:Error)
+        {
+            //error in conversion from args
+            println("Usage: <rotation_angle(Float)> <camera_type: perspective/orthogonal (String)>")
+            println("Error: $e")
+
+        }
+
+        val pcg:PCG=PCG()
+
+        val world:World=World(
+            mutableListOf<Shape>(
+                Sphere(material = Material(
+                    emitted_radiance = UniformPigment(Color(pcg.random_float(), pcg.random_float(), pcg.random_float()) *150 )
+                )),
+                Plane(
+                    transformation = traslation(Vec(z=-10f)),
+                    material = Material(
+                        emitted_radiance = UniformPigment(Color(pcg.random_float(), pcg.random_float(), pcg.random_float()) *100 )
+                    )
+                ),
+                Sphere(
+                    transformation = traslation(Vec(z=-10f)),
+                    material = Material(
+                        emitted_radiance = UniformPigment(Color(pcg.random_float(),pcg.random_float(),pcg.random_float())*255)
+                    )
+                )
+
+            )
+        )
+
+
+        val img:HdrImage=HdrImage(width = this.width, height=this.height)
+
+        val tracer:ImageTracer= ImageTracer(image = img, camera=this.camera)
+
+        val renderer:pathtracer=pathtracer(
+            world = world,
+            russian_roulette_limit = 3
+        )
+
+        tracer.fire_all_ray(){ray: Ray ->  renderer(ray)}
+        /*{ ray: Ray ->
+            val hit=world.ray_intersection(ray)!=null
+
+            if (hit) WHITE
+            else BLACK
+        }*/
+        println()
+
+        println("\r\tIntersection done")
+        print("\r\t                                  ")
+        print("\r")
+
+
+        try {
+            // Save image in PFM file
+            img.write_pfm_image(FileOutputStream("${this.pfm}.pfm"))
+            println("Image saved in PFM format at PATH: ${this.pfm}.pfm")
+        }catch (e1: FileNotFoundException)
+        {
+            println("Impossible to write on file ${this.pfm}.pfm")
+            println("Error: $e1")
+            return
+        }
+
+
+
+        if (png!=null)
+        {
+
+            val param:Parameters=Parameters(output_png_filename = "${this.png}.png")
+
+            img.normalize_image(factor = param.factor)
+            img.clamp_image()
+
+            try {
+                //save image in PNG file
+                val out_stream: FileOutputStream = FileOutputStream(param.output_png_filename)
+                img.write_ldr_image(stream = out_stream, format = "PNG", gamma = param.gamma)
+                println("Image saved in PNG format at PATH: ${param.output_png_filename}")
+
+            }catch (e:Error)
+            {
+                println("Impossible to write on file ${param.output_png_filename}")
+                println("Error: $e")
+
+                return
+            }
+
+        }
+
+
+    }
+
 
 }
