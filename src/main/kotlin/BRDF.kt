@@ -83,10 +83,11 @@ class SpecularBRDF(pigment: Pigment):BRDF(pigment)
             z=incoming_dir.z
         ).normalize()
 
-        val _normal=normal.toVec().normalize()
+        val _norm=normal.toVec().normalize()
 
         return Ray(
-            dir = ray_dir-_normal * 2 *(_normal*ray_dir),
+            origin = interaction_point,
+            dir = ray_dir-_norm * 2 *(_norm*ray_dir),
             tmin = 1e-3f,
             depth = depth
         )

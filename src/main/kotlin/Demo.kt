@@ -91,42 +91,53 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
         // Declare 10 Spheres objs, ray 1/10 in the vertex of a cube
         val objs:MutableList<Shape> = mutableListOf(
 
+
+/*            Sphere(
+                transformation = traslation(Vec(x=20f)) * scalar_transformation(500f) ,
+                material = Material(
+                    emitted_radiance = ImagePigment(
+                        read_pfm_image(FileInputStream("memorial.pfm"))
+                    ),
+                    brdf = DiffusiveBRDF(
+                        UniformPigment(Color(1f,1f,1f))
+                    )
+                )
+            ),
+*/
+            Sphere(
+                transformation = traslation(Vec())* scalar_transformation(0.3f),
+                material = Material(
+                    emitted_radiance = UniformPigment(Color(10f,10f,10f,)),
+                    brdf = DiffusiveBRDF(UniformPigment(Color(1f,1f,1f)))
+                )
+            ),
+
+            Sphere(
+                transformation = traslation(Vec(z=-0.6f))* scalar_transformation(0.5f),
+                material = Material(
+                    emitted_radiance = UniformPigment(Color()),
+                    brdf = DiffusiveBRDF(UniformPigment(Color(b=15f)))
+                )
+            ),
+
             Plane(
-                transformation = traslation(Vec(z=-1f)),
+                transformation = traslation(
+                    Vec(z=-0.9f)
+                ),
                 material = Material(
-                    emitted_radiance =   CheckeredPigment(Color( g=15f), Color(b=15f), n_steps = 12),
-                    brdf = DiffusiveBRDF(CheckeredPigment(Color(g=15f), Color(b=15f), n_steps = 12))
+                    emitted_radiance = UniformPigment(Color()),
+                    brdf = DiffusiveBRDF(UniformPigment(Color(1f,1f,1f)))
                 )
             ),
 
             Sphere(
-                transformation = scalar_transformation(0.5f) * traslation(Vec(z=0f)),
+                transformation = scalar_transformation(100f),
                 material = Material(
-                    emitted_radiance = UniformPigment(Color(r=15f)),
-                    brdf = DiffusiveBRDF(UniformPigment(Color(r=5f)))
-                )
-            ),
-
-            Sphere(
-                transformation = scalar_transformation(1f) * traslation(Vec(z=1f, y=3f)),
-                material = Material(
-                    brdf = SpecularBRDF(UniformPigment(Color(5f, 5f, 5f))),
-                    emitted_radiance = UniformPigment(Color(0f, 0f, 0f))
-                )
-
-            ),
-
- /*           Sphere(
-                transformation = scalar_transformation(10f),
-                material = Material(
-                    brdf = DiffusiveBRDF(CheckeredPigment(
-                        color1 = Color(b=5f),
-                        color2 = Color()
-                    )),
-                    emitted_radiance = UniformPigment(Color(b=15f))
+                    brdf = DiffusiveBRDF(UniformPigment(Color(b=1f)))
                 )
             )
-*/
+
+
 
         )
 
