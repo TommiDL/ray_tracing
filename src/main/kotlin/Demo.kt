@@ -86,8 +86,6 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
     fun declare_world():World
     {
 
-
-
         // Declare 10 Spheres objs, ray 1/10 in the vertex of a cube
         val objs:MutableList<Shape> = mutableListOf(
 
@@ -127,6 +125,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
                 material = Material(
                     emitted_radiance = UniformPigment(Color()),
                     brdf = DiffusiveBRDF(UniformPigment(Color(1f,1f,1f)))
+
                 )
             ),
 
@@ -134,10 +133,24 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
                 transformation = scalar_transformation(100f),
                 material = Material(
                     brdf = DiffusiveBRDF(UniformPigment(Color(b=1f)))
+
                 )
+            ),
+
+
+            /*Mesh(
+                stream = FileInputStream("/home/tommaso/ziotom/raytracer/raytracing/humanoid_tri.obj"),
+                transformation = rotation(Vec(z=1f), theta = PI.toFloat()/4) *
+                        scalar_transformation(sx=0.07f,sy=0.07f, sz=0.07f)
+
+            )*/
+
+/*            Triangle(
+                Point(0f,-1f,0f),
+                Point(0f, 1f, 0f),
+                Point(0f, 0f, 1f)
             )
-
-
+*/
 
         )
 
