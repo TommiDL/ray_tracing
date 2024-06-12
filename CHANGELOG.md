@@ -1,4 +1,6 @@
 ## Head
+## v0.2.3
+-   Fix an issue with the triangle shape [#17](https://github.com/TommiDL/LITracer/pull/17)
 
 ## v0.2.2
 -   Fix an issue with the Transformation product [#15](https://github.com/TommiDL/LITracer/pull/15)
