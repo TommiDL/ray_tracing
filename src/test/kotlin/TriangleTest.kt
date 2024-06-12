@@ -66,7 +66,7 @@ class TriangleTest {
         )
 
         val ray_x2:Ray=Ray(
-            origin = Point(0f, y=0.75f, 0.75f),
+            origin = Point(0f, y=0.51f, 0.51f),
             dir = Vec(x=1f)
         )
 
@@ -100,7 +100,7 @@ class TriangleTest {
         )
 
         val ray_y2:Ray=Ray(
-            origin = Point(0.75f, y=0f, 0.75f),
+            origin = Point(0.51f, y=0f, 0.51f),
             dir = Vec(y=1f)
         )
 
@@ -135,7 +135,7 @@ class TriangleTest {
         )
 
         val ray_z2:Ray=Ray(
-            origin = Point(0.75f, y=0.75f, 0f),
+            origin = Point(0.51f, y=0.51f, 0f),
             dir = Vec(z=1f)
         )
 
