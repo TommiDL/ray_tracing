@@ -93,8 +93,8 @@ data class Triangle(
         if (gamma<0f || gamma>1f)
             return null
 
-        // NOOOOOOOOOO
-        if(gamma.pow(2)+beta.pow(2)>0.5f)
+
+        if(gamma+beta>1)
             return null
 
         val hit_point:Point? = this.get_point(beta, gamma)

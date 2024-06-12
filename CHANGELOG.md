@@ -1,4 +1,9 @@
 ## Head
+## v0.2.3
+-   Fix an issue with the triangle shape [#17](https://github.com/TommiDL/LITracer/pull/17)
+
+## v0.2.2
+-   Fix an issue with the Transformation product [#15](https://github.com/TommiDL/LITracer/pull/15)
 
 ## v0.2.1
 -   Fix an issue with the ortonormal basis creation in function create_onb_from_z [#11](https://github.com/TommiDL/LITracer/pull/11)

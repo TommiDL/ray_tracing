@@ -2,6 +2,7 @@
 import org.example.*
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
+import java.io.FileOutputStream
 import kotlin.test.Test
 
 class TriangleTest {
@@ -64,6 +65,15 @@ class TriangleTest {
             )
         )
 
+        val ray_x2:Ray=Ray(
+            origin = Point(0f, y=0.51f, 0.51f),
+            dir = Vec(x=1f)
+        )
+
+        assertTrue(
+            tr_x.ray_intersection(ray_x2)==null
+        )
+
 
         val tr_y:Triangle = Triangle(
             Point(x= -1f,y= 1f, z=-1f),
@@ -75,7 +85,6 @@ class TriangleTest {
             origin = Point(0f,0f,0f),
             dir = Vec(y=1f)
         )
-
 
         assertTrue(
             tr_y.ray_intersection(ray_y)!!.is_close(
@@ -89,6 +98,16 @@ class TriangleTest {
                 )
             )
         )
+
+        val ray_y2:Ray=Ray(
+            origin = Point(0.51f, y=0f, 0.51f),
+            dir = Vec(y=1f)
+        )
+
+        assertTrue(
+            tr_y.ray_intersection(ray_y2)==null
+        )
+
 
 
         val tr_z:Triangle = Triangle(
@@ -115,8 +134,73 @@ class TriangleTest {
             )
         )
 
+        val ray_z2:Ray=Ray(
+            origin = Point(0.51f, y=0.51f, 0f),
+            dir = Vec(z=1f)
+        )
+
+        assertTrue(
+            tr_z.ray_intersection(ray_z2)==null
+        )
 
 
+
+
+    }
+
+    @Test
+    fun printTriangle()
+    {
+        val world:World=World(
+            mutableListOf<Shape>(
+                Triangle(
+                    Point(0f,0f,0f),
+                    Point(0f, 1f,0f),
+                    Point(0f, 0f, 1f)
+                )
+            )
+        )
+
+            val camera:Camera=OrthogonalCamera(
+                //transformation = rotation(Vec(z=1f), theta = PI.toFloat()/4)
+            )
+            /*val camera:Camera=PerspectiveCamera(
+                aspect_ratio = 0.5f,
+                distance = 50f,
+                //transformation = rotation(u=Vec(x =1f), theta = PI.toFloat()/4)
+            )*/
+
+            val img:HdrImage=HdrImage(width = 960, height=960)
+
+            val tracer:ImageTracer=ImageTracer(camera= camera, image = img)
+
+            val WHITE:Color=Color(255f, 255f, 255f)
+    //            Color(r= Random.nextFloat(), g= Random.nextFloat(), b= Random.nextFloat())
+            val BLACK:Color=Color()
+
+            tracer.fire_all_ray() { ray: Ray ->
+                val hit=world.ray_intersection(ray)!=null
+
+                if (hit) WHITE
+                else BLACK
+            }
+
+            try {
+                val filename="triangle.png"
+                //save image in PNG file
+                img.normalize_image(1f)
+                img.clamp_image()
+                val out_stream: FileOutputStream = FileOutputStream(filename)
+                img.write_ldr_image(stream = out_stream, format = "PNG")
+                println("Image saved in PNG format at PATH: ${filename}")
+
+            }catch (e:Error)
+            {
+                println("Impossible to write on file triangle.png")
+                println("Error: $e")
+
+                return
+            }
 
     }
 

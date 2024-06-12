@@ -56,8 +56,7 @@ class MeshTest
 */
             val mesh1:Mesh=Mesh(
                 stream = FileInputStream("/home/tommaso/ziotom/raytracer/raytracing/tetrahedron.obj"),
-                transformation = rotation(u = Vec(z=1f), theta = PI.toFloat()/4) *
-                        scalar_transformation(2f,2f,2f) *
+                        //transformation = scalar_transformation(2f,2f,2f) *
                         traslation(Vec(-1.25f,-1.25f, -1.25f))
             )
 
@@ -65,7 +64,9 @@ class MeshTest
 
             val mesh2:Mesh=Mesh(
                 stream = FileInputStream("/home/tommaso/ziotom/raytracer/raytracing/humanoid_tri.obj"),
-                transformation = rotation(Vec(z=1f), theta = PI.toFloat()/4) *
+                transformation =
+                    traslation(Vec(z=-1f))*
+                    rotation(Vec(z=1f), theta = PI.toFloat()/4) *
                         scalar_transformation(sx=0.07f,sy=0.07f, sz=0.07f)
 
             )
@@ -74,14 +75,16 @@ class MeshTest
 
             val world:World=World(
                 mutableListOf<Shape>(
-                    mesh1,
-                    //mesh2,
+                    //mesh1,
+                    mesh2,
                     //triangle
                 )
             )
 
             val camera:Camera=OrthogonalCamera(
-                transformation = rotation(Vec(z=1f), theta = PI.toFloat()/4)
+                transformation = rotation(Vec(z=1f), theta = 7*PI.toFloat()/8)
+
+
             )
             /*val camera:Camera=PerspectiveCamera(
                 aspect_ratio = 0.5f,
