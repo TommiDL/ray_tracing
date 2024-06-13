@@ -3,7 +3,12 @@ package org.example
 /**
  * Definition of a triangle through 3 points
  */
-data class Triangle(val A: Point = Point(1f, 0f, 0f), val B: Point = Point(0f, 1f, 0f), val C:Point = Point(0f, 0f, 1f), override val material: Material):Shape() {
+data class Triangle(
+    val A: Point = Point(1f, 0f, 0f),
+    val B: Point = Point(0f, 1f, 0f),
+    val C:Point = Point(0f, 0f, 1f),
+    override val material: Material=Material()
+):Shape(material=material) {
 
     /**
      * Returns a point inside the triangle
@@ -13,10 +18,6 @@ data class Triangle(val A: Point = Point(1f, 0f, 0f), val B: Point = Point(0f, 1
         {
             return (this.A + (this.B - this.A) * beta + (this.C - this.A) * gamma)
         }
-        /*        else {
-                    throw IllegalArgumentException("Point is outside the triangle! beta and gamma must be between 0 and 1")
-                }
-        */
         else
             return null
     }
@@ -36,9 +37,13 @@ data class Triangle(val A: Point = Point(1f, 0f, 0f), val B: Point = Point(0f, 1
     /**
      * Determinant of a 3x3 matrix
      */
-    fun det(a:Float, b:Float, c:Float, d:Float, e:Float, f:Float, g:Float, h:Float, i:Float):Float
+    fun det(
+        a:Float, b:Float, c:Float,
+        d:Float, e:Float, f:Float,
+        g:Float, h:Float, i:Float
+    ):Float
     {
-        val res:Float = a * (( e * i) - ( h * f )) - d * (( b * i ) - ( h * c )) + g * (( b * f ) - ( e * c ))
+        val res:Float = a * (( e * i) - ( h * f )) - b * ( (d*i) - (f*g) ) + c * (( d*h ) - ( e*g ))
 
         return res
     }
@@ -49,12 +54,49 @@ data class Triangle(val A: Point = Point(1f, 0f, 0f), val B: Point = Point(0f, 1
      */
     override fun ray_intersection(ray: Ray): HitRecord? {
 
-        val M:Float = this.det(this.B.x-this.A.x, this.C.x-this.A.x, ray.dir.x, this.B.y-this.A.y, this.C.y-this.A.y, ray.dir.y, this.B.z-this.A.z, this.C.z-this.A.z, ray.dir.z)
-        val beta:Float = this.det(ray.origin.x-this.A.x, this.C.x-this.A.x, ray.dir.x, ray.origin.y-this.A.y, this.C.y-this.A.y, ray.dir.y, ray.origin.z-this.A.z, this.C.z-this.A.z, ray.dir.z)/M
-        val gamma:Float = this.det(this.B.x-this.A.x, ray.origin.x-this.A.x, ray.dir.x, this.B.y-this.A.y, ray.origin.y-this.A.y, ray.dir.y, this.B.z-this.A.z, ray.origin.z-this.A.z, ray.dir.z)/M
-        val t:Float = this.det(this.B.x-this.A.x, this.C.x-this.A.x, ray.origin.x-this.A.x, this.B.y-this.A.y, this.C.y-this.A.y, ray.origin.y-this.A.y, this.B.z-this.A.z, this.C.z-this.A.z, ray.origin.z-this.A.z)/M
+
+        val M:Float = this.det(
+            a=this.B.x-this.A.x, b=this.C.x-this.A.x, c=ray.dir.x,
+            d=this.B.y-this.A.y, e=this.C.y-this.A.y, f=ray.dir.y,
+            g=this.B.z-this.A.z, h=this.C.z-this.A.z, i=ray.dir.z
+        )
+
+        if (are_similar(M, 0f))
+            return null
+
+        val beta:Float = this.det(
+            a=ray.origin.x-this.A.x, b=this.C.x-this.A.x, c=ray.dir.x,
+            d=ray.origin.y-this.A.y, e=this.C.y-this.A.y, f=ray.dir.y,
+            g=ray.origin.z-this.A.z, h=this.C.z-this.A.z, i=ray.dir.z
+        ) /M
+
+        val gamma:Float = this.det(
+            a=this.B.x-this.A.x, b=ray.origin.x-this.A.x, c=ray.dir.x,
+            d=this.B.y-this.A.y, e=ray.origin.y-this.A.y, f=ray.dir.y,
+            g=this.B.z-this.A.z, h=ray.origin.z-this.A.z, i=ray.dir.z
+        )/M
+
+        val t:Float = -this.det(
+            a=this.B.x-this.A.x, b=this.C.x-this.A.x, c=ray.origin.x-this.A.x,
+            d=this.B.y-this.A.y, e=this.C.y-this.A.y, f=ray.origin.y-this.A.y,
+            g=this.B.z-this.A.z, h=this.C.z-this.A.z, i=ray.origin.z-this.A.z
+        )/M
+
+        if (t > ray.tmax || t < ray.tmin )
+            return null
+
+        if (beta<0f || beta>1f )
+            return null
+
+        if (gamma<0f || gamma>1f)
+            return null
+
+
+        if(gamma+beta>1)
+            return null
 
         val hit_point:Point? = this.get_point(beta, gamma)
+
 
         if (hit_point!=null)
             return HitRecord(
@@ -63,7 +105,7 @@ data class Triangle(val A: Point = Point(1f, 0f, 0f), val B: Point = Point(0f, 1
                 surface_point = Vec2D(beta, gamma),
                 t = t,
                 ray = ray,
-                material=this.material
+                material = this.material
             )
         else
             return null
@@ -79,7 +121,7 @@ data class Triangle(val A: Point = Point(1f, 0f, 0f), val B: Point = Point(0f, 1
 
         val norm:Vec = Vec(diff1.x, diff1.y, diff1.z).prod(diff2)
 
-        return if (norm * ray_dir < 0f) norm.conversion() else norm.conversion()*(-1)
+        return if (point.conversion() * ray_dir < 0f) norm.conversion() else norm.conversion()*(-1)
     }
 
 }
