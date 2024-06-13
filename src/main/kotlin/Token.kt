@@ -13,6 +13,11 @@ sealed class Token(var location: SourceLocation) {
         }
     }
 
+    class KeywordToken(location: SourceLocation, val keyword: KeywordEnum): Token(location){
+        override fun toString(): String {
+            return keyword.toString()
+        }
+    }
     //  StringToken
     /**
      *   Token containing a literal string
@@ -38,7 +43,8 @@ sealed class Token(var location: SourceLocation) {
     /**
      *   Token containing a symbol e.g. variable name
      */
-    sealed class SymbolToken(location: SourceLocation, val symbol: String) : Token(location) {
+
+     class SymbolToken(location: SourceLocation, val symbol: String) : Token(location) {
         override fun toString(): String {
             return symbol
         }
@@ -49,9 +55,9 @@ sealed class Token(var location: SourceLocation) {
      * Token signalling the end of a file
      *
      * */
-    class StopToken(location: SourceLocation) : Token(location){
-        override fun toString(): String {
-            return "StopToken"
+     class StopToken(location: SourceLocation) : Token(location){
+         override fun toString(): String {
+             return "StopToken"
         }
     }
 
