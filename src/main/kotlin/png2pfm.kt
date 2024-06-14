@@ -40,8 +40,8 @@ class png2pfm: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a
         help="gamma value of the screen"
     ).float().default(1f)
 
-    val png_output:String by argument(
-        "--output_png",
+    val png_input:String by argument(
+        "--input_png",
         help = "name of the input file PNG (specify .png format)"
     )
 
@@ -58,7 +58,7 @@ class png2pfm: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a
                     pfm_output,
                     "$a",
                     "$gamma",
-                    png_output)
+                    png_input)
             )
         } catch (e:RuntimeException)
         {
@@ -68,14 +68,14 @@ class png2pfm: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a
 
 
         try {
-            val inp_stream: FileInputStream = FileInputStream(parameters.input_pfm_file_name)
+            val inp_stream: FileInputStream = FileInputStream(parameters.output_png_filename)
             val img: HdrImage? = pfm_from_png(
                 stream=inp_stream,
-                path = parameters.output_png_filename,
+                path = parameters.input_pfm_file_name,
                 return_img = true,
-                parameters=parameters
+                parameters=parameters,
             )
-            println("File ${parameters.output_png_filename} has been read from the disk")
+            println("File ${parameters.input_pfm_file_name} has been read from the disk")
 
 
         } catch (e2: FileNotFoundException)

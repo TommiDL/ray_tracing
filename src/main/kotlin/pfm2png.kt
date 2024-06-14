@@ -24,20 +24,7 @@ import java.io.FileOutputStream
 
 class pfm2png: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a PFM file to a PNG image")
 {
-    /*private val args: List<String> by argument(
-        help="insert:"+
-                "\n- input PFM file name (.pfm format)" +
-                "\n- clamp value (float)"+
-                "\n- gamma value of the screen (float)"+
-                "\n- output png file name (.png format)"
-
-    ).multiple()*/
-
-
-
-
-//    val args by option(help = "").split(" " )
-    val pfm_input:String by argument(
+   val pfm_input:String by argument(
         "--input_pfm",
         help="name of the input file PFM (specify .pfm format) to load"
     )

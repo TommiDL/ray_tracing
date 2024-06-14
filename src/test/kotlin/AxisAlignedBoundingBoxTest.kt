@@ -17,6 +17,7 @@ class AxisAlignedBoundingBoxTest
         assertTrue(box.xmax==2f)
 
         assertTrue(box.ymin==1f)
+        println(box.ymax)
         assertTrue(box.ymax==2f)
 
         assertTrue(box.zmin==1f)

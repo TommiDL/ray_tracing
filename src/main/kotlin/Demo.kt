@@ -6,6 +6,7 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.float
 import com.github.ajalt.clikt.parameters.types.int
+import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import kotlin.math.PI
@@ -38,6 +39,22 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
         "--angle", "--rotation-angle", "-rot",
         help="Camera rotation angle"
     ).float().default(0f)
+
+    val traslation_x:Float by option(
+        "--traslation-x", "-trx",
+        help = "Insert the desired value of traslation of the camera on x-axis"
+    ).float().default(0f)
+
+    val traslation_y:Float by option(
+        "--traslation-y", "-try",
+        help = "Insert the desired value of traslation of the camera on y-axis"
+    ).float().default(0f)
+
+    val traslation_z:Float by option(
+        "--traslation-z", "-trz",
+        help = "Insert the desired value of traslation of the camera on z-axis"
+    ).float().default(0f)
+
 
     val distance:Float by option("--dist", help = "distance of the camera from the screen").float().default(1f)
 
@@ -86,71 +103,71 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
     fun declare_world():World
     {
 
+
+        println("reading pfm files...")
+        val lcm:HdrImage=read_pfm_image(FileInputStream("milkyway.pfm"))
+        val earth:HdrImage=read_pfm_image(FileInputStream("earth.pfm"))
+        earth.clamp_image()
+        println("Done")
+
         // Declare 10 Spheres objs, ray 1/10 in the vertex of a cube
         val objs:MutableList<Shape> = mutableListOf(
 
-
-/*            Sphere(
-                transformation = traslation(Vec(x=20f)) * scalar_transformation(500f) ,
+            Sphere(
+                transformation = traslation(Vec(z=0f)) * scalar_transformation(0.5f),
                 material = Material(
-                    emitted_radiance = ImagePigment(
-                        read_pfm_image(FileInputStream("memorial.pfm"))
-                    ),
+                    emitted_radiance = UniformPigment(Color()),
                     brdf = DiffusiveBRDF(
-                        UniformPigment(Color(1f,1f,1f))
+                        ImagePigment(earth)
                     )
                 )
             ),
+
+            /*Sphere(
+                transformation = traslation(Vec(x=1f)) * scalar_transformation(1f),
+                material = Material(
+                    emitted_radiance =UniformPigment(Color(0f, 0f, 0f)),
+                    brdf = SpecularBRDF(
+                        UniformPigment(Color(20f, 20f, 20f))
+                    )
+                )
+            ),
+
+             */
+/*
+            Sphere(
+                transformation = traslation(Vec(x=3f)) * scalar_transformation(2f),
+                material = Material(
+                    emitted_radiance =UniformPigment(Color(0f, 0f, 0f)),
+                    brdf = SpecularBRDF(
+                        UniformPigment(Color(10f, 10f, 10f))
+                    )
+                )
+            ),
+
+            /*            Plane(
+                transformation = traslation(Vec(z=-2f)),
+                material = Material(
+                    emitted_radiance = UniformPigment(Color(r=1f))
+                )
+            ),
 */
-            Sphere(
-                transformation = traslation(Vec())* scalar_transformation(0.3f),
-                material = Material(
-                    emitted_radiance = UniformPigment(Color(10f,10f,10f,)),
-                    brdf = DiffusiveBRDF(UniformPigment(Color(1f,1f,1f)))
-                )
-            ),
+
+ */
 
             Sphere(
-                transformation = traslation(Vec(z=-0.6f))* scalar_transformation(0.5f),
+                transformation = scalar_transformation(500000f),
                 material = Material(
-                    emitted_radiance = UniformPigment(Color()),
-                    brdf = DiffusiveBRDF(UniformPigment(Color(b=15f)))
+                    emitted_radiance =     ImagePigment(
+                        lcm
+                    ),
+                    brdf = DiffusiveBRDF(
+                        ImagePigment(
+                            lcm
+                        )
+                    )
                 )
-            ),
-
-            Plane(
-                transformation = traslation(
-                    Vec(z=-0.9f)
-                ),
-                material = Material(
-                    emitted_radiance = UniformPigment(Color()),
-                    brdf = DiffusiveBRDF(UniformPigment(Color(1f,1f,1f)))
-
-                )
-            ),
-
-            Sphere(
-                transformation = scalar_transformation(100f),
-                material = Material(
-                    brdf = DiffusiveBRDF(UniformPigment(Color(b=1f)))
-
-                )
-            ),
-
-
-            /*Mesh(
-                stream = FileInputStream("/home/tommaso/ziotom/raytracer/raytracing/humanoid_tri.obj"),
-                transformation = rotation(Vec(z=1f), theta = PI.toFloat()/4) *
-                        scalar_transformation(sx=0.07f,sy=0.07f, sz=0.07f)
-
-            )*/
-
-/*            Triangle(
-                Point(0f,-1f,0f),
-                Point(0f, 1f, 0f),
-                Point(0f, 0f, 1f)
             )
-*/
 
         )
 
@@ -162,13 +179,22 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
     {
         if (this.camera_ch=="perspective")
             this.camera=PerspectiveCamera(
-                transformation = rotation(u=Vec(z=1f), rotation_angle*2* PI.toFloat()/360f) * traslation(Vec(-1f, 0f, 0f)),
+                transformation = rotation(u=Vec(z=1f), rotation_angle*2* PI.toFloat()/360f) * traslation(Vec(-1f, 0f, 0f))
+                    * traslation(Vec(
+                    x= this.traslation_x,
+                    y= this.traslation_y,
+                    z= this.traslation_z,
+                    )),
                 aspect_ratio = this.width.toFloat()/this.height,
                 distance = this.distance
             )
         else if (this.camera_ch=="orthogonal")
             this.camera=OrthogonalCamera(
-                transformation = rotation(u = Vec(z=1f), rotation_angle*2* PI.toFloat()/360f)* traslation(Vec(-1f, 0f, 0f)),
+                transformation = rotation(u = Vec(z=1f), rotation_angle*2* PI.toFloat()/360f)* traslation(Vec(-1f, 0f, 0f))                    * traslation(Vec(
+                    x= this.traslation_x,
+                    y= this.traslation_y,
+                    z= this.traslation_z,
+                )),
                 aspect_ratio = this.width.toFloat()/this.height,
             )
 

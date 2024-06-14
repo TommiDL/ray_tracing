@@ -54,9 +54,12 @@ class DiffusiveBRDF(pigment: Pigment, val reflectance:Float=1f):BRDF(pigment)
         depth: Int
     ):Ray {
 
+        // the las vec is equal to the normal
         val e:Array<Vec> = create_onb_from_z(normal)
 
+        // bound from 0 to 1
         val cos_theta_sq:Float=pcg.random_float()
+
 
         val cos_theta:Float= sqrt(cos_theta_sq)
         val sin_theta:Float= sqrt(1f-cos_theta_sq)

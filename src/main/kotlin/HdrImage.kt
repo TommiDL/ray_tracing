@@ -145,42 +145,86 @@ fun _read_float(stream: InputStream, endiannes:ByteOrder):Float
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-fun pfm_from_png(stream: InputStream, path:String="conversion.pfm", return_img:Boolean=false, parameters: Parameters= Parameters()):HdrImage?
+fun _declamp(y:Float):Float
+{
+    return y/(1-y)
+}
+
+fun invert_ldr(col:Color, gamma: Float=1f):Color
+{
+    val new_color:Color=Color(
+        r = (col.r/255f).pow(gamma),
+        g = (col.g/255f).pow(gamma),
+        b = (col.b/255f).pow(gamma),
+    )
+
+    return new_color
+}
+
+fun pfm_from_png(
+    stream: InputStream,
+    path:String="conversion.pfm",
+    return_img:Boolean=false,
+    parameters: Parameters= Parameters(),
+    luminosity: Float?=null
+):HdrImage?
 {
     val png=ImageIO.read(stream)
 
+    val img:HdrImage=HdrImage(width = png.width, height = png.height)
 
-    val img:HdrImage=HdrImage()
 
+    println("Reading PFM file")
+    print("[")
     for(col in 0 until png.width)
     {
-        for (row in 0 downTo  png.height-1)
+        for (row in png.height-1 downTo 0 )
         {
             val color=png.getRGB(col, row)
 
             val blue: Float = (color and 0xff).toFloat()
             val green: Float = ((color and 0xff00) shr 8).toFloat()
             val red: Float = ((color and 0xff0000) shr 16).toFloat()
-            img.set_pixel(col, row, Color(r=red, g=green, b=blue))
+                img.set_pixel(col, row, Color(r = red, g = green, b = blue))
         }
+        print("\r["+"#".repeat(col*100/png.width)+" ".repeat((png.width-col)*100/png.width)+"]")
+    }
+    println()
+
+    println("final size of the array: ${img.pixels.size}")
+
+    println("de-clamping in progress...")
+
+    var counter:Int=0
+
+
+    for(i in 0 until img.pixels.size)
+    {
+        val col=img.pixels[i]
+        img.pixels[i]= invert_ldr(col, gamma = parameters.gamma)
+
+        img.pixels[i].r= _declamp(img.pixels[i].r)
+        img.pixels[i].g= _declamp(img.pixels[i].g)
+        img.pixels[i].b= _declamp(img.pixels[i].b)
+
+        counter+=1
+
+        print("\rprogress ${counter.toFloat() /img.pixels.size} ")
+
     }
 
-    img.pixels.forEach { it ->
-        it.r *=img.average_luminosity().toFloat()/parameters.factor
-        it.g *=img.average_luminosity().toFloat()/parameters.factor
-        it.b *=img.average_luminosity().toFloat()/parameters.factor
-
-        it.r*=1/255f
-        it.g*=1/255f
-        it.b*=1/255f
-
-        it.r=it.r.pow(parameters.gamma)
-        it.g=it.g.pow(parameters.gamma)
-        it.b=it.b.pow(parameters.gamma)
-
-    }
+    println("de-normalizing in progress")
+    img._denormalize_image(
+        factor = parameters.factor,
+        luminosity=luminosity
+    )
 
 
+    println()
+    println("done")
+
+
+    println("saving pfm image")
     img.write_pfm_image(stream=FileOutputStream(path))
 
     if(return_img)
@@ -272,6 +316,15 @@ class HdrImage(val width:Int = 0, val height:Int=0)
             this.pixels[i] = (this.pixels[i] * (factor / lum.toFloat()))
     }
 
+    fun _denormalize_image(factor: Float, luminosity: Float? = null)
+    {
+        val lum = luminosity ?: this.average_luminosity(delta = 1e-10)
+        for(i in this.pixels.indices)
+            this.pixels[i] = (this.pixels[i] * (lum.toFloat()/factor))
+
+    }
+
+
     /**
      * Correction for light sources through "_clamp" function
      * declared outside the class HdrImage
@@ -324,9 +377,8 @@ class HdrImage(val width:Int = 0, val height:Int=0)
                 _writeFloatToStream(stream, color.b, endiannes)
 
             }
-            if (i%10==0) print("#")
+            print("\r["+"#".repeat((this.height-i)*100/this.height)+" ".repeat((i)*100/this.height)+"]")
         }
-        print("]")
         println()
     }
 

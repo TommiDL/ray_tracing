@@ -27,8 +27,10 @@ class AxisAlignedBoundingBox
     {
         this.xmin=xmin
         this.xmax=xmax
+
         this.ymin=ymin
         this.ymax=ymax
+
         this.zmin=zmin
         this.zmax=zmax
     }
@@ -38,8 +40,8 @@ class AxisAlignedBoundingBox
         this.xmax = mesh.vertexes.maxBy { it.x }.x
         this.xmin = mesh.vertexes.minBy { it.x }.x
 
-        this.ymax = mesh.vertexes.maxBy { it.y }.z
-        this.ymin = mesh.vertexes.minBy { it.y }.z
+        this.ymax = mesh.vertexes.maxBy { it.y }.y
+        this.ymin = mesh.vertexes.minBy { it.y }.y
 
         this.zmax = mesh.vertexes.maxBy { it.z }.z
         this.zmin = mesh.vertexes.minBy { it.z }.z
@@ -59,8 +61,8 @@ class AxisAlignedBoundingBox
         this.xmax = vertices.maxBy { it.x }.x
         this.xmin = vertices.minBy { it.x }.x
 
-        this.ymax = vertices.maxBy { it.y }.z
-        this.ymin = vertices.minBy { it.y }.z
+        this.ymax = vertices.maxBy { it.y }.y
+        this.ymin = vertices.minBy { it.y }.y
 
         this.zmax = vertices.maxBy { it.z }.z
         this.zmin = vertices.minBy { it.z }.z
@@ -81,8 +83,8 @@ class AxisAlignedBoundingBox
         this.xmax = mesh.vertexes.maxBy { it.x }.x
         this.xmin = mesh.vertexes.minBy { it.x }.x
 
-        this.ymax = mesh.vertexes.maxBy { it.y }.z
-        this.ymin = mesh.vertexes.minBy { it.y }.z
+        this.ymax = mesh.vertexes.maxBy { it.y }.y
+        this.ymin = mesh.vertexes.minBy { it.y }.y
 
         this.zmax = mesh.vertexes.maxBy { it.z }.z
         this.zmin = mesh.vertexes.minBy { it.z }.z
