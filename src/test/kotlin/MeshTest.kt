@@ -13,7 +13,7 @@ class MeshTest
     fun constructorTest()
     {
         try {
-            val mesh:Mesh = Mesh(stream = FileInputStream("/home/tommaso/ziotom/raytracer/raytracing/tetrahedron.obj"))
+            val mesh:Mesh = Mesh(stream = FileInputStream("tetrahedron.obj"))
 
             assertTrue(mesh.triangles.size==4)
             assertTrue(mesh.vertexes.size==4)
