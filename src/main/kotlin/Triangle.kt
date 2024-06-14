@@ -1,5 +1,7 @@
 package org.example
 
+import kotlin.math.pow
+
 /**
  * Definition of a triangle through 3 points
  */

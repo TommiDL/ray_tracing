@@ -32,4 +32,9 @@ data class PCG(var state: ULong = 0u, var inc: ULong = 0u) {
         return (xorShifted shr rot.toInt()) or (xorShifted shl ((-rot.toInt()) and 31))
     }
 
+    fun random_float():Float
+    {
+        return this.random().toFloat()/0xffffffff
+    }
+
 }

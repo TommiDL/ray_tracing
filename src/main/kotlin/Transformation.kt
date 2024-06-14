@@ -328,3 +328,11 @@ fun scalar_transformation(sx:Float=1f, sy:Float=1f, sz:Float=1f):Transformation
         invmatrix = HomMatrix(_scalar_tranformation_array(1/sx, 1/sy, 1/sz))
     )
 }
+
+fun scalar_transformation(s:Float=1f):Transformation
+{
+    return Transformation(
+        matrix = HomMatrix(_scalar_tranformation_array(s, s, s)),
+        invmatrix = HomMatrix(_scalar_tranformation_array(1/s, 1/s, 1/s))
+    )
+}
