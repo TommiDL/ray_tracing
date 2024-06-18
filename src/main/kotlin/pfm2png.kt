@@ -30,7 +30,7 @@ class pfm2png: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a
     )
 
     val a:Float by option(
-        "-a",
+        "--factor", "-a",
         help="clamp value (float)"
     ).float().default(1f)
 
@@ -44,6 +44,10 @@ class pfm2png: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a
         help = "name of the output file PNG (specify .png format)"
     )
 
+    val luminosity:Float? by option(
+        "--luminosity", "-lum",
+        help = "Luminosity to normalize image"
+    ).float()
 
     override fun run()
     {

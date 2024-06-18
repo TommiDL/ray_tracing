@@ -213,10 +213,9 @@ class HdrImageTest {
 
         println("doing conversion")
         //read png and create pfm
-        val new_img=pfm_from_png(
+        val new_img=read_png(
             stream = FileInputStream("memorial.png"),
             parameters=parameters,
-            return_img = true,
             luminosity = lum
         )
 

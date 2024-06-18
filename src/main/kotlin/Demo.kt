@@ -105,69 +105,97 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
 
 
         println("reading pfm files...")
-        val lcm:HdrImage=read_pfm_image(FileInputStream("milkyway.pfm"))
-        val earth:HdrImage=read_pfm_image(FileInputStream("earth.pfm"))
-        earth.clamp_image()
+        val lcm:HdrImage=read_pfm_image(FileInputStream("conversion.pfm"))
+
+
         println("Done")
+
 
         // Declare 10 Spheres objs, ray 1/10 in the vertex of a cube
         val objs:MutableList<Shape> = mutableListOf(
 
-            Sphere(
-                transformation = traslation(Vec(z=0f)) * scalar_transformation(0.5f),
+/*            Sphere(
+                transformation = traslation(Vec(z=-0.5f)) * scalar_transformation(0.3f),
                 material = Material(
-                    emitted_radiance = UniformPigment(Color()),
-                    brdf = DiffusiveBRDF(
-                        ImagePigment(earth)
-                    )
-                )
-            ),
-
-            /*Sphere(
-                transformation = traslation(Vec(x=1f)) * scalar_transformation(1f),
-                material = Material(
-                    emitted_radiance =UniformPigment(Color(0f, 0f, 0f)),
-                    brdf = SpecularBRDF(
-                        UniformPigment(Color(20f, 20f, 20f))
-                    )
-                )
-            ),
-
-             */
-/*
-            Sphere(
-                transformation = traslation(Vec(x=3f)) * scalar_transformation(2f),
-                material = Material(
-                    emitted_radiance =UniformPigment(Color(0f, 0f, 0f)),
-                    brdf = SpecularBRDF(
-                        UniformPigment(Color(10f, 10f, 10f))
-                    )
-                )
-            ),
-
-            /*            Plane(
-                transformation = traslation(Vec(z=-2f)),
-                material = Material(
-                    emitted_radiance = UniformPigment(Color(r=1f))
+                    emitted_radiance = UniformPigment(Color(b=20f))
                 )
             ),
 */
+            Plane(
+                transformation = traslation(Vec(z=-1f)),
+                material = Material(
+                    brdf = DiffusiveBRDF(CheckeredPigment(Color(r=5f), Color(g=10f))),
+                    emitted_radiance = CheckeredPigment(Color(r=1f), Color(g=1f))
+                )
+            ),
+
+
+
+
+            Sphere(
+                transformation = traslation(Vec(x=0f, z=3f)) * scalar_transformation(0.3f),
+                material = Material(
+                    emitted_radiance = UniformPigment(Color(1f,1f,1f)),
+                    brdf = SpecularBRDF(UniformPigment(Color(0f,0f, 0f,)))
+                )
+            ),
+
+
+
+/*            Sphere(
+                transformation = traslation(Vec(x=0f, z=0f)) * scalar_transformation(0.5f),
+                material = Material(
+                    emitted_radiance = UniformPigment(Color()),
+                    brdf = SpecularBRDF(UniformPigment(Color(5f,5f,5f)))
+                )
+            ),
 
  */
 
-            Sphere(
-                transformation = scalar_transformation(500000f),
+/*
+            Mesh(
+                FileInputStream("tetrahedron.obj"),
+                transformation = traslation(Vec(z=-2f, x=-1f)),
                 material = Material(
-                    emitted_radiance =     ImagePigment(
-                        lcm
-                    ),
                     brdf = DiffusiveBRDF(
-                        ImagePigment(
-                            lcm
+                        UniformPigment(
+                            Color(r=1f)
                         )
+                    ),
+                    emitted_radiance = UniformPigment(Color(0f,0f,0f))
+                )
+            ),
+
+ */
+
+            Mesh(
+                FileInputStream("humanoid_tri.obj"),
+                transformation = scalar_transformation(0.9f),
+                material = Material(
+                    brdf = DiffusiveBRDF(
+                        UniformPigment(
+                            Color(b=1f)
+                        )
+                    ),
+                    emitted_radiance = UniformPigment(Color(0f,0f,0f))
+                )
+            ),
+
+/*
+            Sphere(
+                transformation = traslation(Vec(x=3f)) * scalar_transformation(100f),
+                material = Material(
+                    brdf= DiffusiveBRDF(
+                        UniformPigment(Color())
+                    ),
+                    emitted_radiance = ImagePigment(
+                        lcm
                     )
+
                 )
             )
+
+ */
 
         )
 

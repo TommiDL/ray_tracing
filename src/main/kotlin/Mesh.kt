@@ -19,33 +19,51 @@ class indexes(val i1:Int, val i2:Int, val i3:Int)
  */
 class Mesh :Shape{
     val vertexes: Array<Point>
-
     val triangles:Array<indexes>
     //normali smooth nella mesh
 
     val normals:Array<Normal>
 
+    override val material:Material
+
+    val aabb:AxisAlignedBoundingBox
+
     override val transformation:Transformation
     /**
      * Constructor from arrays
      */
-    constructor(vertexes: Array<Point>, triangles:Array<indexes>, normals:Array<Normal>, transformation: Transformation=Transformation())
+    constructor(
+        vertexes: Array<Point>,
+        triangles:Array<indexes>,
+        normals:Array<Normal>,
+        transformation: Transformation=Transformation(),
+        material: Material=Material()
+    )
     {
         this.vertexes = vertexes
         this.triangles = triangles
         this.normals=normals
 
         this.transformation=transformation
+        this.material=material
+
+        aabb=AxisAlignedBoundingBox(this)
+
     }
 
     /**
      * Constructor Mesh of triangle from a obj file
      */
-    constructor(stream: InputStream, transformation:Transformation=Transformation())
+    constructor(
+        stream: InputStream,
+        transformation:Transformation=Transformation(),
+        material: Material=Material()
+    )
     {
 
         println("In constructor from obj file")
         this.transformation = transformation
+        this.material=material
 
         var vertexes= arrayOf<Point>()
         var normals= arrayOf<Normal>()
@@ -54,7 +72,7 @@ class Mesh :Shape{
         var lines:List<String> = stream.bufferedReader().readLines()
 
         lines.forEach{line:String->
-            println(line)
+            //println(line)
             val split=line.split(" ")
 
             if((line.contains("#")) or (line == " ")) {
@@ -87,6 +105,8 @@ class Mesh :Shape{
                     i3=split[3].split("//")[0].toInt(),
                 )
             }
+
+
         }
 
 
@@ -98,6 +118,7 @@ class Mesh :Shape{
         //if(normals.size<3) throw Error("Not enough normals in obj file")
         if(triangles.isEmpty()) throw Error("Not enough triangles in obj file")
 
+        aabb=AxisAlignedBoundingBox(this)
 
     }
 
@@ -112,6 +133,7 @@ class Mesh :Shape{
             A=this.vertexes[indexes.i1-1],
             B=this.vertexes[indexes.i2-1],
             C=this.vertexes[indexes.i3-1],
+            material=material
             )
     }
     /**
@@ -124,6 +146,7 @@ class Mesh :Shape{
             A=this.vertexes[i1],
             B=this.vertexes[i2],
             C=this.vertexes[i3],
+            material=material
         )
     }
 
@@ -133,6 +156,7 @@ class Mesh :Shape{
             A=this.vertexes[indexes.i1-1],
             B=this.vertexes[indexes.i2-1],
             C=this.vertexes[indexes.i3-1],
+            material=material
         )
     }
 
@@ -140,6 +164,8 @@ class Mesh :Shape{
     override fun ray_intersection(ray:Ray):HitRecord?
     {
         val inv_ray:Ray = ray.transform(this.transformation.inverse())
+
+        if (aabb.ray_intersection(inv_ray)==false) return null
 
         var closest:HitRecord?=null
 

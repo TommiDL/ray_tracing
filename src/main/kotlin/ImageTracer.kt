@@ -23,6 +23,9 @@ class ImageTracer(val image:HdrImage, val camera: Camera)
      */
     fun fire_all_ray(func:(Ray)->Color)
     {
+        var counter:Int=0
+        val size:Int=this.image.height*this.image.width
+
         println("Firing all rays")
         print("["+" ".repeat(this.image.height/10)+"]")
         print("\r[")
@@ -34,9 +37,11 @@ class ImageTracer(val image:HdrImage, val camera: Camera)
                 val color:Color=func(ray)
 
                 this.image.set_pixel(col, row, color)
+
+                counter+=1
             }
             //print("\r["+"#".repeat(1+row/10)+" ".repeat(this.image.height/10 - (row/10))+"]\r")
-            print("\r["+"#".repeat(row*100/this.image.height)+" ".repeat((this.image.height-row)*100/this.image.height)+"]")
+            print("\r["+"#".repeat(row*20/this.image.height)+" ".repeat((this.image.height-row)*20/this.image.height)+"] [${100*counter.toFloat()/size} %]      ")
 
         }
         //print("]")
