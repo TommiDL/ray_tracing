@@ -46,9 +46,9 @@ The program was made using Gradle and can perform three tasks:
  - ### png2pfm
     Execute conversion from a PNG image to a PFM file with the specified values of screen's gamma and clamp factor
 
-  #### png2pfm usage:
+    #### png2pfm usage:
 
-       `./gradlew run --args="png2pfm <input_PFM_file>.pfm <clamp value (float)> <gamma value of the screen (float)> <output_png_file>.png"`
+       `./gradlew run --args="png2pfm <output_PFM_file>.pfm <clamp value (float)> <gamma value of the screen (float)> <input_png_file>.png"`
    
 
    For further details execute `./gradlew run --args="png2pfm"` and get the complete usage documentation.
