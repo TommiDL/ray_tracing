@@ -24,12 +24,13 @@ val BLACK:Color=Color(0f,0f,0f)
  *      @ rotation angle
  *      @ camera type
  */
-class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image and a pfm file of 10 Spheres")
+class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo image and a pfm file")
 {
     val camera_ch:String by option(
         "--camera", "-cam",
         help = "Camera type for the scene rendering: \n" +
-                "\tperspective or orthogonal"
+                "\tperspective or orthogonal  \n" +
+                "\t[default value perspective]"
     ).choice("perspective", "orthogonal").default("perspective")
 
 
@@ -37,26 +38,30 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
 
     val rotation_angle:Float by option(
         "--angle", "--rotation-angle", "-rot",
-        help="Camera rotation angle"
+        help="Camera rotation angle  [default value 0]"
     ).float().default(0f)
 
     val traslation_x:Float by option(
         "--traslation-x", "-trx",
-        help = "Insert the desired value of traslation of the camera on x-axis"
+        help = "Insert the desired value of traslation of the camera on x-axis  [default value 0]"
     ).float().default(0f)
 
     val traslation_y:Float by option(
         "--traslation-y", "-try",
-        help = "Insert the desired value of traslation of the camera on y-axis"
+        help = "Insert the desired value of traslation of the camera on y-axis  [default value 0]"
     ).float().default(0f)
 
     val traslation_z:Float by option(
         "--traslation-z", "-trz",
-        help = "Insert the desired value of traslation of the camera on z-axis"
+        help = "Insert the desired value of traslation of the camera on z-axis  [default value 0]"
     ).float().default(0f)
 
 
-    val distance:Float by option("--dist", help = "distance of the camera from the screen").float().default(1f)
+    val distance:Float by option(
+        "--dist",
+        help = "distance of the camera from the screen  \n" +
+                "[default value 1]"
+    ).float().default(1f)
 
 
     val alg:String by option(
@@ -64,37 +69,51 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
         help = "Select rendering algorithm type:\u0085" +
                 "-   onoff -> rendering in black&white format\u0085" +
                 "-   flat -> rendering in colored format\u0085" +
-                "-   pathtracing -> rendering with path tracing alg"
+                "-   pathtracing -> rendering with pathtracing alg\u0085" +
+                " [default value pathtracing]"
 
     ).choice("onoff", "flat", "pathtracing").default("pathtracing")
 
 
     // pathtracer parameters
-    val n_ray:Int by option("--nray", help = "number of rays for pathtracing algorithm").int().default(10)
-    val max_depth:Int by option("--max-depth", "-md" , help = "max depth of bouncing per ray").int().default(5)
-    val russian_roulette:Int by option("--russian-roul", "-rr", help = "depth to start suppressing the ray bouncing probability")
-        .int().default(3)
-    val bck_col:Color by option("--bck-col", help = "Background Color").choice("white" to WHITE, "black" to BLACK).default(BLACK)
+    val n_ray:Int by option(
+        "--nray",
+        help = "number of rays for pathtracing algorithm  [default value 10]"
+    ).int().default(10)
+    val max_depth:Int by option(
+        "--max-depth", "-md" ,
+        help = "max depth of bouncing per ray  [default value 5]"
+    ).int().default(5)
+    val russian_roulette:Int by option(
+        "--russian-roul", "-rr",
+        help = "depth to start suppressing the ray bouncing probability  [default value 3]"
+    ).int().default(3)
+    val bck_col:Color by option(
+        "--bck-col",
+        help = "Background Color  [default value black]"
+    ).choice("white" to WHITE, "black" to BLACK).default(BLACK)
 
 
     //image parameters
     val width by option(
         "--width", "-w",
-        help="Width of the PNG image"
+        help="Width of the PNG image  [default value 480]"
     ).int().default(480)
 
     val height by option(
         "--height", "-he",
-        help="Height of the PNG image"
+        help="Height of the PNG image [default value 480]"
     ).int().default(480)
 
     val pfm:String by option(
         "--pfm-output", "-pfm",
-        help="Name of the pfm output file"
+        help="Name of the pfm output file  \n" +
+                "[default value output.pfm]"
     ).default("output")
     val png:String? by option(
         "--png-output", "-png",
-        help = "Path of the png output file"
+        help = "Path of the png output file  \n" +
+                "[default value null]"
     )
 
 
@@ -125,7 +144,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
                 transformation = traslation(Vec(z=-1f)),
                 material = Material(
                     brdf = DiffusiveBRDF(CheckeredPigment(Color(r=5f), Color(g=10f))),
-                    emitted_radiance = CheckeredPigment(Color(r=1f), Color(g=1f))
+                    emitted_radiance = CheckeredPigment(Color(r=0.01f), Color(g=0.01f))
                 )
             ),
 
@@ -133,55 +152,69 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
 
 
             Sphere(
-                transformation = traslation(Vec(x=0f, z=3f)) * scalar_transformation(0.3f),
+                transformation = traslation(Vec(x=0f, y=1f, z=1f)) * scalar_transformation(0.3f),
                 material = Material(
-                    emitted_radiance = UniformPigment(Color(1f,1f,1f)),
+                    emitted_radiance = UniformPigment(Color(10f,10f,10f)),
                     brdf = SpecularBRDF(UniformPigment(Color(0f,0f, 0f,)))
                 )
             ),
 
 
 
-/*            Sphere(
-                transformation = traslation(Vec(x=0f, z=0f)) * scalar_transformation(0.5f),
+            Sphere(
+                transformation = traslation(Vec(x=1.5f, y=-1.5f, z=0f)) * scalar_transformation(0.7f),
                 material = Material(
                     emitted_radiance = UniformPigment(Color()),
                     brdf = SpecularBRDF(UniformPigment(Color(5f,5f,5f)))
                 )
             ),
 
- */
 
-/*
+
+
             Mesh(
                 FileInputStream("tetrahedron.obj"),
-                transformation = traslation(Vec(z=-2f, x=-1f)),
+                transformation = traslation(Vec(z=1f, x=-1f)),
                 material = Material(
                     brdf = DiffusiveBRDF(
                         UniformPigment(
-                            Color(r=1f)
+                            Color(r=10f)
                         )
                     ),
                     emitted_radiance = UniformPigment(Color(0f,0f,0f))
                 )
             ),
+
+            Mesh(
+                FileInputStream("shuttle.obj"),
+                transformation = traslation(Vec(z=0f, y=1f, x=3f)) * scalar_transformation(0.2f) * rotation(Vec(y=1f), theta = PI.toFloat()/8) * rotation(Vec(z=1f), PI.toFloat()/2),
+                material = Material(
+                    brdf = DiffusiveBRDF(
+                        UniformPigment(
+                            Color(r=10f)
+                        )
+                    ),
+                    emitted_radiance = UniformPigment(Color(0f,0f,0f))
+                )
+            ),
+
+
+/*            Mesh(
+                FileInputStream("shuttle.obj"),
+                transformation = traslation(Vec(z=1f, y=0f, x=3f)) * scalar_transformation(0.3f) * rotation(Vec(y=1f), theta = -PI.toFloat()/8),
+                material = Material(
+                    brdf = DiffusiveBRDF(
+                        UniformPigment(
+                            Color(b=10f)
+                        )
+                    ),
+                    emitted_radiance = UniformPigment(Color(0f,0f,0.7f))
+                )
+            ),
+
 
  */
 
-            Mesh(
-                FileInputStream("humanoid_tri.obj"),
-                transformation = scalar_transformation(0.9f),
-                material = Material(
-                    brdf = DiffusiveBRDF(
-                        UniformPigment(
-                            Color(b=1f)
-                        )
-                    ),
-                    emitted_radiance = UniformPigment(Color(0f,0f,0f))
-                )
-            ),
-
-/*
             Sphere(
                 transformation = traslation(Vec(x=3f)) * scalar_transformation(100f),
                 material = Material(
@@ -195,7 +228,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png image a
                 )
             )
 
- */
+
 
         )
 

@@ -61,6 +61,7 @@ class Mesh :Shape{
     )
     {
 
+
         println("In constructor from obj file")
         this.transformation = transformation
         this.material=material
@@ -72,6 +73,8 @@ class Mesh :Shape{
         var lines:List<String> = stream.bufferedReader().readLines()
 
         lines.forEach{line:String->
+
+
             //println(line)
             val split=line.split(" ")
 

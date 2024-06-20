@@ -23,7 +23,7 @@ import java.io.FileOutputStream
  *
  */
 
-class png2pfm: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a PNG image to a PMF file")
+class png2pfm: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a PNG image to a PFM file")
 {
 
     val pfm_output:String by argument(
@@ -33,12 +33,12 @@ class png2pfm: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a
 
     val a:Float by option(
         "--factor","-a",
-        help="clamp value (float)"
+        help="clamp value (float) [default value 1]"
     ).float().default(1f)
 
     val gamma:Float by option(
         "--gamma",
-        help="gamma value of the screen"
+        help="gamma value of the screen [default value 1]"
     ).float().default(1f)
 
     val png_input:String by argument(
@@ -53,17 +53,18 @@ class png2pfm: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a
 */
     val denormalize:Boolean by option(
         "--denormalize",
-        help = "process denormalization on original image"
+        help = "process denormalization on original image  [default value true]"
     ).choice("true" to true, "false" to false).default(true)
 
     val luminosity:Float? by option(
         "--luminosity",
-        help = "luminosity to process normalization"
+        help = "luminosity to process normalization  \n" +
+                "[default value null]"
     ).float()
 
     val ldr_inv:Boolean by option(
         "--ldr-inv",
-        help = "LDR inversion from png image"
+        help = "LDR inversion from png image [default value true]"
     ).choice(
         "true" to true,
         "false" to false
