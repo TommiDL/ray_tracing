@@ -10,18 +10,20 @@ class AxisAlignedBoundingBoxTest
     fun constructorTest()
     {
 
+        mesh.vertexes.forEach {
+            println(it)
+        }
 
         val box: AxisAlignedBoundingBox =AxisAlignedBoundingBox(this.mesh)
 
-        assertTrue(box.xmin==1f)
-        assertTrue(box.xmax==2f)
+        assertTrue(box.xmin==-0.25f)
+        assertTrue(box.xmax==0.75f)
 
-        assertTrue(box.ymin==1f)
-        println(box.ymax)
-        assertTrue(box.ymax==2f)
+        assertTrue(box.ymin==-0.25f)
+        assertTrue(box.ymax==0.75f)
 
-        assertTrue(box.zmin==1f)
-        assertTrue(box.zmax==2f)
+        assertTrue(box.zmin==-0.25f)
+        assertTrue(box.zmax==0.75f)
 
 
 
