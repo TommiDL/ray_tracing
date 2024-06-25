@@ -16,8 +16,6 @@ val WHITE:Color=Color(255f, 255f, 255f)
 val BLACK:Color=Color(0f,0f,0f)
 
 
-
-
 /**
  * Command Line Interface to produce an image of 10 spheres
  * Parameters:
@@ -42,18 +40,18 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
     ).float().default(0f)
 
     val traslation_x:Float by option(
-        "--traslation-x", "-trx",
-        help = "Insert the desired value of traslation of the camera on x-axis  [default value 0]"
+        "--translation-x", "-trx",
+        help = "Insert the desired value of translation of the camera on x-axis  [default value 0]"
     ).float().default(0f)
 
     val traslation_y:Float by option(
-        "--traslation-y", "-try",
-        help = "Insert the desired value of traslation of the camera on y-axis  [default value 0]"
+        "--translation-y", "-try",
+        help = "Insert the desired value of translation of the camera on y-axis  [default value 0]"
     ).float().default(0f)
 
     val traslation_z:Float by option(
-        "--traslation-z", "-trz",
-        help = "Insert the desired value of traslation of the camera on z-axis  [default value 0]"
+        "--translation-z", "-trz",
+        help = "Insert the desired value of translation of the camera on z-axis  [default value 0]"
     ).float().default(0f)
 
 
@@ -75,7 +73,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
     ).choice("onoff", "flat", "pathtracing").default("pathtracing")
 
 
-    // pathtracer parameters
+    // path tracer parameters
     val n_ray:Int by option(
         "--nray",
         help = "number of rays for pathtracing algorithm  [default value 10]"
@@ -116,32 +114,28 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
                 "[default value null]"
     )
 
-
-
-
+    /**
+     * Declare and set up the world with objects
+     */
     fun declare_world():World
     {
-
-
         println("reading pfm files...")
         val lcm:HdrImage=read_pfm_image(FileInputStream("conversion.pfm"))
 
-
         println("Done")
 
-
-        // Declare 10 Spheres objs, ray 1/10 in the vertex of a cube
+        // Declare 10 Spheres objects, ray 1/10 in the vertex of a cube
         val objs:MutableList<Shape> = mutableListOf(
 
 /*            Sphere(
-                transformation = traslation(Vec(z=-0.5f)) * scalar_transformation(0.3f),
+                transformation = translation(Vec(z=-0.5f)) * scalar_transformation(0.3f),
                 material = Material(
                     emitted_radiance = UniformPigment(Color(b=20f))
                 )
             ),
 */
             Plane(
-                transformation = traslation(Vec(z=-1f)),
+                transformation = translation(Vec(z=-1f)),
                 material = Material(
                     brdf = DiffusiveBRDF(CheckeredPigment(Color(r=5f), Color(g=10f))),
                     emitted_radiance = CheckeredPigment(Color(r=0.01f), Color(g=0.01f))
@@ -152,7 +146,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 
 
             Sphere(
-                transformation = traslation(Vec(x=0f, y=1f, z=3f)) * scalar_transformation(0.3f),
+                transformation = translation(Vec(x=0f, y=1f, z=3f)) * scalar_transformation(0.3f),
                 material = Material(
                     emitted_radiance = UniformPigment(Color(2f,2f,2f)),
                     brdf = SpecularBRDF(UniformPigment(Color(0f,0f, 0f,)))
@@ -162,7 +156,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 
 
             Sphere(
-                transformation = traslation(Vec(x=1.5f, y=-1.5f, z=0f)) * scalar_transformation(0.7f),
+                transformation = translation(Vec(x=1.5f, y=-1.5f, z=0f)) * scalar_transformation(0.7f),
                 material = Material(
                     emitted_radiance = UniformPigment(Color()),
                     brdf = SpecularBRDF(UniformPigment(Color(5f,5f,5f)))
@@ -174,7 +168,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 
             Mesh(
                 FileInputStream("tetrahedron.obj"),
-                transformation = traslation(Vec(z=-1f, x=1f, y=2f)) * scalar_transformation(3f) ,
+                transformation = translation(Vec(z=-1f, x=1f, y=2f)) * scalar_transformation(3f) ,
                 material = Material(
                     brdf = DiffusiveBRDF(
                         UniformPigment(
@@ -187,7 +181,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 /*
             Mesh(
                 FileInputStream("shuttle.obj"),
-                transformation = traslation(Vec(z=0f, y=1f, x=3f)) * scalar_transformation(0.2f) * rotation(Vec(y=1f), theta = PI.toFloat()/8) * rotation(Vec(z=1f), PI.toFloat()/2),
+                transformation = translation(Vec(z=0f, y=1f, x=3f)) * scalar_transformation(0.2f) * rotation(Vec(y=1f), theta = PI.toFloat()/8) * rotation(Vec(z=1f), PI.toFloat()/2),
                 material = Material(
                     brdf = DiffusiveBRDF(
                         UniformPigment(
@@ -202,7 +196,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 
 /*            Mesh(
                 FileInputStream("shuttle.obj"),
-                transformation = traslation(Vec(z=1f, y=0f, x=3f)) * scalar_transformation(0.3f) * rotation(Vec(y=1f), theta = -PI.toFloat()/8),
+                transformation = translation(Vec(z=1f, y=0f, x=3f)) * scalar_transformation(0.3f) * rotation(Vec(y=1f), theta = -PI.toFloat()/8),
                 material = Material(
                     brdf = DiffusiveBRDF(
                         UniformPigment(
@@ -217,7 +211,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
  */
 
             Sphere(
-                transformation = traslation(Vec(x=3f)) * scalar_transformation(100f),
+                transformation = translation(Vec(x=3f)) * scalar_transformation(100f),
                 material = Material(
                     brdf= DiffusiveBRDF(
                         UniformPigment(Color())
@@ -237,12 +231,15 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 
     }
 
+    /**
+     * Select and configure the camera based on the user's choice
+     */
     private fun _camera_selection()
     {
         if (this.camera_ch=="perspective")
             this.camera=PerspectiveCamera(
-                transformation = rotation(u=Vec(z=1f), rotation_angle*2* PI.toFloat()/360f) * traslation(Vec(-1f, 0f, 0f))
-                    * traslation(Vec(
+                transformation = rotation(u=Vec(z=1f), rotation_angle*2* PI.toFloat()/360f) * translation(Vec(-1f, 0f, 0f))
+                    * translation(Vec(
                     x= this.traslation_x,
                     y= this.traslation_y,
                     z= this.traslation_z,
@@ -252,7 +249,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
             )
         else if (this.camera_ch=="orthogonal")
             this.camera=OrthogonalCamera(
-                transformation = rotation(u = Vec(z=1f), rotation_angle*2* PI.toFloat()/360f)* traslation(Vec(-1f, 0f, 0f))                    * traslation(Vec(
+                transformation = rotation(u = Vec(z=1f), rotation_angle*2* PI.toFloat()/360f)* translation(Vec(-1f, 0f, 0f))                    * translation(Vec(
                     x= this.traslation_x,
                     y= this.traslation_y,
                     z= this.traslation_z,
@@ -262,6 +259,9 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 
     }
 
+    /**
+     * Select the renderer based on the user's choice
+     */
     private fun _renderer_selection(world: World):Renderer
     {
         if(alg=="onoff")
@@ -288,6 +288,9 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
         }
     }
 
+    /**
+     * Main function to run the demo and generate the images
+     */
     override fun run()
     {
         this._camera_selection()

@@ -2,7 +2,14 @@ package org.example
 
 import java.io.InputStream
 
-
+/**
+ * A class representing indexes of vertices for a triangle.
+ *
+ * Parameters:
+ * @i1 = the first vertex index
+ * @i2 = the second vertex index
+ * @i3 = the third vertex index
+ */
 class indexes(val i1:Int, val i2:Int, val i3:Int)
 
 
@@ -10,7 +17,7 @@ class indexes(val i1:Int, val i2:Int, val i3:Int)
 
 
 /**
- * Mesh of triangles to represent a complex shape
+ * A class representing a mesh of triangles to form a complex shape
  *
  * Parameters:
  *      - Vertexes of triangles
@@ -29,8 +36,16 @@ class Mesh :Shape{
     val aabb:AxisAlignedBoundingBox
 
     override val transformation:Transformation
+
     /**
-     * Constructor from arrays
+     * Constructor to create a Mesh from arrays
+     *
+     * Parameters:
+     * @vertexes = the vertices of the triangles
+     * @triangles = the indexes of the vertices defining each triangle
+     * @normals = the normals for each vertex
+     * @transformation = the transformation to apply to the mesh (default is no transformation)
+     * @material = the material properties of the mesh (default is a basic material)
      */
     constructor(
         vertexes: Array<Point>,
@@ -54,7 +69,12 @@ class Mesh :Shape{
     }
 
     /**
-     * Constructor Mesh of triangle from a obj file
+     * Constructor Mesh of triangle from an OBJ file
+     *
+     * Parameters:
+     * @stream = the input stream of the OBJ file
+     * @transformation = the transformation to apply to the mesh (default is no transformation)
+     * @material = the material properties of the mesh (default is a basic material)
      */
     constructor(
         stream: InputStream,
@@ -131,7 +151,7 @@ class Mesh :Shape{
 
 
     /**
-     * Get a triangle from the mesh specifing the indexes of the vertexes
+     * Get a triangle from the mesh by specifying the indexes of the vertices
      */
     fun get_triangle(indexes: indexes):Triangle
     {
@@ -144,7 +164,7 @@ class Mesh :Shape{
             )
     }
     /**
-     * Get a triangle from the mesh specifing the indexes of the vertexes
+     * Get a triangle from the mesh by specifying the indexes of the vertices
      */
     fun get_triangle(i1: Int, i2: Int, i3: Int):Triangle
     {
@@ -157,6 +177,9 @@ class Mesh :Shape{
         )
     }
 
+    /**
+     * Operator function to get a triangle from the mesh by specifying the indexes of the vertices
+     */
     operator fun invoke(indexes: indexes):Triangle
     {
         return Triangle(
@@ -167,7 +190,9 @@ class Mesh :Shape{
         )
     }
 
-
+    /**
+     * Check for intersection between a ray and the mesh
+     */
     override fun ray_intersection(ray:Ray):HitRecord?
     {
         val inv_ray:Ray = ray.transform(this.transformation.inverse())
@@ -192,6 +217,9 @@ class Mesh :Shape{
         return closest
     }
 
+    /**
+     * Get the center point of the mesh
+     */
     fun get_center():Point
     {
         var x_mean:Float=0f

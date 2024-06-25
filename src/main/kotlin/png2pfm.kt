@@ -13,16 +13,17 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 
 /**
- * Command Line Interface to convert PFM file in PNG image
+ * Command Line Interface to convert a PNG file in PFM image
  *
  * Parameters:
- *      @ pfm_input = input PFM file
- *      @ a = clamp value
- *      @ gamma = gamma value of the screen
- *      @ png output = output name of the png file
- *
+ *      @pfm_output = name of the output PFM file
+ *      @png_input = name of the input PNG file
+ *      @a = clamp value
+ *      @gamma = gamma value of the screen
+ *      @denormalize = whether to process denormalization on th original image
+ *      @luminosity = luminosity to process normalization
+ *      @ldr_inv = LDR inversion from PNG image
  */
-
 class png2pfm: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a PNG image to a PFM file")
 {
 
@@ -71,13 +72,12 @@ class png2pfm: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a
     ).default(true)
 
 
-
     override fun run()
     {
 
         val parameters: Parameters = Parameters()
 
-        //parse parameter
+        //parse command line parameters
         try {
             parameters.parse_command_line(
                 listOf<String>(
@@ -127,14 +127,14 @@ class png2pfm: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a
         }
 
  */
-        // write pfm
+        // write PFM file
         try {
             println("Saving")
             img.write_pfm_image(stream= FileOutputStream(parameters.input_pfm_file_name))
 
         } catch (e:Error)
         {
-            println("impossible to write file ${parameters.input_pfm_file_name}")
+            println("Impossible to write file ${parameters.input_pfm_file_name}")
             println(e)
             return
         }
