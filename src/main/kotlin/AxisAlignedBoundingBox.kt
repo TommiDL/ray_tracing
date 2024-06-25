@@ -1,7 +1,8 @@
 package org.example
 
 /**
- * Interface that creates an Axis-Aligned-Bounding-Box and verify the intersection with a Ray.
+ * Interface representing an Axis-Aligned-Bounding-Box
+ * Provides methods to create the bounding box and verify intersections with a ray
  */
 
 // fare come classe
@@ -16,6 +17,9 @@ class AxisAlignedBoundingBox
     var zmin:Float
     var zmax:Float
 
+    /**
+     * Constructor to initialize the bounding box with specified min and max values for each axis.
+     */
     constructor(
         xmin:Float,
         xmax:Float,
@@ -35,6 +39,10 @@ class AxisAlignedBoundingBox
         this.zmax=zmax
     }
 
+    /**
+     * Constructor to initialize the bounding box based on a mesh
+     * The bounding box will be calculated to encompass all vertices of the mesh
+     */
     constructor(mesh: Mesh)
     {
         this.xmax = mesh.vertexes.maxBy { it.x }.x
@@ -50,8 +58,8 @@ class AxisAlignedBoundingBox
 
     /**
      * Calculate the Axis-Aligned-Bounding-Box based on the vertices of a Shape.
-     * @param vertices List of vertices of the shape.
-     * @return couple of Points: 1) minimum  2) maximum points of the bounding box.
+     * @vertices = list of vertices of the shape.
+     * @return a pair of Points representing the minimum and maximum points of the bounding box
      *
      * to override in child class
      *
@@ -72,8 +80,8 @@ class AxisAlignedBoundingBox
 
     /**
      * Calculate the Axis-Aligned-Bounding-Box based on the vertices of a Shape.
-     * @param mesh: a Mesh of triangles.
-     * @return couple of Points: 1) minimum  2) maximum points of the bounding box.
+     * @mesh = mesh of triangles.
+     * @return A pair of Points representing the minimum and maximum points of the bounding box
      *
      * to override in child class
      *

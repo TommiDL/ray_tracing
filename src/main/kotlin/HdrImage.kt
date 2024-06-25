@@ -11,14 +11,17 @@ import javax.imageio.ImageIO
 import kotlin.math.log10
 import kotlin.math.pow
 
-
+/**
+ * Clamps a floating-point value using a specific formula.
+ */
 fun _clamp (x: Float): Float
 {
     return x / (1 + x)
 }
 
 /**
- * Function to read a PFM file
+ * Reads an HDR image from a PFM file:
+ * @stream = the input stream to read the PFM file from
  */
 fun read_pfm_image(stream: InputStream):HdrImage
 {
@@ -57,7 +60,8 @@ fun read_pfm_image(stream: InputStream):HdrImage
 }
 
 /**
- * read the endianness from PFM file
+ * Parses the endianness from the PFM file:
+ * @line = line containing the enaidnness information
  */
 fun _parse_endianness(line:String):ByteOrder
 {
@@ -82,6 +86,10 @@ fun _parse_endianness(line:String):ByteOrder
     }
 }
 
+/**
+ * Parses the image size from the PFM file:
+ * @str = string containing the image size
+ */
 fun _parse_img_size(str:String):Array<Int>
 {
     val l = str.split(" ")
@@ -106,6 +114,9 @@ fun _parse_img_size(str:String):Array<Int>
     return arrayOf<Int>(w, h)
 }
 
+/**
+ * Reads a line from the input stream
+ */
 fun _read_line(stream: InputStream):String {
 
     val res:ByteArrayOutputStream=ByteArrayOutputStream()
@@ -126,7 +137,9 @@ fun _read_line(stream: InputStream):String {
 }
 
 /**
- * Read a float 32 bit from a binary file opened in a stream object
+ * Read a 32-bit float from a binary file opened in a stream object:
+ * @stream = input stream to read from
+ * @endianness = the byte order
  */
 fun _read_float(stream: InputStream, endiannes:ByteOrder):Float
 {
@@ -148,11 +161,17 @@ fun _read_float(stream: InputStream, endiannes:ByteOrder):Float
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * De-clamps a floating-point value using a specific formula
+ */
 fun _declamp(y:Float):Float
 {
     return y/(1-y)
 }
 
+/**
+ * Inverts an LDR color with optional gamma correction
+ */
 fun invert_ldr(col:Color, gamma: Float=1f):Color
 {
     val new_color:Color=Color(
@@ -164,6 +183,15 @@ fun invert_ldr(col:Color, gamma: Float=1f):Color
     return new_color
 }
 
+/**
+ * Reads a PNG image and processes it into an HDR image:
+ * @stream = the input stream to read the PNG file from.
+ * @parameters = additional parameters for processing.
+ * @luminosity = optional luminosity value for processing.
+ * @declamp = whether to apply de-clamping.
+ * @denormalize = whether to apply denormalization.
+ * @ldr_inversion = whether to apply LDR inversion.
+ */
 fun read_png(
     stream: InputStream,
     parameters: Parameters= Parameters(),
@@ -254,10 +282,7 @@ fun read_png(
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Create a matrix with dimensions (width, height)
- * of Color in RGB format (all in color black)
- *
- *
+ * Represents an HDR image (matrix) with dimensions (width, height) and a pixel array of colors in RGB format
  */
 class HdrImage(val width:Int = 0, val height:Int=0)
 {
@@ -282,7 +307,7 @@ class HdrImage(val width:Int = 0, val height:Int=0)
 
 
     /**
-     * Set the new color for a pixel in the image
+     * Sets a new color for a pixel in the image
      * The pixel in the top-left corner has coordinates (0, 0)
      */
     fun set_pixel(x:Int, y:Int, new_color:Color)
@@ -294,7 +319,7 @@ class HdrImage(val width:Int = 0, val height:Int=0)
 
 
     /**
-     * Check if the coordinates of the matrix are inside the boundaries
+     * Checks if the coordinates are within the image boundaries
      */
     fun valid_coordinates(x:Int, y:Int):Boolean
     {
@@ -302,7 +327,7 @@ class HdrImage(val width:Int = 0, val height:Int=0)
     }
 
     /**
-     * return the index of the array implementation for the matrix of colors
+     * Returns the index of the pixel in the array
      */
     fun pixel_offset(x:Int, y:Int):Int
     {
@@ -310,8 +335,8 @@ class HdrImage(val width:Int = 0, val height:Int=0)
     }
 
     /**
-     * Returns the average of the image luminosity
-     * Using logaritmic average
+     * Computes the average of the image using a logarithmic average
+     * @delta = a small value to avoid log(0)
      */
     fun average_luminosity (delta: Double = 1e-10): Double
     {
@@ -325,8 +350,9 @@ class HdrImage(val width:Int = 0, val height:Int=0)
     }
 
     /**
-     * Normalizes the image through average luminosity
-     * Input: the value of alpha, the luminosity and the variable color of type Color
+     * Normalizes the image based on the average luminosity:
+     * @factor = normalization factor
+     * @luminosity = optional luminosity value for normalization
      */
     fun normalize_image (factor: Float, luminosity: Float? = null)
     {
@@ -335,6 +361,11 @@ class HdrImage(val width:Int = 0, val height:Int=0)
             this.pixels[i] = (this.pixels[i] * (factor / lum.toFloat()))
     }
 
+    /**
+     * De-normalizes the image based on the average luminosity:
+     * @factor = normalization factor
+     * @luminosity = optional luminosity value for normalization
+     */
     fun _denormalize_image(factor: Float, luminosity: Float? = null)
     {
         val lum = luminosity ?: this.average_luminosity(delta = 1e-10)
@@ -357,6 +388,9 @@ class HdrImage(val width:Int = 0, val height:Int=0)
         }
     }
 
+    /**
+     * Writes a float value to a stream with the specified byte order(endianness)
+     */
     fun _writeFloatToStream(stream: OutputStream, value: Float, order: ByteOrder) {
         val bytes = ByteBuffer.allocate(4).putFloat(value).array() // Big endian
 
@@ -368,7 +402,7 @@ class HdrImage(val width:Int = 0, val height:Int=0)
     }
 
     /**
-     * writes a PFM file with a given output stream
+     * Writes the HDR image to a PFM file
      *
      * the color matrix is written with (0,0) in the bottom left corner
      */
@@ -406,8 +440,10 @@ class HdrImage(val width:Int = 0, val height:Int=0)
     }
 
     /**
-     * generate a ldr image from a Stream of Output
-     * with the selected format
+     * Writes the HRD image to a LDR image file from a Stream of Output in the specified format:
+     * @stream = output stream
+     * @format = image format (e.g. "png")
+     * @gamma = gamma correction value
      */
     fun write_ldr_image(stream: OutputStream, format:String, gamma:Float=1.0f)
     {

@@ -12,7 +12,7 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 
 /**
- * Command Line Interface to convert PFM file in PNG image
+ * Command Line Interface to convert a PFM file into a PNG image
  *
  * Parameters:
  *      @ pfm_input = input PFM file
@@ -21,35 +21,44 @@ import java.io.FileOutputStream
  *      @ png output = output name of the png file
  *
  */
-
 class pfm2png: CliktCommand(printHelpOnEmptyArgs = true, help="Conversion from a PFM file to a PNG image")
 {
+    // Input PFM file name
    val pfm_input:String by argument(
         "--input_pfm",
         help="name of the input file PFM (specify .pfm format) to load"
     )
 
+    // Clamp value with default of 1
     val a:Float by option(
         "--factor", "-a",
         help="clamp value (float)  [default value 1]"
     ).float().default(1f)
 
+    // Gamma value with default of 1
     val gamma:Float by option(
         "--gamma",
         help="gamma value of the screen  [default value 1]"
     ).float().default(1f)
 
+    // Output PNG file name
     val png_output:String by argument(
         "--output_png",
         help = "name of the output file PNG (specify .png format)"
     )
 
+    // Optional luminosity normalization
     val luminosity:Float? by option(
         "--luminosity", "-lum",
         help = "Luminosity to normalize image  \n" +
                 "[default value null]"
     ).float()
 
+
+    /**
+     * Main function to run the command.
+     * It reads the PFM file, processes the image, and writes the output to a PNG file.
+     */
     override fun run()
     {
 
