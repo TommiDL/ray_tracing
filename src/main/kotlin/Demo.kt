@@ -152,9 +152,9 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 
 
             Sphere(
-                transformation = traslation(Vec(x=0f, y=1f, z=1f)) * scalar_transformation(0.3f),
+                transformation = traslation(Vec(x=0f, y=1f, z=3f)) * scalar_transformation(0.3f),
                 material = Material(
-                    emitted_radiance = UniformPigment(Color(10f,10f,10f)),
+                    emitted_radiance = UniformPigment(Color(2f,2f,2f)),
                     brdf = SpecularBRDF(UniformPigment(Color(0f,0f, 0f,)))
                 )
             ),
@@ -174,7 +174,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 
             Mesh(
                 FileInputStream("tetrahedron.obj"),
-                transformation = traslation(Vec(z=1f, x=-1f)),
+                transformation = traslation(Vec(z=-1f, x=1f, y=2f)) * scalar_transformation(3f) ,
                 material = Material(
                     brdf = DiffusiveBRDF(
                         UniformPigment(
@@ -184,7 +184,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
                     emitted_radiance = UniformPigment(Color(0f,0f,0f))
                 )
             ),
-
+/*
             Mesh(
                 FileInputStream("shuttle.obj"),
                 transformation = traslation(Vec(z=0f, y=1f, x=3f)) * scalar_transformation(0.2f) * rotation(Vec(y=1f), theta = PI.toFloat()/8) * rotation(Vec(z=1f), PI.toFloat()/2),
@@ -198,6 +198,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
                 )
             ),
 
+ */
 
 /*            Mesh(
                 FileInputStream("shuttle.obj"),

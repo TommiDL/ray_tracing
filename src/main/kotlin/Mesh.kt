@@ -44,6 +44,8 @@ class Mesh :Shape{
         this.triangles = triangles
         this.normals=normals
 
+        this.recenter()
+
         this.transformation=transformation
         this.material=material
 
@@ -116,6 +118,8 @@ class Mesh :Shape{
         this.vertexes=vertexes
         this.normals=normals
         this.triangles=triangles
+
+        this.recenter()
 
         if(vertexes.size<3) throw Error("Not enough vertexes in obj file")
         //if(normals.size<3) throw Error("Not enough normals in obj file")
@@ -206,6 +210,18 @@ class Mesh :Shape{
             z = z_mean/this.vertexes.size,
         )
 
+    }
+
+
+    fun recenter()
+    {
+        val center:Point=this.get_center()
+
+        this.vertexes.forEach {
+            it.x-=center.x
+            it.y-=center.y
+            it.z-=center.z
+        }
     }
 
 
