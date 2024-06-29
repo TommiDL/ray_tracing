@@ -13,7 +13,7 @@ class MeshTest
     fun constructorTest()
     {
         try {
-            val mesh:Mesh = Mesh(stream = FileInputStream("tetrahedron.obj"))
+            val mesh:Mesh = Mesh(stream = FileInputStream("mesh_obj_files/tetrahedron.obj"))
 
             assertTrue(mesh.triangles.size==4)
             assertTrue(mesh.vertexes.size==4)
@@ -55,7 +55,7 @@ class MeshTest
             )
 */
             val mesh1:Mesh=Mesh(
-                stream = FileInputStream("tetrahedron.obj"),
+                stream = FileInputStream("mesh_obj_files/tetrahedron.obj"),
                         //transformation = scalar_transformation(2f,2f,2f) *
                         translation(Vec(-1.25f,-1.25f, -1.25f))
             )
@@ -63,7 +63,7 @@ class MeshTest
             println(mesh1.get_center())
 
             val mesh2:Mesh=Mesh(
-                stream = FileInputStream("humanoid_tri.obj"),
+                stream = FileInputStream("mesh_obj_files/humanoid_tri.obj"),
                 transformation =
                     translation(Vec(z=-1f))*
                     rotation(Vec(z=1f), theta = PI.toFloat()/4) *

@@ -5,7 +5,7 @@ import kotlin.test.assertTrue
 
 class AxisAlignedBoundingBoxTest
 {
-    val mesh:Mesh=Mesh(FileInputStream("tetrahedron.obj"))
+    val mesh:Mesh=Mesh(FileInputStream("mesh_obj_files/tetrahedron.obj"))
     @Test
     fun constructorTest()
     {

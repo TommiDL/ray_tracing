@@ -120,109 +120,125 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
     fun declare_world():World
     {
         println("reading pfm files...")
-        val lcm:HdrImage=read_pfm_image(FileInputStream("conversion.pfm"))
+        //val lcm:HdrImage=read_pfm_image(FileInputStream("nebula.pfm"))
+        val wood:HdrImage=read_pfm_image(FileInputStream("pigment_images/wood.pfm"))
 
         println("Done")
 
         // Declare 10 Spheres objects, ray 1/10 in the vertex of a cube
         val objs:MutableList<Shape> = mutableListOf(
 
-/*            Sphere(
-                transformation = translation(Vec(z=-0.5f)) * scalar_transformation(0.3f),
-                material = Material(
-                    emitted_radiance = UniformPigment(Color(b=20f))
-                )
-            ),
-*/
             Plane(
-                transformation = translation(Vec(z=-1f)),
+                transformation = translation(Vec(x=3f)) * rotation(Vec(y=1f), theta = PI.toFloat()/2),
                 material = Material(
                     brdf = DiffusiveBRDF(CheckeredPigment(Color(r=5f), Color(g=10f))),
-                    emitted_radiance = CheckeredPigment(Color(r=0.01f), Color(g=0.01f))
+                    emitted_radiance = CheckeredPigment(Color(r=0.0f), Color(g=0.0f))
                 )
+
             ),
 
 
+            Plane(
+                transformation = translation(Vec(z=-1f)),
+                material =Material(
+                    brdf = DiffusiveBRDF(
+                        ImagePigment(
+                            wood
+                        )
+
+                        //UniformPigment(
+                          //  Color(1f,1f,1f)
+                        //)
+                    ),
+
+                    emitted_radiance = ImagePigment(
+                        wood
+                    )
+                   // ImagePigment(
+                     //   read_pfm_image(FileInputStream("wood.pfm"))
+                    //)
+                )
+            ),
+
+            Sphere(
+                transformation = translation(Vec(z=8f)) * scalar_transformation(7f),
+                material =Material(
+                    brdf = SpecularBRDF(
+                        UniformPigment(Color(1f,1f,1f))
+                    ),
+
+                    emitted_radiance = UniformPigment(Color())
+                    // ImagePigment(
+                    //   read_pfm_image(FileInputStream("wood.pfm"))
+                    //)
+                )
+            ),
 
 
             Sphere(
-                transformation = translation(Vec(x=0f, y=1f, z=3f)) * scalar_transformation(0.3f),
+                transformation = translation(Vec(z=-0.5f, x=1f, y=-1.5f)) * scalar_transformation(0.5f),
+                material =Material(
+                    brdf = DiffusiveBRDF(
+                        ImagePigment(
+                            read_pfm_image(FileInputStream("pigment_images/wood.pfm"))
+                        )
+                    ),
+
+                    emitted_radiance = UniformPigment(Color())
+                )
+            ),
+
+            Sphere(
+                transformation = translation(Vec(z=-0.5f, y=0.5f, x=1f)) * scalar_transformation(0.5f),
+                material =Material(
+                    brdf = DiffusiveBRDF(
+                        ImagePigment(
+                            read_pfm_image(FileInputStream("pigment_images/porfido.pfm"))
+                        )
+                    ),
+
+                    emitted_radiance =ImagePigment(
+                        read_pfm_image(FileInputStream("pigment_images/porfido.pfm"))
+                    )
+
+                )
+            ),
+
+
+            Sphere(
+                transformation = translation(Vec(z=-0.5f,y=-0.5f, x=1f)) * scalar_transformation(0.5f),
                 material = Material(
-                    emitted_radiance = UniformPigment(Color(2f,2f,2f)),
+                    emitted_radiance = UniformPigment(Color(5f,5f,5f)),
                     brdf = SpecularBRDF(UniformPigment(Color(0f,0f, 0f,)))
                 )
             ),
 
 
 
-            Sphere(
-                transformation = translation(Vec(x=1.5f, y=-1.5f, z=0f)) * scalar_transformation(0.7f),
-                material = Material(
-                    emitted_radiance = UniformPigment(Color()),
-                    brdf = SpecularBRDF(UniformPigment(Color(5f,5f,5f)))
-                )
-            ),
-
-
 
 
             Mesh(
-                FileInputStream("tetrahedron.obj"),
+                FileInputStream("mesh_obj_files/tetrahedron.obj"),
                 transformation = translation(Vec(z=-1f, x=1f, y=2f)) * scalar_transformation(3f) ,
                 material = Material(
                     brdf = DiffusiveBRDF(
-                        UniformPigment(
-                            Color(r=10f)
-                        )
-                    ),
-                    emitted_radiance = UniformPigment(Color(0f,0f,0f))
-                )
-            ),
-/*
-            Mesh(
-                FileInputStream("shuttle.obj"),
-                transformation = translation(Vec(z=0f, y=1f, x=3f)) * scalar_transformation(0.2f) * rotation(Vec(y=1f), theta = PI.toFloat()/8) * rotation(Vec(z=1f), PI.toFloat()/2),
-                material = Material(
-                    brdf = DiffusiveBRDF(
-                        UniformPigment(
-                            Color(r=10f)
+                        ImagePigment(
+                            read_pfm_image(FileInputStream("pigment_images/porfido.pfm"))
                         )
                     ),
                     emitted_radiance = UniformPigment(Color(0f,0f,0f))
                 )
             ),
 
- */
 
-/*            Mesh(
-                FileInputStream("shuttle.obj"),
-                transformation = translation(Vec(z=1f, y=0f, x=3f)) * scalar_transformation(0.3f) * rotation(Vec(y=1f), theta = -PI.toFloat()/8),
-                material = Material(
-                    brdf = DiffusiveBRDF(
-                        UniformPigment(
-                            Color(b=10f)
-                        )
-                    ),
-                    emitted_radiance = UniformPigment(Color(0f,0f,0.7f))
-                )
-            ),
-
-
- */
 
             Sphere(
-                transformation = translation(Vec(x=3f)) * scalar_transformation(100f),
+                transformation = scalar_transformation(100f),
                 material = Material(
-                    brdf= DiffusiveBRDF(
-                        UniformPigment(Color())
-                    ),
-                    emitted_radiance = ImagePigment(
-                        lcm
-                    )
-
+                    brdf = SpecularBRDF(UniformPigment(Color())),
+                    emitted_radiance = UniformPigment(Color())
                 )
             )
-
 
 
         )
@@ -320,11 +336,11 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 
         try {
             // Save image in PFM file
-            img.write_pfm_image(FileOutputStream("${this.pfm}.pfm"))
-            println("Image saved in PFM format at PATH: ${this.pfm}.pfm")
+            img.write_pfm_image(FileOutputStream("images" + "${this.pfm}.pfm"))
+            println("Image saved in PFM format at PATH: ${"images" + this.pfm}.pfm")
         }catch (e1: FileNotFoundException)
         {
-            println("Impossible to write on file ${this.pfm}.pfm")
+            println("Impossible to write on file ${"images" + this.pfm}.pfm")
             println("Error: $e1")
             return
         }
@@ -341,13 +357,13 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 
             try {
                 //save image in PNG file
-                val out_stream: FileOutputStream = FileOutputStream(param.output_png_filename)
+                val out_stream: FileOutputStream = FileOutputStream("images" + param.output_png_filename)
                 img.write_ldr_image(stream = out_stream, format = "PNG", gamma = param.gamma)
                 println("Image saved in PNG format at PATH: ${param.output_png_filename}")
 
             }catch (e:Error)
             {
-                println("Impossible to write on file ${param.output_png_filename}")
+                println("Impossible to write on file ${"images" + param.output_png_filename}")
                 println("Error: $e")
 
                 return
