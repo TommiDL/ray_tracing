@@ -336,11 +336,11 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 
         try {
             // Save image in PFM file
-            img.write_pfm_image(FileOutputStream("images" + "${this.pfm}.pfm"))
-            println("Image saved in PFM format at PATH: ${"images" + this.pfm}.pfm")
+            img.write_pfm_image(FileOutputStream("images/" + "${this.pfm}.pfm"))
+            println("Image saved in PFM format at PATH: ${"images/" + this.pfm}.pfm")
         }catch (e1: FileNotFoundException)
         {
-            println("Impossible to write on file ${"images" + this.pfm}.pfm")
+            println("Impossible to write on file ${"images/" + this.pfm}.pfm")
             println("Error: $e1")
             return
         }
@@ -357,13 +357,13 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
 
             try {
                 //save image in PNG file
-                val out_stream: FileOutputStream = FileOutputStream("images" + param.output_png_filename)
+                val out_stream: FileOutputStream = FileOutputStream("images/" + param.output_png_filename)
                 img.write_ldr_image(stream = out_stream, format = "PNG", gamma = param.gamma)
-                println("Image saved in PNG format at PATH: ${param.output_png_filename}")
+                println("Image saved in PNG format at PATH: ${"images/" + param.output_png_filename}")
 
             }catch (e:Error)
             {
-                println("Impossible to write on file ${"images" + param.output_png_filename}")
+                println("Impossible to write on file ${"images/" + param.output_png_filename}")
                 println("Error: $e")
 
                 return
