@@ -12,12 +12,16 @@ The program was made using Gradle and can perform three tasks:
    (in fondo aggiungere due foto linkate) 
 
    The available rendering algorithms are the following:
-   - onoff:         the objects of the scene are displayed in white color with a black background
-      [example]
+   - onoff:         the objects of the scene are displayed in white color with a black background.
+   
+     Here an ![example]() using onoff rendering algorithm.
+     
    - flat:          the objects of the scene are displayed with their real colors without simulating the realistic behaviour of light
-      [example]
+
+     Here an ![example]() using flat rendering algorithm.
    - path tracing:  the objects are displayed with their real colors and physical properties simulating the realistic behaviour of light
-      [example]
+
+     Here an ![example]() using pathtracing rendering algorithm.
 
    The demo command also allows the user to move inside the scene specifying the translation and rotation movements.
 
@@ -56,6 +60,22 @@ The program was made using Gradle and can perform three tasks:
 
 
 ### Examples
+
+#### On-Off renderer examples
+
+<p align="left">
+Perspective Camera:
+</p>
+<p align="right">
+ Orthogonal Camera:
+<\p>
+ 
+![](Spheres.png)     ![](Spheres.png)     
+
+
+#### Flat renderer examples
+
+#### Pathtracing renderer examples
 
 
 ## History
