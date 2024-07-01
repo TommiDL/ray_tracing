@@ -14,7 +14,7 @@ The program was made using Gradle and can perform three tasks:
    The available rendering algorithms are the following:
    - onoff:         the objects of the scene are displayed in white color with a black background.
    
-     Here an [example](###-examples) using onoff rendering algorithm.
+     Here an ![example](https://github.com/TommiDL/LITracer/blob/pathtracing/example_images/onoff_example_perspective.png) using onoff rendering algorithm.
      
    - flat:          the objects of the scene are displayed with their real colors without simulating the realistic behaviour of light
 
