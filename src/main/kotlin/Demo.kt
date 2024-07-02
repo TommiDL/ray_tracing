@@ -72,7 +72,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
         help = "Select rendering algorithm type:\u0085" +
                 "-   onoff -> rendering in black&white format\u0085" +
                 "-   flat -> rendering in colored format\u0085" +
-                "-   pathtracing -> rendering with pathtracing alg\u0085" +
+                "-   pathtracing -> rendering with pathtracing alg" +
                 " [default value pathtracing]"
 
     ).choice("onoff", "flat", "pathtracing").default("pathtracing")
@@ -85,7 +85,7 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
     ).int().default(10)
     val max_depth:Int by option(
         "--max-depth", "-md" ,
-        help = "max depth of bouncing per ray  [default value 5]"
+        help = "max depth of bouncing per ray  \u0085[default value 5]"
     ).int().default(5)
     val russian_roulette:Int by option(
         "--russian-roul", "-rr",
