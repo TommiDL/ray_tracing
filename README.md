@@ -98,7 +98,7 @@ Demo image obtained using flat tracing algorithm, on the left image generated us
 #### Pathtracing renderer examples
 Here some examples obtained using `./gradlew run --args="demo -alg pathtracing"`.
 
-The following examples of the demo image were generated using the path-tracing algorithm for different values of the parameter `--nray`.
+The following examples of the demo image were generated using the path-tracing algorithm for different values of the parameter `--nray` with perspective camera.
 
 Each one of those images is obtained with a value of max depth fixed at 3.
 
@@ -121,6 +121,26 @@ On the left demo image obtained with nray=1, on the right demo image obtained wi
 On the left demo image obtained with nray=15, on the right demo image obtained with nray=20.
 </em></p>
 
+The following example is generated using orthogonal camera with parameters `--nray=10`, a traslation of 0.5 along z axis and of 10 along x axis and a rotation of 45 degrees relative to the z axis
+
+<div align="center">
+ <img src="example_images/pt_10nray_ortho.png", width="500">
+</div>
+<p align="center"><em>
+ Demo image with orthogonal camera (800x500 pixels)
+</em></p>
+
+Finally some examples generated using a fixed value of `--nray=10` with different values of the max depth using perspective camera
+
+<div align="center">
+<img src="example_images/pt_1md.png", width="300">
+<img src="example_images/pt_2md.png", width="300">
+<img src="example_images/pt_3md.png", width="300">
+</div>
+
+<p align="center"><em>
+From the left to the right: (1) max depth = 1, (2) max depth = 2, (3) max depth = 3
+</em></p>
 
 
 ## History
