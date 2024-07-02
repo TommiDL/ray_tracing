@@ -14,14 +14,14 @@ The program was made using Gradle and can perform three tasks:
    The available rendering algorithms are the following:
    - onoff:         the objects of the scene are displayed in white color with a black background.
    
-     Here an ![example](https://github.com/TommiDL/LITracer/blob/pathtracing/example_images/onoff_example_perspective.png) using onoff rendering algorithm.
+     Here some [examples](#on-off-renderer-examples) using onoff rendering algorithm.
      
    - flat:          the objects of the scene are displayed with their real colors without simulating the realistic behaviour of light
 
-     Here an [example](###-examples) using flat rendering algorithm.
+     Here some [examples](#flat-renderer-examples) using flat rendering algorithm.
    - path tracing:  the objects are displayed with their real colors and physical properties simulating the realistic behaviour of light
 
-     Here an [example](###-examples) using pathtracing rendering algorithm.
+     Here some [examples](#pathtracing-renderer-examples) using pathtracing rendering algorithm.
 
    The demo command also allows the user to move inside the scene specifying the translation and rotation movements.
 
@@ -63,20 +63,61 @@ The program was made using Gradle and can perform three tasks:
 
 #### On-Off renderer examples
 
-<p align="left">
-Perspective Camera:
-</p>
-<p align="right">
- Orthogonal Camera:
-<\p>
- 
-![](Spheres.png)     ![](Spheres.png)     
+Here is an example made with 11 spheres showing the behavior of on-off renderer using the two different choices of camera
 
+This image is not obtainable from the flag `--algorithm=onoff`, this is only an example of the renderer behavior
+<center>
+<figure>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+**Perspective Camera**
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+**Orthogonal Camera**
+
+<img src="example_images/onoff_example_perspective.png" alt="Perspective" width="300"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="example_images/onoff_example_orthogonal.png" alt="Orthogonal" width="300"/>
+</figure>
+</center>
 
 #### Flat renderer examples
+<center>
+<figure>
+<img src="example_images/flat_example.png" alt="Orthogonal" width="300"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="example_images/flat_ortho.png" alt="Orthogonal" width="300"/>
+<figcaption> <center>
+Demo image obtained using flat tracing algorithm, on the left image generated using perspective camera, on the right image generated using orthogonal camera with a rotation of 45 degree relative to the z-axis 
+</center>
+</figcaption>
+
+</figure>
+</center>
 
 #### Pathtracing renderer examples
+Here are some examples of the demo image generated using the path-tracing algorithm for different values of the parameter `--nray`.
 
+Each one of those images is obtained with a value of max depth fixed at 3.
+<center>
+<figure>
+<img src="example_images/pt1_ray.png" alt="1 ray" width="300" title="1 ray"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="example_images/pt_5ray.png" alt="5 ray" width="300"/>
+<figcaption>On the left demo image obtained with nray=1, on the right demo image obtained with nray=5.</figcaption>
+</figure>
+
+<figure>
+<img src="example_images/pt15_ray.png" alt="15 ray" width="300"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="example_images/pt_20ray.png" alt="20 ray" width="300"/>
+<figcaption>On the left demo image obtained with nray=15, on the right demo image obtained with nray=20.</figcaption>
+</figure>
+</center>
 
 ## History
 

@@ -39,6 +39,11 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
         help="Camera rotation angle  [default value 0]"
     ).float().default(0f)
 
+    val rotation_ax:String by option(
+        "--rotatoin_ax", "-rotax",
+        help = "Axis of rotation for the camera"
+    ).choice("x", "y", "z").default("z")
+
     val traslation_x:Float by option(
         "--translation-x", "-trx",
         help = "Insert the desired value of translation of the camera on x-axis  [default value 0]"
@@ -252,24 +257,42 @@ class Demo : CliktCommand(printHelpOnEmptyArgs = true,help="Create a png demo im
      */
     private fun _camera_selection()
     {
+        val translation:Transformation= translation(
+            Vec(
+                x = this.traslation_x,
+                y = this.traslation_y,
+                z = this.traslation_z
+            )
+        )
+        val u:Vec
+        if (this.rotation_ax=="x")
+        {
+            u=Vec(x=1f)
+        }else if (this.rotation_ax=="y")
+        {
+            u=Vec(y=1f)
+        }else if(this.rotation_ax=="z")
+        {
+            u=Vec(z=1f)
+        }else
+        {
+            u=Vec(z=1f)
+        }
+
+        val rotation:Transformation = rotation(
+            u = u,
+            theta = rotation_angle*2* PI.toFloat()/360f
+        )
+
         if (this.camera_ch=="perspective")
             this.camera=PerspectiveCamera(
-                transformation = rotation(u=Vec(z=1f), rotation_angle*2* PI.toFloat()/360f) * translation(Vec(-1f, 0f, 0f))
-                    * translation(Vec(
-                    x= this.traslation_x,
-                    y= this.traslation_y,
-                    z= this.traslation_z,
-                    )),
+                transformation = rotation *translation* translation(Vec(-1f, 0f, 0f)),
                 aspect_ratio = this.width.toFloat()/this.height,
                 distance = this.distance
             )
         else if (this.camera_ch=="orthogonal")
             this.camera=OrthogonalCamera(
-                transformation = rotation(u = Vec(z=1f), rotation_angle*2* PI.toFloat()/360f)* translation(Vec(-1f, 0f, 0f))                    * translation(Vec(
-                    x= this.traslation_x,
-                    y= this.traslation_y,
-                    z= this.traslation_z,
-                )),
+                transformation = rotation * translation * translation(Vec(-1f, 0f, 0f)),
                 aspect_ratio = this.width.toFloat()/this.height,
             )
 
