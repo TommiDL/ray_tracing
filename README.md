@@ -1,6 +1,7 @@
 # LITracer
 This is a very simple [Ray-Tracer](https://developer.nvidia.com/discover/ray-tracing#:~:text=Ray%20tracing%20is%20a%20rendering,%2C%20shadows%2C%20and%20indirect%20lighting.) written in [Kotlin](https://en.wikipedia.org/wiki/Kotlin_(programming_language)) language 
 
+
 ## Installation
 
 ## Usage
@@ -66,58 +67,61 @@ The program was made using Gradle and can perform three tasks:
 Here is an example made with 11 spheres showing the behavior of on-off renderer using the two different choices of camera
 
 This image is not obtainable from the flag `--algorithm=onoff`, this is only an example of the renderer behavior
-<center>
-<figure>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-**Perspective Camera**
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;
-**Orthogonal Camera**
 
-<img src="example_images/onoff_example_perspective.png" alt="Perspective" width="300"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="example_images/onoff_example_orthogonal.png" alt="Orthogonal" width="300"/>
-</figure>
-</center>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/TommiDL/LITracer/pathtracing/example_images/onoff_example_perspective.png" width="300"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/TommiDL/LITracer/pathtracing/example_images/onoff_example_orthogonal.png" alt="Orthogonal" width="300"/>
+</div>
+
+<p align="center"><em>
+ The image on the left  was generated using perspective camera, the image on the right was generated using orthogonal camera
+</p></em>
+
+ 
 
 #### Flat renderer examples
-<center>
-<figure>
+Here some examples obtained using `./gradlew run --args="demo -alg flat"`
+
+<div align="center">
+
 <img src="example_images/flat_example.png" alt="Orthogonal" width="300"/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="example_images/flat_ortho.png" alt="Orthogonal" width="300"/>
-<figcaption> <center>
+</div>
+<p align="center"><em>
 Demo image obtained using flat tracing algorithm, on the left image generated using perspective camera, on the right image generated using orthogonal camera with a rotation of 45 degree relative to the z-axis 
-</center>
-</figcaption>
+</p></em>
 
-</figure>
-</center>
 
 #### Pathtracing renderer examples
-Here are some examples of the demo image generated using the path-tracing algorithm for different values of the parameter `--nray`.
+Here some examples obtained using `./gradlew run --args="demo -alg pathtracing"`.
+
+The following examples of the demo image were generated using the path-tracing algorithm for different values of the parameter `--nray`.
 
 Each one of those images is obtained with a value of max depth fixed at 3.
-<center>
-<figure>
+
+<div align="center">
 <img src="example_images/pt1_ray.png" alt="1 ray" width="300" title="1 ray"/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="example_images/pt_5ray.png" alt="5 ray" width="300"/>
-<figcaption>On the left demo image obtained with nray=1, on the right demo image obtained with nray=5.</figcaption>
-</figure>
+</div>
+<p align="center"><em>
+On the left demo image obtained with nray=1, on the right demo image obtained with nray=5.
+</em></p>
 
-<figure>
+
+<div align="center">
 <img src="example_images/pt15_ray.png" alt="15 ray" width="300"/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="example_images/pt_20ray.png" alt="20 ray" width="300"/>
-<figcaption>On the left demo image obtained with nray=15, on the right demo image obtained with nray=20.</figcaption>
-</figure>
-</center>
+</div>
+<p align="center"><em>
+On the left demo image obtained with nray=15, on the right demo image obtained with nray=20.
+</em></p>
+
+
 
 ## History
 
